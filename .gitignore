@@ -1,0 +1,17 @@
+/url/cache
+/auto-save-list
+/.session
+/session.*
+*.elc
+CVS
+.svn
+*~
+.cvsignore
+.*.lock
+/tramp
+/.org-id-locations
+cookies
+\#*
+/elpa
+site-lisp/package/
+/backups
