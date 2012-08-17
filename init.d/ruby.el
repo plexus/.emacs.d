@@ -10,6 +10,7 @@
                 ("Gemfile.lock" . ruby-mode) 
                 ("Procfile" . ruby-mode) 
                 ("Vagrantfile" . ruby-mode) 
+                ("Guardfile" . ruby-mode) 
                 )
               auto-mode-alist))
 
