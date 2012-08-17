@@ -16,11 +16,11 @@
 ;;Init
 
 ; load per-hostname config file
-(let ((local-rc (concat 
-		 user-emacs-directory "init." *hostname* ".el")))
-  (if (file-exists-p local-rc)
-      (load-library local-rc)
-    (beep)))
+; (let ((local-rc (concat 
+; 		 user-emacs-directory "init." *hostname* ".el")))
+;   (if (file-exists-p local-rc)
+;       (load-library local-rc)
+;     (beep)))
 
 (defun plexus-load-all-in-path (base)
   (interactive) 
