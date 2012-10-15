@@ -15,3 +15,5 @@ cookies
 /elpa
 site-lisp/package/
 /backups
+.git
+eshell

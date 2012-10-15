@@ -31,3 +31,4 @@
         (load-library name)))) )
 
 (plexus-load-all-in-path *auto-init-files-path*)
+(put 'upcase-region 'disabled nil)
