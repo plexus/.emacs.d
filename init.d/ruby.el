@@ -22,3 +22,4 @@
 (setq rspec-use-rake-flag nil)
 (setq rspec-spec-command "rspec")
 (custom-set-variables '(rspec-key-command-prefix (kbd "s-s")))
+(define-key rspec-mode-keymap (kbd "S-s") 'rspec-verify-single)
