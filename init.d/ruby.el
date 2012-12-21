@@ -11,11 +11,15 @@
                 ("Procfile" . ruby-mode) 
                 ("Vagrantfile" . ruby-mode) 
                 ("Guardfile" . ruby-mode) 
+                ("\\.rhtml" . ruby-mode) 
                 )
               auto-mode-alist))
 
 (setq ruby-indent-level 2)
 (setq ruby-deep-indent-paren nil)       ; inside parameter lists, just indent two spaces rather than up to paren
+
+(add-hook 'ruby-mode-hook
+          (lambda () (linum-mode 1)))
 
 (defun plexus-load-rspec ()
   (progn
@@ -54,3 +58,24 @@
      (rvm-use-default)
      (plexus-activate-rcodetools)
      (plexus-load-rspec)))
+
+
+(defun align-to-equals (begin end)
+  "Align region to equal signs"
+   (interactive "r")
+   (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
+
+(defun align-to-rocket (begin end)
+  "Align region to equal signs"
+   (interactive "r")
+   (align-regexp begin end "\\(\\s-*\\)=>" 1 1 ))
+
+(defun align-to-comma (begin end)
+  "Align region to equal signs"
+   (interactive "r")
+   (align-regexp begin end "\\(\\s-*\\)," 1 1 ))
+
+(defun align-to-semicolon (begin end)
+  "Align region to equal signs"
+   (interactive "r")
+   (align-regexp begin end "\\(\\s-*\\);" 1 1 ))
