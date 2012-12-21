@@ -5,3 +5,5 @@
 
 ;(setq backup-inhibited t)                      ; don't backup to a ~ file
 (setq auto-save-default nil)                   ; don't autosave to a #...# file
+
+(show-paren-mode)
