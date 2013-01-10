@@ -453,6 +453,7 @@
            (error "Could not determine the project root."))
           ((file-exists-p (expand-file-name "Rakefile" directory)) directory)
           ((file-exists-p (expand-file-name "Gemfile" directory)) directory)
+          ((file-exists-p (expand-file-name ".git" directory)) directory)
           (t (rspec-project-root (file-name-directory (directory-file-name directory)))))))
 
 (defmacro rspec-from-direcory (directory body-form)
