@@ -7,3 +7,7 @@
 (setq auto-save-default nil)                   ; don't autosave to a #...# file
 
 (show-paren-mode)
+
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
