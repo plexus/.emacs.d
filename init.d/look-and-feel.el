@@ -26,10 +26,10 @@
 (color-theme-initialize)
 
 ; Loading both gives a light theme with a nice red mode line
-(color-theme-arjen)
-(color-theme-scintilla)
+;(color-theme-arjen)
+;(color-theme-scintilla)
 
-;(color-theme-charcoal-black)   ;dark
+(color-theme-charcoal-black)   ;dark
 ;(color-theme-feng-shui)        ;light
 ;(color-theme-sitaramv-nt)      ;light
 ;(color-theme-arjen)
