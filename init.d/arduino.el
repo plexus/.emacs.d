@@ -1,0 +1,1 @@
+(require 'arduino-mode)
