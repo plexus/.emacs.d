@@ -1,17 +1,17 @@
 (require 'ruby-mode)
 
-(setq auto-mode-alist 
+(setq auto-mode-alist
       (append '(("\\.rb$" . ruby-mode)
                 ("\\.rake$" . ruby-mode)
                 ("rakefile$" . ruby-mode)
                 ("Rakefile$" . ruby-mode)
-                ("\\.gemspec$" . ruby-mode) 
-                ("Gemfile" . ruby-mode) 
-                ("Gemfile.lock" . ruby-mode) 
-                ("Procfile" . ruby-mode) 
-                ("Vagrantfile" . ruby-mode) 
-                ("Guardfile" . ruby-mode) 
-                ("\\.rhtml" . ruby-mode) 
+                ("\\.gemspec$" . ruby-mode)
+                ("Gemfile" . ruby-mode)
+                ("Gemfile.lock" . ruby-mode)
+                ("Procfile" . ruby-mode)
+                ("Vagrantfile" . ruby-mode)
+                ("Guardfile" . ruby-mode)
+                ("\\.rhtml" . ruby-mode)
                 )
               auto-mode-alist))
 
@@ -30,8 +30,8 @@
     (define-key rspec-mode-keymap (kbd "S-s") 'rspec-verify-single)))
 
 (defun plexus-set-rct-elisp-path ()
-  (setq load-path 
-        (append 
+  (setq load-path
+        (append
          (list (concat user-emacs-directory "elisp/rcodetools"))
          load-path)))
 
@@ -40,7 +40,7 @@
           (concat user-emacs-directory "elisp/rcodetools/bin" ":" (concat (getenv "PATH")))))
 
 (defun plexus-set-rct-load-path ()
-  (setenv 
+  (setenv
    "RUBYLIB"
    (concat user-emacs-directory "elisp/rcodetools/lib" ":" (concat (getenv "RUBYLIB")))))
 
@@ -53,7 +53,7 @@
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 
 (eval-after-load 'ruby-mode
-  '(progn 
+  '(progn
      (require 'rvm)
      (rvm-use-default)
      (plexus-activate-rcodetools)

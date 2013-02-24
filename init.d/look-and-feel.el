@@ -9,7 +9,7 @@
 
 (setq eol-mnemonic-dos  "(\\DOS)")              ; Readable end-of-line identifiers for the modeline
 (setq eol-mnemonic-unix "(:UNIX)")              ; the default one-char is still in there, maybe I'll learn some day
-(setq eol-mnemonic-mac  "(/MAC)") 
+(setq eol-mnemonic-mac  "(/MAC)")
 (setq eol-mnemonic-undecided "(-UNDECIDED)")
 
 (require 'uniquify)
@@ -17,7 +17,7 @@
 
 ;; Color theme
 
-(setq load-path 
+(setq load-path
       (cons
        (concat user-emacs-directory "elisp/color-theme-6.6.0")
        load-path))
