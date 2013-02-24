@@ -68,14 +68,36 @@
 (defun align-to-rocket (begin end)
   "Align region to equal signs"
    (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)=>" 1 1 ))
+   (align-regexp begin end "\\(\\s-*\\)=>" 1 1 t))
 
 (defun align-to-comma (begin end)
-  "Align region to equal signs"
+  "Align region in columns separated by commas"
    (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)," 1 1 ))
+   (align-regexp begin end "\\(\\s-*\\)," 1 1 t))
 
 (defun align-to-semicolon (begin end)
-  "Align region to equal signs"
+  "Align region to semicolumns"
    (interactive "r")
    (align-regexp begin end "\\(\\s-*\\);" 1 1 ))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(setq ruby-deep-indent-paren nil)
+
+; f(
+;   :bar => :baz
+; )
+(defadvice ruby-indent-line (after unindent-closing-paren activate)
+  (let ((column (current-column))
+        indent offset)
+    (save-excursion
+      (back-to-indentation)
+      (let ((state (syntax-ppss)))
+        (setq offset (- column (current-column)))
+        (when (and (eq (char-after) ?\))
+                   (not (zerop (car state))))
+          (goto-char (cadr state))
+          (setq indent (current-indentation)))))
+    (when indent
+      (indent-line-to indent)
+      (when (> offset 0) (forward-char offset)))))
