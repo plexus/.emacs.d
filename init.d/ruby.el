@@ -101,3 +101,6 @@
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+(require 'chruby)
+(chruby "1.9.3")
