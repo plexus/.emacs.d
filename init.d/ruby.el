@@ -18,9 +18,6 @@
 (setq ruby-indent-level 2)
 (setq ruby-deep-indent-paren nil)       ; inside parameter lists, just indent two spaces rather than up to paren
 
-(add-hook 'ruby-mode-hook
-          (lambda () (linum-mode 1)))
-
 (defun plexus-load-rspec ()
   (progn
     (require 'rspec-mode)
@@ -60,33 +57,12 @@
      (plexus-load-rspec)))
 
 
-(defun align-to-equals (begin end)
-  "Align region to equal signs"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
 
-(defun align-to-rocket (begin end)
-  "Align region to equal signs"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)=>" 1 1 t))
-
-(defun align-to-comma (begin end)
-  "Align region in columns separated by commas"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)," 1 1 t))
-
-(defun align-to-semicolon (begin end)
-  "Align region to semicolumns"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\);" 1 1 ))
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
+;; "Fix" Ruby indentation, for example.
+;; f(
+;;   :bar => :baz
+;; )
 (setq ruby-deep-indent-paren nil)
-
-; f(
-;   :bar => :baz
-; )
 (defadvice ruby-indent-line (after unindent-closing-paren activate)
   (let ((column (current-column))
         indent offset)
@@ -99,7 +75,7 @@
           (goto-char (cadr state))
           (setq indent (current-indentation)))))
     (when indent
-      (indent-line-to indent)
+         (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
 
 (require 'chruby)

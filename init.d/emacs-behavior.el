@@ -13,3 +13,5 @@
 (put 'downcase-region 'disabled nil)
 
 (windmove-default-keybindings)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
