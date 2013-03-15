@@ -1,6 +1,14 @@
 (setq *hostname* (substring (shell-command-to-string "hostname") 0 -1))
 (setq *auto-init-files-path* (concat user-emacs-directory "init.d"))
 
+(require 'package)
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(defun inf-ruby-keys () )
+
 ;;;;
 ;;Load path
 
