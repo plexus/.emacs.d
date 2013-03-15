@@ -51,11 +51,8 @@
 
 (eval-after-load 'ruby-mode
   '(progn
-     (require 'rvm)
-     (rvm-use-default)
      (plexus-activate-rcodetools)
      (plexus-load-rspec)))
-
 
 
 ;; "Fix" Ruby indentation, for example.
