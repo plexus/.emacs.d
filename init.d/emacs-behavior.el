@@ -15,3 +15,5 @@
 (windmove-default-keybindings)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(setq-default indent-tabs-mode nil)            ; tabs are nasty
