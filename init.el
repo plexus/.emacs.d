@@ -4,8 +4,8 @@
 ;;;;
 ;;Load path
 
-(setq load-path 
-      (append 
+(setq load-path
+      (append
        (list
 	(concat user-emacs-directory "elisp")
 	(concat user-emacs-directory "init.d")
@@ -16,18 +16,18 @@
 ;;Init
 
 ; load per-hostname config file
-; (let ((local-rc (concat 
+; (let ((local-rc (concat
 ; 		 user-emacs-directory "init." *hostname* ".el")))
 ;   (if (file-exists-p local-rc)
 ;       (load-library local-rc)
 ;     (beep)))
 
 (defun plexus-load-all-in-path (base)
-  (interactive) 
+  (interactive)
   (add-to-list 'load-path base)
   (dolist (f (directory-files base))
     (let ((name (concat base "/" f)))
-      (when (file-regular-p name) 
+      (when (file-regular-p name)
         (load-library name)))) )
 
 (plexus-load-all-in-path *auto-init-files-path*)

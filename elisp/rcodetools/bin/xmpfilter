@@ -1,4 +1,5 @@
 #! /usr/local/bin/ruby18
+
 require 'rcodetools/xmpfilter'
 require 'rcodetools/options'
 
@@ -16,7 +17,7 @@ opts = OptionParser.new do |opts|
   opts.on("-a", "--annotations", "Annotate code (default)") do
     klass = XMPFilter
   end
-  opts.on("-u", "--unittest", "Complete Test::Unit assertions.") do 
+  opts.on("-u", "--unittest", "Complete Test::Unit assertions.") do
     require 'rcodetools/xmptestunitfilter'
     klass = XMPTestUnitFilter
   end
@@ -42,7 +43,7 @@ opts = OptionParser.new do |opts|
   end
   opts.on("--rails", "Setting appropriate for Rails.",
           "(no warnings, find working directory,",
-          " Test::Unit assertions)") do 
+          " Test::Unit assertions)") do
     require 'rcodetools/xmptestunitfilter'
     options[:warnings] = false
     klass = XMPTestUnitFilter
@@ -52,7 +53,7 @@ opts = OptionParser.new do |opts|
           "(default: use them)") do |poetry_p|
     options[:use_parentheses] = !poetry_p
   end
-  opts.on("--[no-]warnings", "Whether to add warnings (# !>).", 
+  opts.on("--[no-]warnings", "Whether to add warnings (# !>).",
           "(default: enabled)") {|warnings_p| options[:warnings] = warnings_p }
   opts.on("-q", "--quiet", "Supress standard output.") do
     options[:output_stdout] = false
