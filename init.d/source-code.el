@@ -13,23 +13,23 @@
     (local-set-key (kbd "M-s-s") 'align-to-semicolon)
 ))
 
+    (local-set-key (kbd "H-c") 'comment-region)
+    (local-set-key (kbd "H-u") 'uncomment-region)
+    (local-set-key (kbd "H-i") 'indent-region)
+    (local-set-key (kbd "H-a") 'align-to-character)
 
-(defun align-to-equals (begin end)
-  "Align region to equal signs"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)=" 1 1 ))
+    (whitespace-mode)
+    (setq whitespace-style '(face empty tabs lines-tail trailing))
+))
+
+(defun align-to-character (char prefix)
+  (interactive "c\nP")
+  (align-regexp (region-beginning)
+                (region-end)
+                (concat "\\(\\s-*\\)" (make-string 1 char))
+                1 1 (not (eq prefix nil))))
 
 (defun align-to-rocket (begin end)
   "Align region to equal signs"
    (interactive "r")
    (align-regexp begin end "\\(\\s-*\\)=>" 1 1 t))
-
-(defun align-to-comma (begin end)
-  "Align region in columns separated by commas"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\)," 1 1 t))
-
-(defun align-to-semicolon (begin end)
-  "Align region to semicolumns"
-   (interactive "r")
-   (align-regexp begin end "\\(\\s-*\\);" 1 1 ))

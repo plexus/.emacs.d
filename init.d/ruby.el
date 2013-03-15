@@ -24,8 +24,8 @@
     (require 'rspec-mode)
     (setq rspec-use-rake-flag nil)
     (setq rspec-spec-command "rspec")
-    (custom-set-variables '(rspec-key-command-prefix (kbd "s-s")))
-    (define-key rspec-mode-keymap (kbd "S-s") 'rspec-verify-single)))
+    (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
+    (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)))
 
 (defun plexus-set-rct-elisp-path ()
   (setq load-path
@@ -34,13 +34,22 @@
          load-path)))
 
 (defun plexus-set-rct-bin-path ()
-  (setenv "PATH"
-          (concat user-emacs-directory "elisp/rcodetools/bin" ":" (concat (getenv "PATH")))))
+  (setenv
+   "PATH"
+   (file-truename
+    (concat user-emacs-directory
+            "elisp/rcodetools/bin"
+            ":"
+            (concat (getenv "PATH"))))))
 
 (defun plexus-set-rct-load-path ()
   (setenv
    "RUBYLIB"
-   (concat user-emacs-directory "elisp/rcodetools/lib" ":" (concat (getenv "RUBYLIB")))))
+   (file-truename
+    (concat user-emacs-directory
+            "elisp/rcodetools/lib"
+            ":"
+            (concat (getenv "RUBYLIB"))))))
 
 (defun plexus-activate-rcodetools ()
   (progn
