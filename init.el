@@ -1,16 +1,27 @@
 (setq *hostname* (substring (shell-command-to-string "hostname") 0 -1))
 (setq *auto-init-files-path* (concat user-emacs-directory "init.d"))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; customize-*
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(rspec-key-command-prefix (kbd "H-s")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Packages
+
 (require 'package)
 (package-initialize)
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(defun inf-ruby-keys () )
-
-;;;;
-;;Load path
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Load path
 
 (setq load-path
       (append
@@ -20,8 +31,8 @@
 	)
        load-path))
 
-;;;;
-;;Init
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Init
 
 ; load per-hostname config file
 ; (let ((local-rc (concat

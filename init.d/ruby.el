@@ -20,12 +20,13 @@
 (setq ruby-deep-indent-paren nil)       ; inside parameter lists, just indent two spaces rather than up to paren
 
 (defun plexus-load-rspec ()
-  (progn
-    (require 'rspec-mode)
-    (setq rspec-use-rake-flag nil)
-    (setq rspec-spec-command "rspec")
-    (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
-    (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)))
+  (require 'rspec-mode)
+  (setq rspec-use-rake-flag nil)
+  (setq rspec-spec-command "rspec")
+  (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
+  (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)
+  (custom-set-variables
+    '(rspec-use-bundler-when-possible nil)))
 
 (defun plexus-set-rct-elisp-path ()
   (setq load-path

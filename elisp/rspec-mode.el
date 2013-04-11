@@ -442,7 +442,7 @@
   (if rspec-use-rvm
       (rvm-activate-corresponding-ruby))
   (rspec-from-project-root
-   (compile (mapconcat 'identity `(,(rspec-runner) ,a-file-or-dir ,(rspec-runner-options opts)) " ")))
+   (compile (mapconcat 'identity `(,(rspec-runner) ,(rspec-runner-options opts) ,a-file-or-dir) " ")))
   (rspec-end-of-buffer-target-window rspec-compilation-buffer-name))
 
 
