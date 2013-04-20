@@ -13,8 +13,8 @@ CVS
 cookies
 \#*
 .#*
-/elpa
 site-lisp/package/
 /backups
 .git
 eshell
+/elpa/*.txt
