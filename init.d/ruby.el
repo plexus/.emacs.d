@@ -60,10 +60,11 @@
     (require 'rcodetools)
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 
-(eval-after-load 'ruby-mode
-  '(progn
-     (plexus-activate-rcodetools)
-     (plexus-load-rspec)))
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (plexus-activate-rcodetools)
+            (plexus-load-rspec)
+            (robe-mode)))
 
 
 ;; "Fix" Ruby indentation, for example.

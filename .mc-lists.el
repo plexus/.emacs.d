@@ -4,10 +4,12 @@
 (setq mc/cmds-to-run-for-all
       '(
         end-of-buffer
+        indent-for-tab-command
         kill-region
         sgml-slash
         undefined
         wdired-finish-edit
+        yaml-electric-dash-and-dot
         ))
 
 (setq mc/cmds-to-run-once
