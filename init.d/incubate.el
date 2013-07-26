@@ -67,18 +67,6 @@
 (global-set-key (kbd "H-j") 'plexus-jump-to-clipboard)
 
 
-(require 'mmm-auto)
-(require 'mmm-erb)
-
-(setq mmm-global-mode 'maybe)
-(mmm-add-mode-ext-class 'html-erb-mode "\\.html\\.erb\\'" 'erb)
-(mmm-add-mode-ext-class 'html-erb-mode "\\.jst\\.ejs\\'" 'ejs)
-(mmm-add-mode-ext-class 'html-erb-mode nil 'html-js)
-(mmm-add-mode-ext-class 'html-erb-mode nil 'html-css)
-(setq mmm-submode-decoration-level 2
-      mmm-parse-when-idle t)
-
-
 (yas-global-mode 1)
 
 (defun duplicate-line()
