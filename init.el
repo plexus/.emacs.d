@@ -9,7 +9,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(rspec-key-command-prefix (kbd "H-s")))
+ '(safe-local-variable-values (quote ((encoding . utf-8)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
@@ -50,3 +50,13 @@
         (load-library name)))) )
 
 (plexus-load-all-in-path *auto-init-files-path*)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-lock-comment-face ((t (:foreground "forest green"))))
+ '(font-lock-constant-face ((t (:foreground "slate blue"))))
+ '(font-lock-keyword-face ((t (:foreground "magenta3"))))
+ '(font-lock-string-face ((t (:foreground "red1"))))
+ '(font-lock-type-face ((t (:foreground "slate blue")))))

@@ -1,6 +1,9 @@
-;; Snippets that I find but am not sure yet that I'll keep em
+;; Copy-pasted snippets from the web or other 'expirements' that haven't yet made
+;; into my 'official' emacs configuration.
 
 ;; http://emacswiki.org/emacs/MoveLine
+
+
 
 (defun move-line-up ()
   "Move the current line up by N lines."
@@ -18,6 +21,9 @@
 
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
+
+(global-set-key (kbd "M-p") 'move-line-up)
+(global-set-key (kbd "M-n") 'move-line-down)
 
 (defun copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
@@ -73,51 +79,40 @@
       mmm-parse-when-idle t)
 
 
-(setq jslint-globals '(jQuery
-                       Ticketsolve
-                       document
-                       describe
-                       expect
-                       it
-                       spyOn
-                       setFixtures
-                       beforeEach
-                       mock_ajax_request
-                       mock_jsonp_timeout
-                       expect_message
-                       mock_jsonp_exception))
-
-
-(require 'flymake)
-(require 'flymake-cursor)
-
-(defun plexus-flymake-jslint-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name)))
-         (predef-args (mapconcat
-                       (lambda(global)
-                         (concat "--predef " (symbol-name global)))
-                       jslint-globals " ")))
-    (list "jslint"
-          (list (mapconcat 'identity
-                           (list "--terse" "--sloppy" "--vars" predef-args)
-                           " ")
-                local-file))))
-
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.js\\'" plexus-flymake-jslint-init))
-
-(defun plexus-flymake-jslint-activate ()
-  (setq flymake-err-line-patterns
-        (cons '("^\\(.*\\)(\\([[:digit:]]+\\)):\\(.*\\)$"
-                1 2 nil 3)
-              flymake-err-line-patterns))
-      (flymake-mode 1)
-      (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error))
-
-(add-hook 'js-mode-hook 'plexus-flymake-jslint-activate)
-
 (yas-global-mode 1)
+
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+
+(global-set-key (kbd "C-c d") 'duplicate-line)
+
+(defun temp-ruby-buffer ()
+  (interactive)
+  (switch-to-buffer (make-temp-name "*ruby*"))
+  (ruby-mode))
+
+(global-set-key (kbd "H-r") 'temp-ruby-buffer)
+
+(defun plexus-spec-summary ()
+  (interactive)
+  (occur "^[ \t]*\\(describe\\|it\\|context\\|specify\\|shared_examples\\|include_examples\\|shared_context\\|include_context\\)"))
+
+
+(defvar hexcolour-keywords
+  '(("#[abcdef[:digit:]]\\{6\\}"
+     (0 (put-text-property (match-beginning 0)
+                           (match-end 0)
+                           'face (list :background
+                                       (match-string-no-properties 0)))))))
+
+(defun hexcolour-add-to-font-lock ()
+  (font-lock-add-keywords nil hexcolour-keywords))
+
+(add-hook 'scss-mode-hook 'hexcolour-add-to-font-lock)

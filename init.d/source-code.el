@@ -3,6 +3,10 @@
         haskell-mode-hook
         html-mode-hook
         coffee-mode-hook
+        shell-script-mode-hook
+        yaml-mode-hook
+        conf-mode-hook
+        css-mode-hook
         ))
 
 (mapcar

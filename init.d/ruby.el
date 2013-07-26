@@ -11,6 +11,7 @@
                 ("Procfile$" . ruby-mode)
                 ("Vagrantfile$" . ruby-mode)
                 ("Guardfile$" . ruby-mode)
+                ("Berksfile$" . ruby-mode)
                 ("\\.rhtml$" . ruby-mode)
                 ("\\.xml.builder$" . ruby-mode)
                 )
@@ -25,8 +26,7 @@
   (setq rspec-spec-command "rspec")
   (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
   (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)
-  (custom-set-variables
-    '(rspec-use-bundler-when-possible nil)))
+  )
 
 (defun plexus-set-rct-elisp-path ()
   (setq load-path

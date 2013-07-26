@@ -3,13 +3,26 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        beginning-of-buffer
         end-of-buffer
+        goto-line
         indent-for-tab-command
         kill-region
+        org-beginning-of-line
+        org-end-of-line
+        org-kill-line
+        org-self-insert-command
+        org-yank
+        ruby-electric-brace
         sgml-slash
+        skeleton-pair-insert-maybe
+        sp--self-insert-command
+        uncomment-region
         undefined
         wdired-finish-edit
+        yaml-electric-backspace
         yaml-electric-dash-and-dot
+        yas-expand
         ))
 
 (setq mc/cmds-to-run-once

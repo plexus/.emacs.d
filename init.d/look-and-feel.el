@@ -25,6 +25,9 @@
        (concat user-emacs-directory "elisp/color-theme-6.6.0")
        load-path))
 
+;;(set-face-attribute 'default nil :font "Inconsolata-16")
+(set-default-font "Inconsolata-16")
+
 ;(require 'color-theme)
 ;(color-theme-initialize)
 

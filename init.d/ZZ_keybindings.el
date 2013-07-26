@@ -23,3 +23,4 @@
 
 ;; Expansion
 (global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "H-g") 'magit-status)

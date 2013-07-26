@@ -17,4 +17,4 @@ site-lisp/package/
 /backups
 .git
 eshell
-/elpa/*.txt
+/elpa
