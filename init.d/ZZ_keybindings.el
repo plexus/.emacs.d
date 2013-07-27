@@ -1,9 +1,9 @@
 ; Keyboard Bindings
 
 ;; I accidentally hit the following keys WAY too often.
-;; (global-unset-key (kbd "C-x C-c"))
+(global-unset-key (kbd "C-x C-c")) ; save-buffers-kill-terminal
 (global-unset-key (kbd "C-z"))
-;; (global-unset-key (kbd "C-x C-z"))
+(global-unset-key (kbd "C-x C-z")) ; suspend-frame
 
 
 (global-set-key (kbd "<f1>") 'multi-term-dedicated-toggle) ; open/close "main" terminal
