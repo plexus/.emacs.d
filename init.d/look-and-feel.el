@@ -28,6 +28,17 @@
 ;;(set-face-attribute 'default nil :font "Inconsolata-16")
 (set-default-font "Inconsolata-16")
 
+(setq calendar-location-name "Berlin, Germany")
+(setq calendar-latitude 52.30)
+(setq calendar-longitude 13.25)
+
+(require 'color-theme)
+(color-theme-initialize)
+(require 'theme-changer)
+(setq theme-changer-mode "color-theme")
+(change-theme 'color-theme-sitaramv-nt 'color-theme-charcoal-black)
+
+
 ;(require 'color-theme)
 ;(color-theme-initialize)
 

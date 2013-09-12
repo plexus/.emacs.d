@@ -59,5 +59,5 @@
 ;;       (flymake-mode 1)
 ;;       (define-key js-mode-map "\C-c\C-n" 'flymake-goto-next-error))
 
-;; (add-hook 'js-mode-hook 'plexus-javascript-init)
-;; (add-hook 'js-mode-hook 'plexus-flymake-jslint-activate)
+;; ;; (add-hook 'js-mode-hook 'plexus-javascript-init)
+;; ;; (add-hook 'js-mode-hook 'plexus-flymake-jslint-activate)

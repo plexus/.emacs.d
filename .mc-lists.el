@@ -6,8 +6,10 @@
         beginning-of-buffer
         end-of-buffer
         goto-line
+        ido-switch-buffer
         indent-for-tab-command
         kill-region
+        markdown-exdent-or-delete
         org-beginning-of-line
         org-end-of-line
         org-kill-line
@@ -27,4 +29,5 @@
 
 (setq mc/cmds-to-run-once
       '(
+        xmp
         ))

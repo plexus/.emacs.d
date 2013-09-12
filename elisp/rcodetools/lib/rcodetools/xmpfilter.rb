@@ -25,7 +25,7 @@ class XMPFilter
   RuntimeData = Struct.new(:results, :exceptions, :bindings)
 
   INITIALIZE_OPTS = {:interpreter => "ruby", :options => [], :libs => [],
-                     :include_paths => [], :warnings => true, 
+                     :include_paths => [], :warnings => true,
                      :use_parentheses => true}
 
   def windows?
@@ -33,14 +33,14 @@ class XMPFilter
   end
 
   Interpreter = Struct.new(:options, :execute_method, :accept_debug, :accept_include_paths, :chdir_proc)
-  INTERPRETER_RUBY = Interpreter.new(["-w"],
+  INTERPRETER_RUBY = Interpreter.new([],
     :execute_ruby, true, true, nil)
   INTERPRETER_RBTEST = Interpreter.new(["-S", "rbtest"],
     :execute_script, false, false, nil)
   INTERPRETER_FORK = Interpreter.new(["-S", "rct-fork-client"],
     :execute_tmpfile, false, true,
     lambda { Fork::chdir_fork_directory })
-                                     
+
   def self.detect_rbtest(code, opts)
     opts[:use_rbtest] ||= (opts[:detect_rbtest] and code =~ /^=begin test./) ? true : false
   end
@@ -70,7 +70,7 @@ class XMPFilter
     @postfix = ""
     @stdin_path = nil
     @width = options[:width]
-    
+
     initialize_rct_fork if options[:detect_rct_fork]
     initialize_rbtest if options[:use_rbtest]
     initialize_for_test_script test_script, test_method, filename if test_script and !options[:use_rbtest]
@@ -140,7 +140,7 @@ class XMPFilter
       annotated = code.gsub(SINGLE_LINE_RE) { |l|
         expr = $1
         if /^\s*#/ =~ l
-          l 
+          l
         else
           annotated_line(l, expr, runtime_data, idx += 1)
         end
@@ -161,13 +161,13 @@ class XMPFilter
   def annotated_line(line, expression, runtime_data, idx)
     "#{expression} # => " + (runtime_data.results[idx].map{|x| x[1]} || []).join(", ")
   end
-  
+
   def annotated_multi_line(line, expression, indent, runtime_data, idx)
     pretty = (runtime_data.results[idx].map{|x| x[1]} || []).join(", ")
     first, *rest = pretty.to_a
     rest.inject("#{expression}\n#{indent}# => #{first || "\n"}") {|s, l| s << "#{indent}#    " << l }
   end
-  
+
   def prepare_line_annotation(expr, idx, multi_line=false)
     v = "#{VAR}"
     blocal = "__#{VAR}"
@@ -217,7 +217,7 @@ end || #{v}
     ary = script.each_line.to_a
     if ary[0] =~ /^#!/ and ary[1] =~ /^#.*coding/
       [ary[0..1], ary[2..-1]]
-    elsif ary[0] =~ /^#!|^#.*coding/ 
+    elsif ary[0] =~ /^#!|^#.*coding/
       [[ary[0]], ary[1..-1]]
     else
       [[], ary]
@@ -249,7 +249,7 @@ end || #{v}
       END { #{@evals.join(";")} }
     EOF
     stdin.print ";#{rest}"
-    
+
     debugprint "execute command = #{(interpreter_command << stdin.path).join ' '}"
     stdin.close
     oldpwd = Dir.pwd
@@ -276,10 +276,10 @@ end || #{v}
       fname = "xmpfilter.tmpfile_#{Process.pid}-#{i}.rb"
       File.expand_path(fname, Dir.tmpdir)
     end
-    args = *(interpreter_command << %["#{path}"] << "2>" << 
+    args = *(interpreter_command << %["#{path}"] << "2>" <<
       %["#{stderr_path}"] << ">" << %["#{stdout_path}"])
     system(args.join(" "))
-    
+
     [stdout_path, stderr_path].map do |fullname|
       f = File.open(fullname, "r")
       # at_exit {
@@ -331,7 +331,7 @@ end || #{v}
       when "~>"
         exceptions[result_id.to_i] << result
       when "==>"
-        bindings[result_id.to_i] << result unless result.index(VAR) 
+        bindings[result_id.to_i] << result unless result.index(VAR)
       end
     end
     RuntimeData.new(results, exceptions, bindings)

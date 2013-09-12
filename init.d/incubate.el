@@ -69,18 +69,6 @@
 
 (yas-global-mode 1)
 
-(defun duplicate-line()
-  (interactive)
-  (move-beginning-of-line 1)
-  (kill-line)
-  (yank)
-  (open-line 1)
-  (next-line 1)
-  (yank)
-)
-
-(global-set-key (kbd "C-c d") 'duplicate-line)
-
 (defun temp-ruby-buffer ()
   (interactive)
   (switch-to-buffer (make-temp-name "*ruby*"))
