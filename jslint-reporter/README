@@ -1,0 +1,41 @@
+JSLint Reporter
+Node.js wrapper for JSLint (http://jslint.com) and JSHint (http://www.jshint.com)
+
+
+Usage:
+
+  $ jslint-reporter [options] <filepath>
+
+(use `--upgrade` to generate jslint.js alongside wrapper.js)
+
+
+Options:
+
+  --<name>[=<value>]
+    names as per http://www.jslint.com/lint.html#options
+    (e.g. "--vars --predef=foo,bar,baz --maxlen=80")
+
+  --format=<format>
+    output format, using the following placeholders:
+    {f}: file    {l}: line    {c}: character    {m}: message
+    defaults to "{f}:{l}:{c}:{m}"
+
+  --jshint
+    use JSHint instead of JSLint
+
+  --upgrade
+    download latest version of JSLint
+
+  --verbose
+    display additional information
+
+  --version
+    display version numbers for both JSLint Reporter and JSLint
+
+  --help
+    display this usage information
+
+
+Alternatives:
+
+see https://github.com/douglascrockford/JSLint/wiki/JSLINT

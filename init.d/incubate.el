@@ -69,10 +69,23 @@
 
 (yas-global-mode 1)
 
+(defun make-temp-ruby-buffer-name ()
+  (let* ((dir (concat (getenv "HOME") "/projects/ruby-tmp"))
+        (last-buffer (car (last (directory-files dir nil "[0-9]+\.rb")))))
+    (or (file-directory-p dir) (mkdir dir))
+    (format "%s/%05d.rb"
+            dir
+            (+ 1 (string-to-number
+                  (first (split-string
+                          (if last-buffer last-buffer "00000.rb")
+                          "\\.")))))))
+
 (defun temp-ruby-buffer ()
   (interactive)
-  (switch-to-buffer (make-temp-name "*ruby*"))
-  (ruby-mode))
+  (let ((buffer (make-temp-ruby-buffer-name)))
+    (write-region "" nil buffer)
+    (find-file buffer)
+    (ruby-mode)))
 
 (global-set-key (kbd "H-r") 'temp-ruby-buffer)
 
@@ -92,3 +105,27 @@
   (font-lock-add-keywords nil hexcolour-keywords))
 
 (add-hook 'scss-mode-hook 'hexcolour-add-to-font-lock)
+
+(defun plexus-greek (char)
+  (interactive "c")
+  (insert-char
+   (decode-char 'ucs
+                (+ (encode-char char 'ucs) 848))))
+
+(global-set-key (kbd "H-k") 'plexus-greek)
+
+(eval-after-load 'outline
+  '(progn
+     (require 'outline-magic)
+    (define-key outline-minor-mode-map (kbd "H-m") 'outline-cycle)))
+
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (outline-minor-mode)
+            (setq outline-regexp " *\\(def \\|class\\|module\\)")))
+
+;(add-hook 'ruby-mode-hook 'outline-minor-mode)
+
+
+(global-set-key (kbd "H-e") (lambda () (interactive) (find-file (concat (getenv "HOME") "/.emacs.d/init.d/incubate.el"))))
+(global-set-key (kbd "H-x") 'er/expand-region)

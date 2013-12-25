@@ -3,6 +3,7 @@
 (setq auto-mode-alist
       (append '(("\\.rb$" . ruby-mode)
                 ("\\.rake$" . ruby-mode)
+                ("\\.ru$" . ruby-mode)
                 ("rakefile$" . ruby-mode)
                 ("Rakefile$" . ruby-mode)
                 ("\\.gemspec$" . ruby-mode)
@@ -31,7 +32,7 @@
 (defun plexus-set-rct-elisp-path ()
   (setq load-path
         (append
-         (list (concat user-emacs-directory "elisp/rcodetools"))
+         (list (concat user-emacs-directory "vendor/rcodetools"))
          load-path)))
 
 (defun plexus-set-rct-bin-path ()
@@ -39,7 +40,7 @@
    "PATH"
    (file-truename
     (concat user-emacs-directory
-            "elisp/rcodetools/bin"
+            "vendor/rcodetools/bin"
             ":"
             (concat (getenv "PATH"))))))
 
@@ -48,7 +49,7 @@
    "RUBYLIB"
    (file-truename
     (concat user-emacs-directory
-            "elisp/rcodetools/lib"
+            "vendor/rcodetools/lib"
             ":"
             (concat (getenv "RUBYLIB"))))))
 

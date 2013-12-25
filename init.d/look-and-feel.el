@@ -22,32 +22,23 @@
 
 (setq load-path
       (cons
-       (concat user-emacs-directory "elisp/color-theme-6.6.0")
+       (concat user-emacs-directory "vendor/color-theme-6.6.0")
        load-path))
 
 ;;(set-face-attribute 'default nil :font "Inconsolata-16")
-(set-default-font "Inconsolata-16")
+(set-default-font "Inconsolata-20")
 
-(setq calendar-location-name "Berlin, Germany")
-(setq calendar-latitude 52.30)
-(setq calendar-longitude 13.25)
+;(setq calendar-location-name "Berlin, Germany")
+(setq calendar-location-name "Buenos Aires, Argentina")
+(setq calendar-latitude -34.6033)
+(setq calendar-longitude -52.30)
 
 (require 'color-theme)
 (color-theme-initialize)
+
+(require 'color-theme-sanityinc-tomorrow)
+(require 'sanityinc-tomorrow-day-theme)
+(require 'sanityinc-tomorrow-night-theme)
 (require 'theme-changer)
 (setq theme-changer-mode "color-theme")
-(change-theme 'color-theme-sitaramv-nt 'color-theme-charcoal-black)
-
-
-;(require 'color-theme)
-;(color-theme-initialize)
-
-; Loading both gives a light theme with a nice red mode line
-;(color-theme-arjen)
-;(color-theme-scintilla)
-
-;(color-theme-charcoal-black)   ;dark
-;(color-theme-feng-shui)        ;light
-;(color-theme-sitaramv-nt)      ;light
-;(color-theme-arjen)
-;(plexus-color-theme-light)
+(change-theme 'color-theme-sanityinc-tomorrow-day 'color-theme-sanityinc-tomorrow-night)

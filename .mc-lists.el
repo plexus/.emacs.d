@@ -12,6 +12,7 @@
         markdown-exdent-or-delete
         org-beginning-of-line
         org-end-of-line
+        org-force-self-insert
         org-kill-line
         org-self-insert-command
         org-yank
@@ -29,5 +30,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        coffee-dedent-line-backspace
+        haml-electric-backspace
         xmp
         ))

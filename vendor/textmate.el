@@ -147,7 +147,7 @@ by the project root.")
      (define-key map [(meta return)] 'textmate-next-line)
      (define-key map [(control c)(control t)] 'textmate-clear-cache)
      (define-key map [(control c)(control a)] 'align)
-     (define-key map [(control tab)] 'textmate-shift-right)
+     ;(define-key map [(control tab)] 'textmate-shift-right)
      (define-key map [(control shift tab)] 'textmate-shift-left)
      (define-key map [(control c)(control k)] 'comment-or-uncomment-region-or-line)
      (define-key map [(meta t)] 'textmate-goto-file)
@@ -295,12 +295,12 @@ Symbols matching the text at point are put first in the completion list."
   "Uses your completing read to quickly jump to a file in a project."
   (interactive)
   (let ((root (textmate-project-root)))
-    (when (null root) 
+    (when (null root)
       (error "Can't find any .git directory"))
-    (find-file 
-     (concat 
+    (find-file
+     (concat
       (expand-file-name root) "/"
-      (textmate-completing-read 
+      (textmate-completing-read
        "Find file: "
        (mapcar
 	(lambda (e)
