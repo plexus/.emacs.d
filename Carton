@@ -17,6 +17,7 @@
 (depends-on "multiple-cursors")
 (depends-on "outline-magic")
 (depends-on "pallet")
+(depends-on "paredit")
 (depends-on "rainbow-mode")
 (depends-on "smartparens")
 (depends-on "solarized-theme")

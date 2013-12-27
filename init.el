@@ -17,45 +17,28 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Packages
 
-
 (require 'package)
 (package-initialize)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (require 'pallet)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load path
 
-(setq load-path
-      (append
-       (list
-	(concat user-emacs-directory "vendor")
-	(concat user-emacs-directory "init.d")
-	)
-       load-path))
+(add-to-list 'load-path (concat user-emacs-directory "vendor"))
+(add-to-list 'load-path (concat user-emacs-directory "init.d"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom Init
 
-; load per-hostname config file
-; (let ((local-rc (concat
-; 		 user-emacs-directory "init." *hostname* ".el")))
-;   (if (file-exists-p local-rc)
-;       (load-library local-rc)
-;     (beep)))
+(require 'f)
 
-(defun plexus-load-all-in-path (base)
-  (interactive)
-  (add-to-list 'load-path base)
-  (dolist (f (directory-files base))
-    (let ((name (concat base "/" f)))
-      (when (file-regular-p name)
-        (load-library name)))) )
+(add-to-list 'load-path *auto-init-files-path*)
+(f--entries *auto-init-files-path*
+            (if (and (f-file? it) (f-ext? it "el")) (load it)) t)
 
-(plexus-load-all-in-path *auto-init-files-path*)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

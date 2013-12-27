@@ -129,3 +129,20 @@
 
 (global-set-key (kbd "H-e") (lambda () (interactive) (find-file (concat (getenv "HOME") "/.emacs.d/init.d/incubate.el"))))
 (global-set-key (kbd "H-x") 'er/expand-region)
+
+
+(defmacro coxit-env-let (bindings body &rest rest)
+"Like `let' but sets environment variables rather than (Emacs) variables.
+The return value is the result of the last expression, after returning the
+environment variables are reset to their previous value."
+  `(let ((orig-bindings (list ,@(mapcar (lambda (env)
+                                   (list 'list env (list 'getenv env)))
+                                 (mapcar 'symbol-name (mapcar 'car bindings))))))
+     ,@(mapcar (lambda (binding)
+                 (list 'setenv (symbol-name (car binding)) (cadr binding)))
+               bindings)
+     (let ((result (progn ,body ,@rest)))
+       (mapcar (lambda (binding)
+                 (setenv (car binding) (cadr binding)))
+               orig-bindings)
+       result)))
