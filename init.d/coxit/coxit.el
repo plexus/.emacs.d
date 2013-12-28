@@ -1,22 +1,39 @@
+(require 'dash)
+(require 'dash-functional)
+(require 'f)
+
 (defconst *coxit-base* (file-name-directory load-file-name))
 (defconst *coxit-server-port* 10042)
 
+(defconst coxit-mode-line '(:eval (propertize (coxit-format-result)
+                                      'face (if (coxit-result-success) 'coxit-line-covered 'coxit-line-not-covered)
+                                      'help-echo (coxit-format-result t))))
+
 (make-variable-buffer-local 'coxit-project-root)
 (make-variable-buffer-local 'coxit-show-coverage)
+(make-variable-buffer-local 'coxit-rspec-files)
+
+(setq-default coxit-rspec-files '("spec"))
+
+;; Scoped per project
 
 (defvar coxit-process-buffers nil)
 (defvar coxit-timer nil)
 (defvar coxit-buffers nil)
 
+;; global  :(
+
+(defvar coxit-results nil)
+
 (defface coxit-line-covered
-'((((class color) (background light))
+  '((((class color) (background light))
      :background "light green"
      :foreground "dark olive green")
     (((class color) (background dark))
      :background "light green"
      :foreground "dark olive green"))
   "Face shown when a line is covered by tests."
-  :group 'coxit-coverage-faces)
+  :group 'coxit-faces)
 
 (defface coxit-line-not-covered
   '((((class color) (background light))
@@ -24,7 +41,9 @@
     (((class color) (background dark))
      :background "IndianRed1"))
   "Face shown when a line is not covered by tests"
-  :group 'coxit-coverage-faces)
+  :group 'coxit-faces)
+
+;; UTIL
 
 (defmacro coxit-setq (variable value)
   "Coxit has a number of variables that 'project-local', i.e. they are global variables
@@ -49,52 +68,101 @@ coxit-mode on."
   `(setq ,variable
          (--remove (equal (car it) coxit-project-root) ,variable)))
 
-(defun coxit-buffer-lines (buffer &rest start)
+(defun coxit-project-root (&optional directory)
+  "Finds the root directory of the project by walking the directory tree until it finds a rake file."
+  (let ((directory (file-name-as-directory (or directory default-directory))))
+    (cond ((rspec-root-directory-p directory)
+           (error "Could not determine the project root."))
+          ((file-exists-p (expand-file-name "Rakefile" directory)) directory)
+          ((file-exists-p (expand-file-name "Gemfile" directory)) directory)
+          ((file-exists-p (expand-file-name ".git" directory)) directory)
+          (t (coxit-project-root (file-name-directory (directory-file-name directory)))))))
+
+(defun coxit-buffer-lines (buffer)
   "Map the lines in a buffer to (begin . end) pairs, being the
 character index of the first and last character on that line"
-  (save-excursion
-    (set-buffer buffer)
-    (goto-char (if start (car start) 1))
-    (let ((begin (point-at-bol))
-          (end   (point-at-eol))
-          (done  (= (point) (point-max))))
-      (forward-line 1)
-      (cons (cons begin end) (if done nil (coxit-buffer-lines buffer (point)))))))
+  (let ((result '(0)))
+    (save-excursion
+      (set-buffer buffer)
+      (goto-char 1)
+      (while (< (point) (point-max))
+        (let ((begin (point-at-bol))
+              (end   (point-at-eol)))
+          (add-to-list 'result (cons begin end) t)
+          (forward-line 1))))
+    (-drop 1 result)))
+
+(defun coxit-project-root-for-current-buffer ()
+  (coxit-project-root (buffer-file-name)))
 
 (defun coxit-rspec-wrapper-path ()
   "Full path to the RSpec wrapper that returns a SEXP of coverage results"
   (f-join *coxit-base* "rspec-runner.rb"))
+
+(defun coxit-bundler-path ()
+  "Path to bundler"
+  (executable-find "bundle"))
+
+(defun coxit-rspec-runner ()
+  (coxit-bundler-path))
+
+(defun coxit-rspec-runner-arguments ()
+  `("exec" ,(coxit-rspec-wrapper-path) ,@coxit-rspec-files))
+
+(defun coxit-spec-file-for (target)
+  "Tries to find a corresponding spec file for the given ruby file name path."
+  (let* ((project-root  (coxit-project-root target))
+         (spec-unit-dir (f-join project-root "spec" "unit"))
+         (spec-dir      (f-join project-root "spec"))
+         (test-dir
+          (cond ((f-directory? spec-unit-dir) spec-unit-dir)
+                ((f-directory? spec-dir) spec-dir)))
+         (spec-file-parts
+          (-> target
+            (f-relative project-root)
+            (f-no-ext)
+            (concat "_spec.rb")
+            (f-split)
+            )))
+    (-first 'f-file?
+      (-map (lambda (n)
+              (apply 'f-join (cons test-dir (-drop n spec-file-parts)))) '(0 1)))))
+
+
+;; PROCESS
 
 (defun coxit-parse-results (rspec-output)
   "The RSpec wrapper will return a sexp as the last line of the output. Pull that
 line out of the result and parse it with the Elisp reader."
   (read (car (reverse (split-string rspec-output "\n")))))
 
-(defun coxit-gather-coverage-data (project-dir)
-  (let* ((rspec-buffer      (get-buffer-create "*coxit-rspec*"))
-         (default-directory project-dir)
-         (start-pos         (save-excursion (set-buffer rspec-buffer) (point)))
-         (exit-code         (call-process (coxit-rspec-wrapper-path) nil rspec-buffer nil "spec"))
-         (stdout            (save-excursion (set-buffer rspec-buffer) (buffer-string))))
-    (if (not (equal exit-code 0))
-        (progn
-          (switch-to-buffer rspec-buffer)
-          (narrow-to-region start-pos (point-max))
-          (goto-char (point-min))
-          (grep-mode)
-          )
-      (coxit-success (coxit-parse-results stdout)))))
+(defun coxit-dispatch-message (result-assoc)
+  "Dispatch message coming back from RSpec depending on the type of info they contain"
+  (-each result-assoc
+         (lambda (ass)
+           (let ((key (car ass))
+                 (value (cdr ass)))
+             (when (equal key (quote coverage))
+               (coxit-process-coverage value))
+             (when (equal key 'result)
+               (coxit-process-result value))))))
 
-(defun coxit-success (result-assoc)
+(defun coxit-process-coverage (result-assoc)
   "Given an association list of coverage data like ((\"/path\" . (nil nil 1 0 3))),
 find all open buffers for which we have received data, and add coverage overlays."
   (-each result-assoc
          (lambda (kv)
            (let ((file-name (car kv)) (coverage (cdr kv)))
+             ;(message file-name)
              (-if-let (buffer (--first (equal (buffer-file-name it) file-name) (buffer-list)))
                (coxit-display-coverage-data coverage buffer))))))
 
+(defun coxit-process-result (result-assoc)
+  "Called when a 'results message is received from rspec, stored for display in the mode line"
+  (setq coxit-results result-assoc))
+
 (defun coxit-display-coverage-data (coverage buffer)
+  "Overlay the buffer with coverage data, marking uncovered lines in red, covered lines with a green fringe"
   (save-excursion
     (set-buffer buffer)
     (coxit-coverage-delete-overlays)
@@ -113,29 +181,29 @@ find all open buffers for which we have received data, and add coverage overlays
                   (overlay-put overlay 'before-string (propertize "!" 'display '(left-fringe empty-line coxit-line-covered))))
               )))))))
 
-(defun coxit-coverage ()
-  (interactive)
-  (coxit-coverage-delete-overlays)
-  (coxit-gather-coverage-data (coxit-project-root-for-current-buffer)))
-
-(defun coxit-project-root-for-current-buffer ()
-  (rspec-project-root (buffer-file-name)))
-
 (defun coxit-coverage-delete-overlays ()
   (interactive)
   (-each
    (--filter (overlay-get it 'coxit-coverage) (overlays-in 1 (point-max))) #'delete-overlay))
 
-(defun coxit-server-filter (proc string)
-  ;(message string)
-  (let ((buffer (-> (plist-get coxit-process-buffers proc) (or "") (concat string))))
-    (setq coxit-process-buffers (plist-put coxit-process-buffers proc buffer))))
+;; Mode line
 
-(defun coxit-server-sentinel (proc msg)
-  (when (string= msg "connection broken by remote peer\n")
-    (coxit-success (coxit-parse-results (plist-get coxit-process-buffers proc))))
-  ;(message "sentinel: %s" msg)
-  )
+(defun coxit-format-result (&rest x)
+  (let* ((failure-count (or (cdr (assoc 'failure_count coxit-results)) 0))
+         (example-count (or (cdr (assoc 'example_count coxit-results)) 0))
+         (duration      (or (cdr (assoc 'duration coxit-results)) 0))
+         (status (process-status "rspec-client"))
+         (status-fmt (cond ((eq status 'run) " ⌛ ")
+                           ((eq status nil) "")
+                           (t (format " %s " status)))))
+  (format "%d / %d (%.2fs)%s" failure-count example-count duration status-fmt)))
+
+(defun coxit-result-success ()
+  (let ((failure-count (or (cdr (assoc 'failure_count coxit-results)) 0))
+        (example-count (or (cdr (assoc 'example_count coxit-results)) 0)))
+    (and (> example-count 0) (= failure-count 0))))
+
+;; Server
 
 (defun coxit-server-start ()
   (interactive)
@@ -146,31 +214,66 @@ find all open buffers for which we have received data, and add coverage overlays
                         :sentinel 'coxit-server-sentinel
                         :filter 'coxit-server-filter :server 't))
 
-(defun coxit-run-client (&rest project-dir)
-  (interactive)
-  ;(message "Run client for %s" project-dir)
-  (let* ((project-dir (or (car project-dir) (coxit-project-root-for-current-buffer)))
-         (default-directory project-dir))
-    (start-process "rspec-client" "*coxit-rspec-client*" (coxit-rspec-wrapper-path) "spec")))
+(defun coxit-server-filter (proc string)
+  ;(message string)
+  (let ((buffer (-> (plist-get coxit-process-buffers proc) (or "") (concat string))))
+    (setq coxit-process-buffers (plist-put coxit-process-buffers proc buffer))))
 
-(defun coxit-continuous ()
+(defun coxit-server-sentinel (proc msg)
+  (when (string= msg "connection broken by remote peer\n")
+    (-if-let (input (plist-get coxit-process-buffers proc))
+      (coxit-dispatch-message (coxit-parse-results input)))
+    ;(message "sentinel: %s" msg)
+    ))
+
+;; Interactive commands
+
+(defun coxit-run-client (&optional project-dir)
   (interactive)
-  (run-at-time t 3 'coxit-run-client coxit-project-root))
+  (or (process-status "coxit-server") (coxit-server-start))
+  (when (get-buffer "*coxit-rspec-client*")
+    (save-excursion
+      (set-buffer "*coxit-rspec-client*")
+      (narrow-to-region (point-max) (point-max))))
+  (let* ((project-dir (or project-dir (coxit-project-root-for-current-buffer)))
+         (default-directory project-dir))
+    (eval `(start-process "rspec-client" "*coxit-rspec-client*" ,(coxit-rspec-runner) ,@(coxit-rspec-runner-arguments)))))
+
+(defun coxit-continuous (&optional repeat-seconds project-dir)
+  (interactive)
+  (coxit-run-client project-dir)
+  (run-at-time (or repeat-seconds 4) nil 'coxit-continous repeat-seconds (or project-dir (coxit-project-root-for-current-buffer))))
+
+(defun coxit-run-matching-spec ()
+  (interactive)
+  (setq coxit-rspec-files (list (coxit-spec-file-for (buffer-file-name))))
+  (coxit-run-client))
+
+(defun coxit-run-suite ()
+  (interactive)
+  (setq coxit-rspec-files '("spec"))
+  (coxit-run-client))
+
+
+;; minor mode
 
 (defun coxit-minor-turn-on ()
   (setq coxit-project-root (coxit-project-root-for-current-buffer))
   (setq coxit-show-coverage t)
   (coxit-update coxit-buffers (cons (current-buffer) it))
-  (if (not (coxit-get coxit-timer))
-      (coxit-setq coxit-timer (coxit-continuous))))
+  (add-to-list 'mode-line-format coxit-mode-line t))
+  ;; (if (not (coxit-get coxit-timer))
+  ;;     (coxit-setq coxit-timer (coxit-continuous))))
 
 (defun coxit-minor-turn-off ()
   (setq coxit-show-coverage nil)
   (coxit-coverage-delete-overlays)
   (coxit-update coxit-buffers (-remove (lambda (buf) (eq buf (current-buffer))) it))
-  (when (not (coxit-get coxit-buffers))
-      (cancel-timer (coxit-get coxit-timer))
-      (coxit-unset coxit-timer)))
+  (setq mode-line-format
+	    (delq coxit-mode-line mode-line-format)))
+  ;; (when (not (coxit-get coxit-buffers))
+  ;;     (cancel-timer (coxit-get coxit-timer))
+  ;;     (coxit-unset coxit-timer)))
 
 ;;;###autoload
 (define-minor-mode coxit-mode

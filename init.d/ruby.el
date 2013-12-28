@@ -64,8 +64,9 @@
 (add-hook 'ruby-mode-hook
           (lambda ()
             (plexus-activate-rcodetools)
-            (plexus-load-rspec)
-            (robe-mode)))
+            ;(plexus-load-rspec)
+            ;(robe-mode)
+            ))
 
 
 ;; "Fix" Ruby indentation, for example.
