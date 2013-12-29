@@ -61,12 +61,11 @@
     (require 'rcodetools)
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (plexus-activate-rcodetools)
+(add-hook 'ruby-mode-hook 'plexus-activate-rcodetools)
+(add-hook 'ruby-mode-hook 'coxit-mode)
+(add-hook 'ruby-mode-hook 'abbrev-mode)
             ;(plexus-load-rspec)
             ;(robe-mode)
-            ))
 
 
 ;; "Fix" Ruby indentation, for example.

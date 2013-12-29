@@ -35,6 +35,14 @@ end
 
 class SimplecovSexpFormatter
   def format(result)
+    result.files.map do |file|
+      covpct = file.coverage.reduce([0, 0]) do |(covered, total), linecov|
+        [covered + (linecov && linecov > 0 ? 1 : 0), total + (linecov ? 1 : 0) ]
+      end
+      [ file.filename, Float(covpct.first)/covpct.last*100 ]
+    end.sort_by(&:last).each do |filename, covpct|
+      puts " %s%.2f | %s" % [covpct < 100 ? ' ' : '' , covpct, filename]
+    end
     coxit_respond(:coverage =>
       result.files.map do |file|
         Cons.new(file.filename, file.coverage)
@@ -59,8 +67,21 @@ SimpleCov.start
 SimpleCov.formatter = SimplecovSexpFormatter
 
 RSpec.configure do |c|
-  c.formatter = 'progress'
-  c.formatter = RSpecSexpFormatter
+  c.formatters.clear
+  c.add_formatter('progress', $stdout)
+  c.add_formatter(RSpecSexpFormatter, $stdout)
 end
 
-require 'rspec/autorun'
+at_exit do
+  next unless $!.nil? || $!.kind_of?(SystemExit)
+
+  options = RSpec::Core::ConfigurationOptions.new(ARGV)
+  options.parse_options
+  def options.options
+    super.reject {|k,v| k == :formatters}
+  end
+
+  status = RSpec::Core::CommandLine.new(options).run($stderr, $stdout).to_i
+
+  exit status if status != 0
+end

@@ -68,10 +68,18 @@ coxit-mode on."
   `(setq ,variable
          (--remove (equal (car it) coxit-project-root) ,variable)))
 
+(defun coxit-parent-directory (a-directory)
+  "Returns the directory of which a-directory is a child"
+  (file-name-directory (directory-file-name a-directory)))
+
+(defun coxit-root-directory-p (a-directory)
+  "Returns t if a-directory is the root"
+  (equal a-directory (coxit-parent-directory a-directory)))
+
 (defun coxit-project-root (&optional directory)
   "Finds the root directory of the project by walking the directory tree until it finds a rake file."
   (let ((directory (file-name-as-directory (or directory default-directory))))
-    (cond ((rspec-root-directory-p directory)
+    (cond ((coxit-root-directory-p directory)
            (error "Could not determine the project root."))
           ((file-exists-p (expand-file-name "Rakefile" directory)) directory)
           ((file-exists-p (expand-file-name "Gemfile" directory)) directory)
@@ -107,7 +115,7 @@ character index of the first and last character on that line"
   (coxit-bundler-path))
 
 (defun coxit-rspec-runner-arguments ()
-  `("exec" ,(coxit-rspec-wrapper-path) ,@coxit-rspec-files))
+  `("exec" ,(coxit-rspec-wrapper-path) ,@coxit-rspec-files "--no-color"))
 
 (defun coxit-spec-file-for (target)
   "Tries to find a corresponding spec file for the given ruby file name path."
@@ -138,22 +146,26 @@ line out of the result and parse it with the Elisp reader."
 
 (defun coxit-dispatch-message (result-assoc)
   "Dispatch message coming back from RSpec depending on the type of info they contain"
+  (pp result-assoc)
   (-each result-assoc
          (lambda (ass)
            (let ((key (car ass))
                  (value (cdr ass)))
              (when (equal key (quote coverage))
+               (message "%s" key)
                (coxit-process-coverage value))
              (when (equal key 'result)
+               (message "%s" key)
                (coxit-process-result value))))))
 
 (defun coxit-process-coverage (result-assoc)
   "Given an association list of coverage data like ((\"/path\" . (nil nil 1 0 3))),
 find all open buffers for which we have received data, and add coverage overlays."
+  (pp result-assoc)
   (-each result-assoc
          (lambda (kv)
            (let ((file-name (car kv)) (coverage (cdr kv)))
-             ;(message file-name)
+             (message file-name)
              (-if-let (buffer (--first (equal (buffer-file-name it) file-name) (buffer-list)))
                (coxit-display-coverage-data coverage buffer))))))
 
@@ -188,20 +200,29 @@ find all open buffers for which we have received data, and add coverage overlays
 
 ;; Mode line
 
-(defun coxit-format-result (&rest x)
+(defun coxit-format-result (&optional for-help)
   (let* ((failure-count (or (cdr (assoc 'failure_count coxit-results)) 0))
          (example-count (or (cdr (assoc 'example_count coxit-results)) 0))
          (duration      (or (cdr (assoc 'duration coxit-results)) 0))
-         (status (process-status "rspec-client"))
-         (status-fmt (cond ((eq status 'run) " ⌛ ")
-                           ((eq status nil) "")
-                           (t (format " %s " status)))))
-  (format "%d / %d (%.2fs)%s" failure-count example-count duration status-fmt)))
+         (result-fmt (format "%d / %d (%.2fs)" failure-count example-count duration))
+         (status (coxit-process-status)))
+    (cond ((eq status 'run) " ⌛ ")
+          ((and (eq status 'exit) (eq (coxit-exit-code) 0))
+             (format "%d OK (%.2fs)" example-count duration))
+          ((and (eq status 'exit) (> failure-count 0))
+             (format "%d / %d (%.2fs)" failure-count example-count duration))
+          (t (format "%s ⚡ %d" (coxit-process-status) (coxit-exit-code))))))
+
+(defun coxit-exit-code ()
+  (and coxit-rspec-process (process-exit-status coxit-rspec-process)))
+
+(defun coxit-process-status ()
+  (and coxit-rspec-process (process-status coxit-rspec-process)))
 
 (defun coxit-result-success ()
-  (let ((failure-count (or (cdr (assoc 'failure_count coxit-results)) 0))
-        (example-count (or (cdr (assoc 'example_count coxit-results)) 0)))
-    (and (> example-count 0) (= failure-count 0))))
+  (let* ((failure-count (or (cdr (assoc 'failure_count coxit-results)) 0))
+         (example-count (or (cdr (assoc 'example_count coxit-results)) 0)))
+    (and (eq (coxit-exit-code) 0) (> example-count 0) (= failure-count 0))))
 
 ;; Server
 
@@ -231,13 +252,15 @@ find all open buffers for which we have received data, and add coverage overlays
 (defun coxit-run-client (&optional project-dir)
   (interactive)
   (or (process-status "coxit-server") (coxit-server-start))
+  (setq coxit-results nil)
   (when (get-buffer "*coxit-rspec-client*")
     (save-excursion
       (set-buffer "*coxit-rspec-client*")
       (narrow-to-region (point-max) (point-max))))
   (let* ((project-dir (or project-dir (coxit-project-root-for-current-buffer)))
          (default-directory project-dir))
-    (eval `(start-process "rspec-client" "*coxit-rspec-client*" ,(coxit-rspec-runner) ,@(coxit-rspec-runner-arguments)))))
+    (setq coxit-rspec-process
+          (eval `(start-process "rspec-client" "*coxit-rspec-client*" ,(coxit-rspec-runner) ,@(coxit-rspec-runner-arguments))))))
 
 (defun coxit-continuous (&optional repeat-seconds project-dir)
   (interactive)
