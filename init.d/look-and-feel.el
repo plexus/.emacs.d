@@ -26,7 +26,7 @@
        load-path))
 
 ;;(set-face-attribute 'default nil :font "Inconsolata-16")
-(set-default-font "Inconsolata-20")
+(set-default-font "Inconsolata-16")
 
 ;(setq calendar-location-name "Berlin, Germany")
 (setq calendar-location-name "Buenos Aires, Argentina")

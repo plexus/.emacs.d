@@ -17,7 +17,7 @@
   "A JavaScript syntax and style checker based on JSLint Reporter.
 
 See URL `https://github.com/FND/jslint-reporter'."
-  :command ("~/.emacs.d/jslint-reporter/jslint-reporter" "--indent=2" source)
+  :command ("~/.emacs.d/jslint-reporter/jslint-reporter" "--vars" "--indent=2" "--nomen" "--predef=Ember,Ticketbooth,_,console" "--browser" source)
   :error-patterns
   ((error line-start (1+ nonl) ":" line ":" column ":" (message) line-end))
   :modes (js-mode js2-mode js3-mode))

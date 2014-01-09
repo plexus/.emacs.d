@@ -61,11 +61,9 @@
      (concat "/home/arne/ticketsolve/repo/"
              (car selection) ))
     (goto-line (string-to-number (cadr selection)))
-    )
-)
+    ))
 
 (global-set-key (kbd "H-j") 'plexus-jump-to-clipboard)
-
 
 (yas-global-mode 1)
 

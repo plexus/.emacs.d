@@ -1,22 +1,21 @@
 (require 'ruby-mode)
 
-(setq auto-mode-alist
-      (append '(("\\.rb$" . ruby-mode)
-                ("\\.rake$" . ruby-mode)
-                ("\\.ru$" . ruby-mode)
-                ("rakefile$" . ruby-mode)
-                ("Rakefile$" . ruby-mode)
-                ("\\.gemspec$" . ruby-mode)
-                ("Gemfile$" . ruby-mode)
-                ("Gemfile.*" . ruby-mode)
-                ("Procfile$" . ruby-mode)
-                ("Vagrantfile$" . ruby-mode)
-                ("Guardfile$" . ruby-mode)
-                ("Berksfile$" . ruby-mode)
-                ("\\.rhtml$" . ruby-mode)
-                ("\\.xml.builder$" . ruby-mode)
-                )
-              auto-mode-alist))
+(add-auto-mode-patterns 'ruby-mode
+                        "\\.rb$"
+                        "\\.rake$"
+                        "\\.ru$"
+                        "\\.xml.builder$"
+                        "\\.rhtml$"
+                        "\\.gemspec$"
+                        "Rakefile$"
+                        "Gemfile$"
+                        "Gemfile.*"
+                        "Procfile$"
+                        "Vagrantfile$"
+                        "Guardfile$"
+                        "Berksfile$"
+                        "Bowerfile$"
+                        "Assetfile$")
 
 (setq ruby-indent-level 2)
 (setq ruby-deep-indent-paren nil)       ; inside parameter lists, just indent two spaces rather than up to paren
@@ -26,8 +25,7 @@
   (setq rspec-use-rake-flag nil)
   (setq rspec-spec-command "rspec")
   (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
-  (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)
-  )
+  (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single))
 
 (defun plexus-set-rct-elisp-path ()
   (setq load-path

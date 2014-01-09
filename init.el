@@ -36,8 +36,14 @@
 (require 'f)
 
 (add-to-list 'load-path *auto-init-files-path*)
-(f--entries *auto-init-files-path*
-            (if (and (f-file? it) (f-ext? it "el")) (load it)) t)
+
+(defun plexus-require-tree (path)
+  (f--entries path
+              (progn
+                (cond ((and (f-file? it) (f-ext? it "el")) (load it))
+                      ((f-directory? it) (plexus-require-tree it))))))
+
+(plexus-require-tree *auto-init-files-path*)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

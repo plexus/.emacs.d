@@ -8,6 +8,7 @@
         goto-line
         ido-switch-buffer
         indent-for-tab-command
+        kbd-macro-query
         kill-region
         markdown-exdent-or-delete
         org-beginning-of-line
