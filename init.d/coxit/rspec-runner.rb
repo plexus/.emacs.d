@@ -7,6 +7,13 @@ require 'simplecov'
 
 Cons = Struct.new(:car, :cdr)
 
+COXIT_PASSTHROUGH_ARGS = {}
+
+until (arg = ARGV.shift) == "--"
+  k, v = arg.split(':')
+  COXIT_PASSTHROUGH_ARGS[k.to_sym] = v
+end
+
 def Sexp(expr)
   case expr
   when Array
@@ -26,24 +33,30 @@ def Sexp(expr)
   end
 end
 
-def coxit_respond(expr)
+def coxit_respond(type, expr)
   TCPSocket.open('localhost', 10042) do |socket|
     #puts Sexp(expr)
-    socket << Sexp(expr)
+    socket << Sexp(
+      COXIT_PASSTHROUGH_ARGS.merge(
+        type: type,
+        results: expr
+      )
+    )
   end
 end
 
 class SimplecovSexpFormatter
   def format(result)
     result.files.map do |file|
-      covpct = file.coverage.reduce([0, 0]) do |(covered, total), linecov|
+      covered, total = file.coverage.reduce([0, 0]) do |(covered, total), linecov|
         [covered + (linecov && linecov > 0 ? 1 : 0), total + (linecov ? 1 : 0) ]
       end
-      [ file.filename, Float(covpct.first)/covpct.last*100 ]
+
+      [ file.filename, total > 0 ? Float(covered)/total*100 : 0 ]
     end.sort_by(&:last).each do |filename, covpct|
       puts " %s%.2f | %s" % [covpct < 100 ? ' ' : '' , covpct, filename]
     end
-    coxit_respond(:coverage =>
+    coxit_respond(:coverage,
       result.files.map do |file|
         Cons.new(file.filename, file.coverage)
       end
@@ -53,7 +66,7 @@ end
 
 class RSpecSexpFormatter <  RSpec::Core::Formatters::BaseFormatter
   def dump_summary(duration, example_count, failure_count, pending_count)
-    coxit_respond(:result =>
+    coxit_respond(:spec_summary,
       { duration: duration,
         example_count: example_count,
         failure_count: failure_count,
