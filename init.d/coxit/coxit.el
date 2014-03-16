@@ -2,6 +2,17 @@
 (require 'dash-functional)
 (require 'f)
 
+(defcustom coxit-key-command-prefix (kbd "H-s")
+  "The prefix for all coxit key commands"
+  :type 'string
+  :group 'coxit-mode)
+
+(defcustom coxit-rspec-process-buffer-name "*coxit-rspec-client*"
+  "How to name the buffer where RSpec runs"
+  :type 'string
+  :group 'coxit-mode)
+
+
 (defconst *coxit-base* (file-name-directory load-file-name))
 (defconst *coxit-server-port* 10042)
 
@@ -9,16 +20,21 @@
                                       'face (if (coxit-result-success) 'coxit-line-covered 'coxit-line-not-covered)
                                       'help-echo (coxit-format-result t))))
 
-(make-variable-buffer-local 'coxit-project-root)
-(make-variable-buffer-local 'coxit-show-coverage)
-(make-variable-buffer-local 'coxit-rspec-files)
+;; buffer local variables
 
-(setq-default coxit-rspec-files '("spec"))
+(defvar coxit-show-coverage t
+  "Display coverage markers in the fringe")
 
 (defvar coxit-process-buffers nil
   "Keep a tab on the running rspec processes, maps from the process object to the associated buffer")
 
 ;; project-local-variables
+;;
+;; Use with `plv-get' and `plv-set'
+
+(defvar coxit-rspec-files '((default . "spec"))
+  "Arguments to rspec to determine which tests will be run. Defaults to the
+`spec' directory")
 
 (defvar coxit-buffers nil
   "A list of all buffers in the current project that have coxit-mode enabled")
@@ -28,6 +44,12 @@
 
 (defvar coxit-rspec-process nil
   "The last rpsec process that got started.")
+
+(defvar coxit-rspec-last-args nil
+  "The arguments that were passed to rspec on its last run")
+
+(defvar coxit-use-bundler '((default . t))
+  "Run RSpec with `bundle exec' or not.")
 
 
 (defface coxit-line-covered
@@ -57,16 +79,18 @@
   (executable-find "bundle"))
 
 (defun coxit-rspec-runner ()
-  (coxit-bundler-path))
+  (if (plv-get coxit-use-bundler)
+      (coxit-bundler-path)
+    (coxit-rspec-wrapper-path)))
 
 (defun coxit-rspec-runner-arguments ()
   (append
-   (list "exec"
-         (coxit-rspec-wrapper-path)
-         (concat "project-root:" coxit-project-root)
-         "--")
-   coxit-rspec-files
-   '("--no-color")))
+   (if (plv-get coxit-use-bundler)
+       (list "exec" (coxit-rspec-wrapper-path)))
+   `(,(concat "project-root:" plv-project-root)
+     "--"
+     ,@(plv-get coxit-rspec-files)
+     "--no-color")))
 
 (defun coxit-spec-file-for (target)
   "Tries to find a corresponding spec file for the given ruby file name path."
@@ -164,6 +188,9 @@ find all open buffers for which we have received data, and add coverage overlays
              (format "%d / %d (%.2fs)" failure-count example-count duration))
           (t (format "%s ⚡ %d" (coxit-process-status) (coxit-exit-code))))))
 
+(defun coxit-rspec-running-p ()
+  (eq (coxit-process-status) 'run))
+
 (defun coxit-exit-code ()
   (and (plv-get coxit-rspec-process) (process-exit-status (plv-get coxit-rspec-process))))
 
@@ -201,57 +228,71 @@ find all open buffers for which we have received data, and add coverage overlays
 
 ;; Interactive commands
 
-(defun coxit-run-client (&optional project-dir)
+(defun coxit-rspec-run-client (&optional rspec-args project-dir)
   (interactive)
+  (if (and (coxit-rspec-running-p) (y-or-n-p "There's an rspec process running, kill it?"))
+      (kill-process (plv-get coxit-rspec-process)))
   (or (process-status "coxit-server") (coxit-server-start))
   (plv-unset coxit-rspec-summary project-dir)
-  (when (get-buffer "*coxit-rspec-client*")
-    (save-excursion
-      (set-buffer "*coxit-rspec-client*")
-      (narrow-to-region (point-max) (point-max))))
+  (save-excursion
+    (set-buffer (get-buffer-create coxit-rspec-process-buffer-name))
+    (coxit-mode)
+    (narrow-to-region (point-max) (point-max)))
   (let* ((project-dir (or project-dir (plv-project-root)))
+         (rspec-args  (or rspec-args (coxit-rspec-runner-arguments)))
          (default-directory project-dir))
+    ;; TODO check for running process and kill it
+    (plv-set coxit-rspec-last-args rspec-args)
     (plv-set coxit-rspec-process
-             (eval `(start-process "rspec-client" "*coxit-rspec-client*" ,(coxit-rspec-runner) ,@(coxit-rspec-runner-arguments)))
+             (eval `(start-process "rspec-client" coxit-rspec-process-buffer-name ,(coxit-rspec-runner) ,@rspec-args))
              project-dir)))
-
-(defun coxit-continuous (&optional repeat-seconds project-dir)
-  (interactive)
-  (coxit-run-client project-dir)
-  (run-at-time (or repeat-seconds 4) nil 'coxit-continous repeat-seconds (or project-dir (plv-project-root))))
 
 (defun coxit-run-matching-spec ()
   (interactive)
-  (setq coxit-rspec-files (list (coxit-spec-file-for (buffer-file-name))))
-  (coxit-run-client))
+  (plv-set coxit-rspec-files (list (coxit-spec-file-for (buffer-file-name))))
+  (coxit-rspec-run-client))
 
 (defun coxit-run-current-buffer ()
   (interactive)
-  (setq coxit-rspec-files (list (buffer-file-name)))
-  (coxit-run-client))
+  (plv-set coxit-rspec-files (list (buffer-file-name)))
+  (coxit-rspec-run-client))
 
 (defun coxit-run-current-line ()
   (interactive)
-  (setq coxit-rspec-files (list (concat buffer-file-name ":" (number-to-string (line-number-at-pos (point))))))
-  (coxit-run-client))
+  (plv-set coxit-rspec-files (list (concat buffer-file-name ":" (number-to-string (line-number-at-pos (point))))))
+  (coxit-rspec-run-client))
+
+(defun coxit-run-repeat-last ()
+  (interactive)
+  (coxit-rspec-run-client (plv-get coxit-rspec-last-args)))
+
+(defun coxit-run-suite ()
+  (interactive)
+  (plv-set coxit-rspec-files '("spec"))
+  (coxit-rspec-run-client))
+
+(defun coxit-edit-files-and-run (filename)
+  (interactive (list (read-file-name "Run rspec on: "
+                                     (car (plv-get coxit-rspec-files)))))
+  (plv-set coxit-rspec-files (list (f-relative filename (plv-project-root))))
+  (coxit-rspec-run-client))
 
 (defun coxit-goto-matching-spec ()
   (interactive)
   (find-file (coxit-spec-file-for (buffer-file-name))))
 
-(defun coxit-run-suite ()
+(defun coxit-switch-to-output-buffer ()
   (interactive)
-  (setq coxit-rspec-files '("spec"))
-  (coxit-run-client))
+  (switch-to-buffer coxit-rspec-process-buffer-name))
 
 ;; minor mode
 
 (defun coxit-minor-turn-on ()
   (plv-mode)
-  (setq coxit-project-root (plv-project-root))
-  (setq coxit-show-coverage t)
+  (set (make-local-variable 'coxit-show-coverage) t)
   (plv-update coxit-buffers (cons (current-buffer) it))
-  (add-to-list 'mode-line-format coxit-mode-line t))
+  (add-to-list 'mode-line-format coxit-mode-line t)
+  (local-set-key coxit-key-command-prefix coxit-mode-keymap))
 
 (defun coxit-minor-turn-off ()
   (setq coxit-show-coverage nil)
@@ -270,8 +311,22 @@ find all open buffers for which we have received data, and add coverage overlays
         (coxit-minor-turn-on)
       (coxit-minor-turn-off))))
 
+(define-prefix-command 'coxit-mode-keymap)
+
+(define-key coxit-mode-keymap (kbd "s") 'coxit-run-suite)
+(define-key coxit-mode-keymap (kbd "r") 'coxit-run-repeat-last)
+(define-key coxit-mode-keymap (kbd "b") 'coxit-run-current-buffer)
+(define-key coxit-mode-keymap (kbd "l") 'coxit-run-current-line)
+(define-key coxit-mode-keymap (kbd "m") 'coxit-run-matching-spec)
+(define-key coxit-mode-keymap (kbd "o") 'coxit-switch-to-output-buffer)
+(define-key coxit-mode-keymap (kbd "g") 'coxit-goto-matching-spec)
+(define-key coxit-mode-keymap (kbd "e") 'coxit-edit-files-and-run)
+
+;; (define-key coxit-mode-keymap (kbd "v") 'coxit-rspec-run-client)
 
 ;; Notes on bundler error codes
 ;; 7  missing Gem
 ;; 10 missing Gemfile
 ;; 11 git source not checked out
+
+(provide 'coxit)

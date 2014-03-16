@@ -25,13 +25,16 @@
        (concat user-emacs-directory "vendor/color-theme-6.6.0")
        load-path))
 
-;;(set-face-attribute 'default nil :font "Inconsolata-16")
-(set-default-font "Inconsolata-16")
+;; (set-face-attribute 'default nil :font "Inconsolata-16")
+(set-default-font "Inconsolata-15")
 
-;(setq calendar-location-name "Berlin, Germany")
-(setq calendar-location-name "Buenos Aires, Argentina")
-(setq calendar-latitude -34.6033)
-(setq calendar-longitude -52.30)
+(setq calendar-location-name "Berlin, Germany")
+(setq calendar-latitude 13.3833)
+(setq calendar-longitude 52.5167)
+
+;; (setq calendar-location-name "Buenos Aires, Argentina")
+;; (setq calendar-latitude -34.6033)
+;; (setq calendar-longitude -52.30)
 
 (require 'color-theme)
 (color-theme-initialize)

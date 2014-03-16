@@ -1,0 +1,12 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("(semantic-langdev.info-1) Language Support Overview"
+ (front-context-string . "Starting with ve")
+ (rear-context-string . "**************\n\n")
+ (position . 4290)
+ (filename . "/home/arne/Downloads/Manual/cedet-1.0pre4/semantic/doc/semantic-langdev.info-1")
+ (info-node . "Language Support Overview")
+ (handler . Info-bookmark-jump))
+)

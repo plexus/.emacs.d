@@ -36,8 +36,11 @@ non-destructive, returns a new list."
   `(setq ,variable (plv-assoc ,variable ,value ,project-root)))
 
 (defmacro plv-get (variable &optional project-root)
-  "Retrieves a value set with plv-set."
-  `(cdr (assoc-string ,(or project-root 'plv-project-root) ,variable)))
+  "Retrieves a value set with plv-set. Will fall back to the value set for
+'default if no value for the project is set."
+  `(if (--any? (equal (car it) ,(or project-root 'plv-project-root)) ,variable)
+       (assoc-default ,(or project-root 'plv-project-root) ,variable)
+     (assoc-default 'default ,variable)))
 
 (defmacro plv-unset (variable &optional project-root)
   `(setq ,variable (plv-unassoc ,variable ,project-root)))

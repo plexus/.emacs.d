@@ -1,0 +1,6 @@
+# name: def initialize ... end
+# key: defin
+# --
+def initialize($1)
+  $2
+end

@@ -7,6 +7,8 @@
         yaml-mode-hook
         conf-mode-hook
         css-mode-hook
+        handlebars-mode-hook
+        markdown-mode-hook
         ))
 
 (mapcar

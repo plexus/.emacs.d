@@ -5,6 +5,8 @@ require 'rspec/core'
 require 'rspec/core/formatters/base_formatter'
 require 'simplecov'
 
+p ARGV
+
 Cons = Struct.new(:car, :cdr)
 
 COXIT_PASSTHROUGH_ARGS = {}
@@ -47,15 +49,16 @@ end
 
 class SimplecovSexpFormatter
   def format(result)
-    result.files.map do |file|
-      covered, total = file.coverage.reduce([0, 0]) do |(covered, total), linecov|
-        [covered + (linecov && linecov > 0 ? 1 : 0), total + (linecov ? 1 : 0) ]
-      end
 
-      [ file.filename, total > 0 ? Float(covered)/total*100 : 0 ]
-    end.sort_by(&:last).each do |filename, covpct|
-      puts " %s%.2f | %s" % [covpct < 100 ? ' ' : '' , covpct, filename]
-    end
+    # result.files.map do |file|
+    #   covered, total = file.coverage.reduce([0, 0]) do |(covered, total), linecov|
+    #     [covered + (linecov && linecov > 0 ? 1 : 0), total + (linecov ? 1 : 0) ]
+    #   end
+    #   [ file.filename, total > 0 ? Float(covered)/total*100 : 0 ]
+    # end.sort_by(&:last).each do |filename, covpct|
+    #   puts " %s%.2f | %s" % [covpct < 100 ? ' ' : '' , covpct, filename]
+    # end
+
     coxit_respond(:coverage,
       result.files.map do |file|
         Cons.new(file.filename, file.coverage)

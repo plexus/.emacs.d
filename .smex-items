@@ -1,0 +1,19 @@
+
+;; ----- smex-history -----
+(
+ make-directory
+ rgrep
+ cd
+ 5x5
+ arp
+ dbx
+ dig
+)
+
+;; ----- smex-data -----
+(
+ (cider-jack-in . 5)
+ (make-directory . 3)
+ (cider . 7)
+ (rgrep . 2)
+)

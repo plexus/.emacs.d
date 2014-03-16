@@ -107,6 +107,7 @@
     (setenv "BUNDLE_PATH" "")))
 
 (defun chruby (&optional name)
+  (interactive)
   "If name is given, activate the given Ruby. Else, return the currently
  activated Ruby"
   (if name

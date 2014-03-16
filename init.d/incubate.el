@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Copy-pasted snippets from the web or other 'expirements' that haven't yet made
 ;; into my 'official' emacs configuration.
 
@@ -69,7 +70,7 @@
 
 (defun make-temp-ruby-buffer-name ()
   (let* ((dir (concat (getenv "HOME") "/projects/ruby-tmp"))
-        (last-buffer (car (last (directory-files dir nil "[0-9]+\.rb")))))
+         (last-buffer (car (last (directory-files dir nil "[0-9]+\.rb")))))
     (or (file-directory-p dir) (mkdir dir))
     (format "%s/%05d.rb"
             dir
@@ -115,27 +116,27 @@
 (eval-after-load 'outline
   '(progn
      (require 'outline-magic)
-    (define-key outline-minor-mode-map (kbd "H-m") 'outline-cycle)))
+     (define-key outline-minor-mode-map (kbd "H-m") 'outline-cycle)))
 
 (add-hook 'ruby-mode-hook
           (lambda ()
             (outline-minor-mode)
             (setq outline-regexp " *\\(def \\|class\\|module\\)")))
 
-;(add-hook 'ruby-mode-hook 'outline-minor-mode)
+                                        ;(add-hook 'ruby-mode-hook 'outline-minor-mode)
 
 
 (global-set-key (kbd "H-e") (lambda () (interactive) (find-file (concat (getenv "HOME") "/.emacs.d/init.d/incubate.el"))))
 (global-set-key (kbd "H-x") 'er/expand-region)
-
+(global-set-key (kbd "H-q") 'hide/show-comments-toggle)
 
 (defmacro coxit-env-let (bindings body &rest rest)
-"Like `let' but sets environment variables rather than (Emacs) variables.
+  "Like `let' but sets environment variables rather than (Emacs) variables.
 The return value is the result of the last expression, after returning the
 environment variables are reset to their previous value."
   `(let ((orig-bindings (list ,@(mapcar (lambda (env)
-                                   (list 'list env (list 'getenv env)))
-                                 (mapcar 'symbol-name (mapcar 'car bindings))))))
+                                          (list 'list env (list 'getenv env)))
+                                        (mapcar 'symbol-name (mapcar 'car bindings))))))
      ,@(mapcar (lambda (binding)
                  (list 'setenv (symbol-name (car binding)) (cadr binding)))
                bindings)
@@ -144,3 +145,56 @@ environment variables are reset to their previous value."
                  (setenv (car binding) (cadr binding)))
                orig-bindings)
        result)))
+
+
+
+(require 'popwin)
+(popwin-mode 1)
+
+(setq bookmark-save-flag 1) ; save bookmarks immediately
+
+(defun plexus-hashrocket-to-keyword ()
+  (interactive)
+  (kmacro-exec-ring-item
+   '([19 61 62 13 18 58 13 right backspace 19 61 62 13 backspace backspace 134217760 left 58] 0 "%d") nil))
+
+(defun plexus-find-next-filename-linum ()
+  (let* ((chars "a-zA-Z0-9\._/-")
+         (c (concat "[" chars "]"))
+         (not-c (concat "[^" chars "]"))
+         (filename-linum-pattern (concat not-c "\\(/?\\(" c "+/\\)+" c "+\\):\\([0-9]+\\)")))
+    (re-search-forward filename-linum-pattern)
+    `(,(match-beginning 1)
+      ,(match-end 0)
+      ,(buffer-substring (match-beginning 1) (match-end 1))
+      ,(string-to-number (buffer-substring (match-beginning 3) (match-end 3)))
+      ,(match-end 2))))
+
+
+
+(defun plexus-goto-filename-linum-at-point (file line)
+  (interactive)
+  (if (s-starts-with? "." file)
+      (find-file (concat (plv-project-root) (substring file 1 (length file))))
+    (find-file file))
+  (goto-line line))
+
+(defun plexus-generate-next-filenum-linum-link ()
+  (let* ((filename-linum-range (plexus-find-next-filename-linum))
+         (link-start (car filename-linum-range))
+         (link-end   (cadr filename-linum-range))
+         (file       (caddr filename-linum-range))
+         (line       (cadddr filename-linum-range))
+         (map (make-sparse-keymap))
+         (action (lambda () (interactive) (plexus-goto-filename-linum-at-point file line)))
+         )
+    (define-key map [mouse-1] action)
+    (define-key map (kbd "RET") action)
+    (put-text-property link-start link-end 'face 'link)
+    (put-text-property link-start link-end 'local-map map)))
+
+(defun plexus-mark-all-filename-linum-links ()
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while t (plexus-generate-next-filenum-linum-link))))

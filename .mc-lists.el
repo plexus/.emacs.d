@@ -33,5 +33,6 @@
       '(
         coffee-dedent-line-backspace
         haml-electric-backspace
+        markdown-demote
         xmp
         ))

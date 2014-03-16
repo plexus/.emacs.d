@@ -28,34 +28,28 @@
   (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single))
 
 (defun plexus-set-rct-elisp-path ()
-  (setq load-path
-        (append
-         (list (concat user-emacs-directory "vendor/rcodetools"))
-         load-path)))
+  (let ((path (concat user-emacs-directory "vendor/rcodetools")))
+    (if (not (-contains? load-path path))
+        (setq load-path
+              (append (list path)
+                      load-path)))))
 
-(defun plexus-set-rct-bin-path ()
-  (setenv
-   "PATH"
-   (file-truename
-    (concat user-emacs-directory
-            "vendor/rcodetools/bin"
-            ":"
-            (concat (getenv "PATH"))))))
+(setq plexus-rct-rcodetools-path (file-truename
+                                  (concat user-emacs-directory
+                                          "vendor/rcodetools/bin")))
 
-(defun plexus-set-rct-load-path ()
-  (setenv
-   "RUBYLIB"
-   (file-truename
-    (concat user-emacs-directory
-            "vendor/rcodetools/lib"
-            ":"
-            (concat (getenv "RUBYLIB"))))))
+(defun plexus-prepend-env-path (env-var path)
+  (if (not (-contains? (s-split ":" (getenv env-var)) path))
+      (setenv env-var (concat path ":" (getenv env-var)))))
+
+(defun plexus-set-rct-env ()
+  (plexus-prepend-env-path "PATH" plexus-rct-rcodetools-path)
+  (plexus-prepend-env-path "RUBYLIB" plexus-rct-rcodetools-path))
 
 (defun plexus-activate-rcodetools ()
   (progn
     (plexus-set-rct-elisp-path)
-    (plexus-set-rct-bin-path)
-    (plexus-set-rct-load-path)
+    (plexus-set-rct-env)
     (require 'rcodetools)
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 

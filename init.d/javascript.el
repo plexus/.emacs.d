@@ -1,29 +1,34 @@
-(defun plexus-ticketsolve-js-test-runner ()
-  (interactive)
-  (compile (concat "/home/arne/ticketsolve/repo/spec/javascripts/support/runner.coffee "
-                   "/home/arne/ticketsolve/repo/spec/javascripts/unit/runner.html")
-           t))
+(setq auto-mode-alist
+      (append '(("\\.js$" . js2-mode))
+              auto-mode-alist))
 
-(defun plexus-javascript-init ()
-  (toggle-mode)
-  (electric-pair-mode)
-  (yas-minor-mode)
-  (define-key js-mode-map (kbd "H-s") 'plexus-ticketsolve-js-test-runner))
+;; (defun plexus-ticketsolve-js-test-runner ()
+;;   (interactive)
+;;   (compile (concat "/home/arne/ticketsolve/repo/spec/javascripts/support/runner.coffee "
+;;                    "/home/arne/ticketsolve/repo/spec/javascripts/unit/runner.html")
+;;            t))
 
-(setq js-indent-level 2)
+;; (defun plexus-javascript-init ()
+;;   (toggle-mode)
+;;   (electric-pair-mode)
+;;   (yas-minor-mode)
+;;   (define-key js-mode-map (kbd "H-s") 'plexus-ticketsolve-js-test-runner))
 
-(require 'flycheck)
-(flycheck-define-checker javascript-jslint-reporter
-  "A JavaScript syntax and style checker based on JSLint Reporter.
+(custom-set-variables
+ '(js2-basic-offset 2))
 
-See URL `https://github.com/FND/jslint-reporter'."
-  :command ("~/.emacs.d/jslint-reporter/jslint-reporter" "--vars" "--indent=2" "--nomen" "--predef=Ember,Ticketbooth,_,console" "--browser" source)
-  :error-patterns
-  ((error line-start (1+ nonl) ":" line ":" column ":" (message) line-end))
-  :modes (js-mode js2-mode js3-mode))
-(add-hook 'js-mode-hook (lambda ()
-                          (flycheck-select-checker 'javascript-jslint-reporter)
-                          (flycheck-mode)))
+;; (require 'flycheck)
+;; (flycheck-define-checker javascript-jslint-reporter
+;;   "A JavaScript syntax and style checker based on JSLint Reporter.
+
+;; See URL `https://github.com/FND/jslint-reporter'."
+;;   :command ("~/.emacs.d/jslint-reporter/jslint-reporter" "--vars" "--indent=2" "--nomen" "--predef=Ember,Ticketbooth,_,console" "--browser" source)
+;;   :error-patterns
+;;   ((error line-start (1+ nonl) ":" line ":" column ":" (message) line-end))
+;;   :modes (js-mode js2-mode js3-mode))
+;; (add-hook 'js-mode-hook (lambda ()
+;;                           (flycheck-select-checker 'javascript-jslint-reporter)
+;;                           (flycheck-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; flymake + jslint
