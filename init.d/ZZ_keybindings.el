@@ -5,9 +5,6 @@
 (global-unset-key (kbd "C-z"))
 (global-unset-key (kbd "C-x C-z")) ; suspend-frame
 
-
-(global-set-key (kbd "<f1>") 'multi-term-dedicated-toggle) ; open/close "main" terminal
-(global-set-key (kbd "M-<f1>") 'multi-term) ; new terminal
 ;; (defun abg-revert-buffer-no-confirm ()
 ;;   "Revert buffer with no confirmation"
 ;;   (interactive)

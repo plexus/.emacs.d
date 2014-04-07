@@ -1,9 +1,9 @@
 ;; -*- lexical-binding: t; -*-
+
 ;; Copy-pasted snippets from the web or other 'expirements' that haven't yet made
 ;; into my 'official' emacs configuration.
 
 ;; http://emacswiki.org/emacs/MoveLine
-
 
 
 (defun move-line-up ()
@@ -67,26 +67,6 @@
 (global-set-key (kbd "H-j") 'plexus-jump-to-clipboard)
 
 (yas-global-mode 1)
-
-(defun make-temp-ruby-buffer-name ()
-  (let* ((dir (concat (getenv "HOME") "/projects/ruby-tmp"))
-         (last-buffer (car (last (directory-files dir nil "[0-9]+\.rb")))))
-    (or (file-directory-p dir) (mkdir dir))
-    (format "%s/%05d.rb"
-            dir
-            (+ 1 (string-to-number
-                  (first (split-string
-                          (if last-buffer last-buffer "00000.rb")
-                          "\\.")))))))
-
-(defun temp-ruby-buffer ()
-  (interactive)
-  (let ((buffer (make-temp-ruby-buffer-name)))
-    (write-region "" nil buffer)
-    (find-file buffer)
-    (ruby-mode)))
-
-(global-set-key (kbd "H-r") 'temp-ruby-buffer)
 
 (defun plexus-spec-summary ()
   (interactive)
@@ -198,3 +178,18 @@ environment variables are reset to their previous value."
   (save-excursion
     (goto-char (point-min))
     (while t (plexus-generate-next-filenum-linum-link))))
+
+;; (defadvice ido-find-file (after find-file-sudo activate)
+;;   "Find file as root if necessary."
+;;   (unless (and buffer-file-name
+;;                (file-writable-p buffer-file-name))
+;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+  '( (perl . t)
+     (ruby . t)
+     (sh . t)
+     (python . t)
+     (emacs-lisp . t)
+   ))

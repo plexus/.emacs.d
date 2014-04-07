@@ -1,6 +1,7 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
 (source "gnu" "http://elpa.gnu.org/packages/")
 
+(depends-on "auto-complete")
 (depends-on "carton")
 (depends-on "cider")
 (depends-on "clojure-mode")
@@ -10,6 +11,7 @@
 (depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "dash")
 (depends-on "dash-functional")
+(depends-on "enh-ruby-mode")
 (depends-on "evil")
 (depends-on "expand-region")
 (depends-on "flycheck")

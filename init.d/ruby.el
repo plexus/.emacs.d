@@ -34,17 +34,24 @@
               (append (list path)
                       load-path)))))
 
-(setq plexus-rct-rcodetools-path (file-truename
-                                  (concat user-emacs-directory
-                                          "vendor/rcodetools/bin")))
+(setq plexus-rct-rcodetools-path (f-expand
+                                  (f-join user-emacs-directory
+                                          "vendor/rcodetools")))
+
 
 (defun plexus-prepend-env-path (env-var path)
-  (if (not (-contains? (s-split ":" (getenv env-var)) path))
-      (setenv env-var (concat path ":" (getenv env-var)))))
+  (setenv env-var
+          (s-join ":"
+                  (-uniq
+                   (append
+                    (list path)
+                    (if (getenv env-var)
+                        (s-split ":"  (getenv env-var) "")
+                      '() ))))))
 
 (defun plexus-set-rct-env ()
-  (plexus-prepend-env-path "PATH" plexus-rct-rcodetools-path)
-  (plexus-prepend-env-path "RUBYLIB" plexus-rct-rcodetools-path))
+  (plexus-prepend-env-path "PATH" (concat plexus-rct-rcodetools-path "/bin"))
+  (plexus-prepend-env-path "RUBYLIB" (concat plexus-rct-rcodetools-path "/lib")))
 
 (defun plexus-activate-rcodetools ()
   (progn
@@ -79,6 +86,26 @@
     (when indent
          (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+(defun make-temp-ruby-buffer-name ()
+  (let* ((dir (concat (getenv "HOME") "/projects/ruby-tmp"))
+         (last-buffer (car (last (directory-files dir nil "^[0-9]+\.rb")))))
+    (or (file-directory-p dir) (mkdir dir))
+    (format "%s/%05d.rb"
+            dir
+            (+ 1 (string-to-number
+                  (first (split-string
+                          (if last-buffer last-buffer "00000.rb")
+                          "\\.")))))))
+
+(defun temp-ruby-buffer ()
+  (interactive)
+  (let ((buffer (make-temp-ruby-buffer-name)))
+    (write-region "" nil buffer)
+    (find-file buffer)
+    (ruby-mode)))
+
+(global-set-key (kbd "H-r") 'temp-ruby-buffer)
 
 (require 'chruby)
 (chruby "1.9.3")

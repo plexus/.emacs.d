@@ -41,7 +41,8 @@
 
 (require 'color-theme-sanityinc-tomorrow)
 (require 'sanityinc-tomorrow-day-theme)
-(require 'sanityinc-tomorrow-night-theme)
-(require 'theme-changer)
-(setq theme-changer-mode "color-theme")
-(change-theme 'color-theme-sanityinc-tomorrow-day 'color-theme-sanityinc-tomorrow-night)
+;(require 'sanityinc-tomorrow-night-theme)
+;(require 'theme-changer)
+;(setq theme-changer-mode "color-theme")
+;(change-theme 'color-theme-sanityinc-tomorrow-day 'color-theme-sanityinc-tomorrow-night)
+(color-theme-sanityinc-tomorrow-day)

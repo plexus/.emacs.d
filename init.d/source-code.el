@@ -9,6 +9,7 @@
         css-mode-hook
         handlebars-mode-hook
         markdown-mode-hook
+        slim-mode-hook
         ))
 
 (mapcar
