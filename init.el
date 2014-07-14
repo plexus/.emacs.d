@@ -4,6 +4,38 @@
 (setq *auto-init-files-path* (concat user-emacs-directory "init.d"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Load path
+
+(add-to-list 'load-path (concat user-emacs-directory "vendor"))
+(add-to-list 'load-path (concat user-emacs-directory "init.d"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Custom Init
+
+
+(add-to-list 'load-path *auto-init-files-path*)
+(load "00_packages.el")
+
+(require 'f)
+(require 'org)
+(require 'ob)
+(require 'org-install) 
+(require 'ob-tangle)
+
+(defun plexus-require-tree (path)
+  (f--entries path
+              (cond ((and (f-file? it) (f-ext? it "el"))
+                     (load it))
+                    ((and (f-file? it) (f-ext? it "org"))
+                     (org-babel-load-file it))
+                    ((f-directory? it)
+                     (plexus-require-tree it)))))
+
+(add-hook 'after-init-hook
+	  (lambda ()
+	    (plexus-require-tree *auto-init-files-path*)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; customize-*
 
 (custom-set-variables
@@ -19,7 +51,8 @@
  '(fci-rule-color "#eee8d5")
  '(js2-basic-offset 2)
  '(js2-indent-level 2)
- '(org-babel-load-languages (quote ((perl . t) (ruby . t) (sh . t) (python . t) (emacs-lisp . t))))
+;'(org-babel-load-languages (quote ((perl . t) (ruby . t) (sh . t) (python . t) (emacs-lisp . t))))
+ '(org-babel-load-languages (quote ((ruby . t) (emacs-lisp . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
  '(rspec-key-command-prefix (kbd "H-s"))
@@ -27,40 +60,6 @@
  '(vc-annotate-background nil)
  '(vc-annotate-color-map (quote ((20 . "#dc322f") (40 . "#cb4b16") (60 . "#b58900") (80 . "#859900") (100 . "#2aa198") (120 . "#268bd2") (140 . "#d33682") (160 . "#6c71c4") (180 . "#dc322f") (200 . "#cb4b16") (220 . "#b58900") (240 . "#859900") (260 . "#2aa198") (280 . "#268bd2") (300 . "#d33682") (320 . "#6c71c4") (340 . "#dc322f") (360 . "#cb4b16"))))
  '(vc-annotate-very-old-color nil))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Packages
-
-(require 'package)
-(package-initialize)
-
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
-(require 'pallet)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Load path
-
-(add-to-list 'load-path (concat user-emacs-directory "vendor"))
-(add-to-list 'load-path (concat user-emacs-directory "init.d"))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Custom Init
-
-(require 'f)
-
-(add-to-list 'load-path *auto-init-files-path*)
-
-(defun plexus-require-tree (path)
-  (f--entries path
-              (cond ((and (f-file? it) (f-ext? it "el"))
-                     (load it))
-                    ((and (f-file? it) (f-ext? it "org"))
-                     (org-babel-load-file it))
-                    ((f-directory? it)
-                     (plexus-require-tree it)))))
-
-(plexus-require-tree *auto-init-files-path*)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

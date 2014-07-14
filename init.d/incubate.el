@@ -26,15 +26,15 @@
 (global-set-key (kbd "M-p") 'move-line-up)
 (global-set-key (kbd "M-n") 'move-line-down)
 
-(defun copy-file-name-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (kill-new filename)
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
+;; (defun copy-file-name-to-clipboard ()
+;;   "Copy the current buffer file name to the clipboard."
+;;   (interactive)
+;;   (let ((filename (if (equal major-mode 'dired-mode)
+;;                       default-directory
+;;                     (buffer-file-name))))
+;;     (when filename
+;;       (kill-new filename)
+;;       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 ;; (defun plexus-find-file(filename &optional wildcards)
 ;;   "finds a file, and then creates the folder if it doesn't exist"
@@ -68,9 +68,9 @@
 
 (yas-global-mode 1)
 
-(defun plexus-spec-summary ()
-  (interactive)
-  (occur "^[ \t]*\\(describe\\|it\\|context\\|specify\\|shared_examples\\|include_examples\\|shared_context\\|include_context\\)"))
+;; (defun plexus-spec-summary ()
+;;   (interactive)
+;;   (occur "^[ \t]*\\(describe\\|it\\|context\\|specify\\|shared_examples\\|include_examples\\|shared_context\\|include_context\\)"))
 
 
 (defvar hexcolour-keywords
@@ -93,92 +93,92 @@
 
 (global-set-key (kbd "H-k") 'plexus-greek)
 
-(eval-after-load 'outline
-  '(progn
-     (require 'outline-magic)
-     (define-key outline-minor-mode-map (kbd "H-m") 'outline-cycle)))
+;; (eval-after-load 'outline
+;;   '(progn
+;;      (require 'outline-magic)
+;;      (define-key outline-minor-mode-map (kbd "H-m") 'outline-cycle)))
 
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (outline-minor-mode)
-            (setq outline-regexp " *\\(def \\|class\\|module\\)")))
+;; (add-hook 'ruby-mode-hook
+;;           (lambda ()
+;;             (outline-minor-mode)
+;;             (setq outline-regexp " *\\(def \\|class\\|module\\)")))
 
-                                        ;(add-hook 'ruby-mode-hook 'outline-minor-mode)
+;;                                         ;(add-hook 'ruby-mode-hook 'outline-minor-mode)
 
 
 (global-set-key (kbd "H-e") (lambda () (interactive) (find-file (concat (getenv "HOME") "/.emacs.d/init.d/incubate.el"))))
 (global-set-key (kbd "H-x") 'er/expand-region)
-(global-set-key (kbd "H-q") 'hide/show-comments-toggle)
+;; (global-set-key (kbd "H-q") 'hide/show-comments-toggle)
 
-(defmacro coxit-env-let (bindings body &rest rest)
-  "Like `let' but sets environment variables rather than (Emacs) variables.
-The return value is the result of the last expression, after returning the
-environment variables are reset to their previous value."
-  `(let ((orig-bindings (list ,@(mapcar (lambda (env)
-                                          (list 'list env (list 'getenv env)))
-                                        (mapcar 'symbol-name (mapcar 'car bindings))))))
-     ,@(mapcar (lambda (binding)
-                 (list 'setenv (symbol-name (car binding)) (cadr binding)))
-               bindings)
-     (let ((result (progn ,body ,@rest)))
-       (mapcar (lambda (binding)
-                 (setenv (car binding) (cadr binding)))
-               orig-bindings)
-       result)))
+;; (defmacro coxit-env-let (bindings body &rest rest)
+;;   "Like `let' but sets environment variables rather than (Emacs) variables.
+;; The return value is the result of the last expression, after returning the
+;; environment variables are reset to their previous value."
+;;   `(let ((orig-bindings (list ,@(mapcar (lambda (env)
+;;                                           (list 'list env (list 'getenv env)))
+;;                                         (mapcar 'symbol-name (mapcar 'car bindings))))))
+;;      ,@(mapcar (lambda (binding)
+;;                  (list 'setenv (symbol-name (car binding)) (cadr binding)))
+;;                bindings)
+;;      (let ((result (progn ,body ,@rest)))
+;;        (mapcar (lambda (binding)
+;;                  (setenv (car binding) (cadr binding)))
+;;                orig-bindings)
+;;        result)))
 
 
 
 (require 'popwin)
 (popwin-mode 1)
-(push '("*coxit-rspec-client*" :height 20) popwin:special-display-config)
+;; (push '("*coxit-rspec-client*" :height 20) popwin:special-display-config)
 
 (setq bookmark-save-flag 1) ; save bookmarks immediately
 
-(defun plexus-hashrocket-to-keyword ()
-  (interactive)
-  (kmacro-exec-ring-item
-   '([19 61 62 13 18 58 13 right backspace 19 61 62 13 backspace backspace 134217760 left 58] 0 "%d") nil))
+;; (defun plexus-hashrocket-to-keyword ()
+;;   (interactive)
+;;   (kmacro-exec-ring-item
+;;    '([19 61 62 13 18 58 13 right backspace 19 61 62 13 backspace backspace 134217760 left 58] 0 "%d") nil))
 
-(defun plexus-find-next-filename-linum ()
-  (let* ((chars "a-zA-Z0-9\._/-")
-         (c (concat "[" chars "]"))
-         (not-c (concat "[^" chars "]"))
-         (filename-linum-pattern (concat not-c "\\(/?\\(" c "+/\\)+" c "+\\):\\([0-9]+\\)")))
-    (re-search-forward filename-linum-pattern)
-    `(,(match-beginning 1)
-      ,(match-end 0)
-      ,(buffer-substring (match-beginning 1) (match-end 1))
-      ,(string-to-number (buffer-substring (match-beginning 3) (match-end 3)))
-      ,(match-end 2))))
+;; (defun plexus-find-next-filename-linum ()
+;;   (let* ((chars "a-zA-Z0-9\._/-")
+;;          (c (concat "[" chars "]"))
+;;          (not-c (concat "[^" chars "]"))
+;;          (filename-linum-pattern (concat not-c "\\(/?\\(" c "+/\\)+" c "+\\):\\([0-9]+\\)")))
+;;     (re-search-forward filename-linum-pattern)
+;;     `(,(match-beginning 1)
+;;       ,(match-end 0)
+;;       ,(buffer-substring (match-beginning 1) (match-end 1))
+;;       ,(string-to-number (buffer-substring (match-beginning 3) (match-end 3)))
+;;       ,(match-end 2))))
 
 
 
-(defun plexus-goto-filename-linum-at-point (file line)
-  (interactive)
-  (if (s-starts-with? "." file)
-      (find-file (concat (plv-project-root) (substring file 1 (length file))))
-    (find-file file))
-  (goto-line line))
+;; (defun plexus-goto-filename-linum-at-point (file line)
+;;   (interactive)
+;;   (if (s-starts-with? "." file)
+;;       (find-file (concat (plv-project-root) (substring file 1 (length file))))
+;;     (find-file file))
+;;   (goto-line line))
 
-(defun plexus-generate-next-filenum-linum-link ()
-  (let* ((filename-linum-range (plexus-find-next-filename-linum))
-         (link-start (car filename-linum-range))
-         (link-end   (cadr filename-linum-range))
-         (file       (caddr filename-linum-range))
-         (line       (cadddr filename-linum-range))
-         (map (make-sparse-keymap))
-         (action (lambda () (interactive) (plexus-goto-filename-linum-at-point file line)))
-         )
-    (define-key map [mouse-1] action)
-    (define-key map (kbd "RET") action)
-    (put-text-property link-start link-end 'face 'link)
-    (put-text-property link-start link-end 'local-map map)))
+;; (defun plexus-generate-next-filenum-linum-link ()
+;;   (let* ((filename-linum-range (plexus-find-next-filename-linum))
+;;          (link-start (car filename-linum-range))
+;;          (link-end   (cadr filename-linum-range))
+;;          (file       (caddr filename-linum-range))
+;;          (line       (cadddr filename-linum-range))
+;;          (map (make-sparse-keymap))
+;;          (action (lambda () (interactive) (plexus-goto-filename-linum-at-point file line)))
+;;          )
+;;     (define-key map [mouse-1] action)
+;;     (define-key map (kbd "RET") action)
+;;     (put-text-property link-start link-end 'face 'link)
+;;     (put-text-property link-start link-end 'local-map map)))
 
-(defun plexus-mark-all-filename-linum-links ()
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (while t (plexus-generate-next-filenum-linum-link))))
+;; (defun plexus-mark-all-filename-linum-links ()
+;;   (interactive)
+;;   (save-excursion
+;;     (goto-char (point-min))
+;;     (while t (plexus-generate-next-filenum-linum-link))))
 
 ;; (defadvice ido-find-file (after find-file-sudo activate)
 ;;   "Find file as root if necessary."
@@ -228,17 +228,7 @@ environment variables are reset to their previous value."
  )
 (global-set-key (kbd "H-o") 'org-skeleton)
 
-(require 'ox-reveal)
-
-(defun org-file-equal-p (f1 f2)
-  "Return t if files F1 and F2 are the same.
-   Implements `file-equal-p' for older emacsen and XEmacs."
-  (if (fboundp 'file-equal-p)
-      (file-equal-p f1 f2)
-    (let (f1-attr f2-attr)
-      (and (setq f1-attr (file-attributes (file-truename f1)))
-           (setq f2-attr (file-attributes (file-truename f2)))
-           (equal f1-attr f2-attr)))))
+;; (require 'ox-reveal)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)

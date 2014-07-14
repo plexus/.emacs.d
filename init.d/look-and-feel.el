@@ -1,9 +1,9 @@
 ;; Color theme
 
-(setq load-path
-      (cons
-       (concat user-emacs-directory "vendor/color-theme-6.6.0")
-       load-path))
+;; (setq load-path
+;;       (cons
+;;        (concat user-emacs-directory "vendor/color-theme-6.6.0")
+;;        load-path))
 
 ;; (set-face-attribute 'default nil :font "Inconsolata-16")
 (set-default-font "Inconsolata-15")
@@ -17,8 +17,8 @@
 ;; (setq calendar-latitude -34.6033)
 ;; (setq calendar-longitude -52.30)
 
-(require 'color-theme)
-(color-theme-initialize)
+;; (require 'color-theme)
+;; (color-theme-initialize)
 
 (require 'color-theme-sanityinc-tomorrow)
 (require 'sanityinc-tomorrow-day-theme)

@@ -62,10 +62,10 @@
     (require 'rcodetools)
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 
-(require 'web-mode)
+;; (require 'web-mode)
 (require 'ruby-hash-syntax)
 (define-key ruby-mode-map (kbd "H-;") 'ruby-toggle-hash-syntax)
-(define-key web-mode-map  (kbd "H-;") 'ruby-toggle-hash-syntax)
+;; (define-key web-mode-map  (kbd "H-;") 'ruby-toggle-hash-syntax)
 
 (add-hook 'ruby-mode-hook 'plexus-activate-rcodetools)
 ;(add-hook 'ruby-mode-hook 'coxit-mode)
