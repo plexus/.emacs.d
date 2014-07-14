@@ -21,11 +21,13 @@
 (setq ruby-deep-indent-paren nil)       ; inside parameter lists, just indent two spaces rather than up to paren
 
 (defun plexus-load-rspec ()
-  (require 'rspec-mode)
-  (setq rspec-use-rake-flag nil)
-  (setq rspec-spec-command "rspec")
-  (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
-  (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single))
+  ;; (require 'rspec-mode)
+  ;; (setq rspec-use-rake-flag nil)
+  ;; (setq rspec-spec-command "rspec")
+  ;; (custom-set-variables '(rspec-key-command-prefix (kbd "H-s")))
+  ;; (define-key rspec-mode-keymap (kbd "H-s") 'rspec-verify-single)
+  ;(rspec-install-snippets)
+  )
 
 (defun plexus-set-rct-elisp-path ()
   (let ((path (concat user-emacs-directory "vendor/rcodetools")))
@@ -60,10 +62,15 @@
     (require 'rcodetools)
     (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)))
 
+(require 'web-mode)
+(require 'ruby-hash-syntax)
+(define-key ruby-mode-map (kbd "H-;") 'ruby-toggle-hash-syntax)
+(define-key web-mode-map  (kbd "H-;") 'ruby-toggle-hash-syntax)
+
 (add-hook 'ruby-mode-hook 'plexus-activate-rcodetools)
-(add-hook 'ruby-mode-hook 'coxit-mode)
+;(add-hook 'ruby-mode-hook 'coxit-mode)
 (add-hook 'ruby-mode-hook 'abbrev-mode)
-            ;(plexus-load-rspec)
+(plexus-load-rspec)
             ;(robe-mode)
 
 

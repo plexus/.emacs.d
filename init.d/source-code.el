@@ -10,6 +10,7 @@
         handlebars-mode-hook
         markdown-mode-hook
         slim-mode-hook
+        ruby-mode-hook
         ))
 
 (mapcar

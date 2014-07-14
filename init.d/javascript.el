@@ -15,6 +15,7 @@
 ;;   (define-key js-mode-map (kbd "H-s") 'plexus-ticketsolve-js-test-runner))
 
 (custom-set-variables
+ '(js2-indent-level 2)
  '(js2-basic-offset 2))
 
 ;; (require 'flycheck)

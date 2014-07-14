@@ -130,6 +130,7 @@ environment variables are reset to their previous value."
 
 (require 'popwin)
 (popwin-mode 1)
+(push '("*coxit-rspec-client*" :height 20) popwin:special-display-config)
 
 (setq bookmark-save-flag 1) ; save bookmarks immediately
 
@@ -185,11 +186,61 @@ environment variables are reset to their previous value."
 ;;                (file-writable-p buffer-file-name))
 ;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
-  '( (perl . t)
-     (ruby . t)
-     (sh . t)
-     (python . t)
-     (emacs-lisp . t)
-   ))
+
+(defun transform-word (transformation)
+  (save-excursion
+    (set-mark (point))
+    (right-word)
+    (let ((str (buffer-substring-no-properties (region-beginning) (region-end))))
+      (delete-region (region-beginning) (region-end))
+      (insert (apply transformation (list str)))))
+  (right-word))
+
+(defun camelize-word ()
+  (interactive)
+  (transform-word 's-lower-camel-case))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; el4r
+
+;; (setq el4r-root-path (expand-file-name "~/github/trogdoro-el4r/"))
+
+;; (plexus-prepend-env-path "PATH"    (concat el4r-root-path "bin"))
+;; (plexus-prepend-env-path "RUBYLIB" (concat el4r-root-path "lib"))
+;; (plexus-prepend-env-path "RUBYLIB" (concat el4r-root-path "lib/el4r/emacsruby"))
+;; (add-to-list 'exec-path (concat el4r-root-path "bin"))
+;; (add-to-list 'load-path (concat el4r-root-path "/data/emacs/site-lisp"))
+
+;; (require 'el4r)
+;; (setq el4r-instance-program  "el4r-instance")
+;; (el4r-boot)
+
+
+(define-skeleton org-skeleton
+  "Header info for a emacs-org file."
+  "Title: "
+  "#+TITLE:" str " \n"
+  "#+AUTHOR: Your Name\n"
+  "#+email: your-email@server.com\n"
+  "#+INFOJS_OPT: \n"
+  "#+BABEL: :session *ruby* :cache yes :results output graphics :exports both :tangle yes \n"
+  "-----"
+ )
+(global-set-key (kbd "H-o") 'org-skeleton)
+
+(require 'ox-reveal)
+
+(defun org-file-equal-p (f1 f2)
+  "Return t if files F1 and F2 are the same.
+   Implements `file-equal-p' for older emacsen and XEmacs."
+  (if (fboundp 'file-equal-p)
+      (file-equal-p f1 f2)
+    (let (f1-attr f2-attr)
+      (and (setq f1-attr (file-attributes (file-truename f1)))
+           (setq f2-attr (file-attributes (file-truename f2)))
+           (equal f1-attr f2-attr)))))
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)

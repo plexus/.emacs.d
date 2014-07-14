@@ -1,0 +1,43 @@
+#+TITLE: Emacs Reset
+#+OPTIONS: toc:nil num:nil ^:nil
+
+Similar to browser reset style sheets, this file undoes or changes default settings to get a sensible base line.
+
+* Basic UI settings
+
+When Emacs boots, start with an empty scratch buffer. The splash screen, menu bar, tool bar, scroll bar, and scratch message are unnecassary distractions.
+
+#+BEGIN_SRC elisp
+(setq inhibit-splash-screen t)                  ; no splash screen
+
+(menu-bar-mode -1)                              ; no menu bar
+(tool-bar-mode -1)                              ; no tool bar
+(scroll-bar-mode -1)                            ; no scroll bar
+
+(setq initial-scratch-message nil)              ; empty *scratch* buffer
+#+END_SRC
+
+* Copy/Paste behavior
+
+This is a tricky topic, especially on X11. I have used this setting for years without much issue, but [[http://www.emacswiki.org/cgi-bin/wiki/CopyAndPaste][EmacsWiki:CopyAndPaste]] lists several alternative approaches.
+
+#+BEGIN_SRC elisp
+(setq x-select-enable-clipboard t)
+ #+END_SRC
+
+* Better Unique Buffer Names
+
+Because buffer names need to be unique, Emacs will suffix them with a number when visiting multiple files with the same name. This abysmal behavior is retained not to upset an ageing user base. Luckily this sad state of affairs is easily rectified.
+
+#+BEGIN_SRC elisp
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+#+END_SRC
+
+* Yes or no
+
+In confirmation prompts, accept a mere "y" or "n", instead of only "yes" or "no".
+
+#+BEGIN_SRC elisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC

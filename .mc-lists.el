@@ -4,6 +4,8 @@
 (setq mc/cmds-to-run-for-all
       '(
         beginning-of-buffer
+        c-electric-pound
+        c-electric-star
         end-of-buffer
         goto-line
         ido-switch-buffer
@@ -34,5 +36,6 @@
         coffee-dedent-line-backspace
         haml-electric-backspace
         markdown-demote
+        org-ctrl-c-ctrl-c
         xmp
         ))

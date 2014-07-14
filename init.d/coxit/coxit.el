@@ -212,7 +212,8 @@ find all open buffers for which we have received data, and add coverage overlays
                         :family 'ipv4
                         :service *coxit-server-port*
                         :sentinel 'coxit-server-sentinel
-                        :filter 'coxit-server-filter :server 't))
+                        :filter 'coxit-server-filter :server 't)
+  (set-process-query-on-exit-flag (get-process "coxit-server") nil))
 
 (defun coxit-server-filter (proc string)
   ;(message string)
@@ -220,11 +221,15 @@ find all open buffers for which we have received data, and add coverage overlays
     (setq coxit-process-buffers (plist-put coxit-process-buffers proc buffer))))
 
 (defun coxit-server-sentinel (proc msg)
+  ;(message "sentinel: %s" msg)
   (when (string= msg "connection broken by remote peer\n")
     (-if-let (input (plist-get coxit-process-buffers proc))
-      (coxit-dispatch-message (coxit-parse-results input)))
-    ;(message "sentinel: %s" msg)
-    ))
+      (coxit-dispatch-message (coxit-parse-results input)))))
+
+(defun coxit-client-sentinel (proc msg)
+  ;(message "sentinel: %s" msg)
+  (if (s-match "exited abnormally" msg)
+      (display-buffer "*coxit-rspec-client*" 'display-buffer-pop-up-window)))
 
 ;; Interactive commands
 
@@ -243,9 +248,9 @@ find all open buffers for which we have received data, and add coverage overlays
          (default-directory project-dir))
     ;; TODO check for running process and kill it
     (plv-set coxit-rspec-last-args rspec-args)
-    (plv-set coxit-rspec-process
-             (eval `(start-process "rspec-client" coxit-rspec-process-buffer-name ,(coxit-rspec-runner) ,@rspec-args))
-             project-dir)))
+    (let ((process (eval `(start-process "rspec-client" coxit-rspec-process-buffer-name ,(coxit-rspec-runner) ,@rspec-args))))
+      (set-process-sentinel process 'coxit-client-sentinel)
+      (plv-set coxit-rspec-process process project-dir))))
 
 (defun coxit-run-matching-spec ()
   (interactive)
@@ -291,7 +296,7 @@ find all open buffers for which we have received data, and add coverage overlays
   (plv-mode)
   (set (make-local-variable 'coxit-show-coverage) t)
   (plv-update coxit-buffers (cons (current-buffer) it))
-  (add-to-list 'mode-line-format coxit-mode-line t)
+  (add-to-list 'mode-line-format coxit-mode-line)
   (local-set-key coxit-key-command-prefix coxit-mode-keymap))
 
 (defun coxit-minor-turn-off ()
@@ -321,6 +326,8 @@ find all open buffers for which we have received data, and add coverage overlays
 (define-key coxit-mode-keymap (kbd "o") 'coxit-switch-to-output-buffer)
 (define-key coxit-mode-keymap (kbd "g") 'coxit-goto-matching-spec)
 (define-key coxit-mode-keymap (kbd "e") 'coxit-edit-files-and-run)
+
+(global-set-key (kbd "H-/") 'coxit-run-repeat-last)
 
 ;; (define-key coxit-mode-keymap (kbd "v") 'coxit-rspec-run-client)
 

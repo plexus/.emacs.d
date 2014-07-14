@@ -1,23 +1,3 @@
-;; Startup and UI
-
-(setq inhibit-splash-screen t)                  ; no splash screen
-
-(menu-bar-mode -1)                              ; no menu bar
-(tool-bar-mode -1)                              ; no tool bar
-(scroll-bar-mode -1)                            ; no scroll bar
-
-(setq initial-scratch-message nil)              ; empty *scratch* buffer
-
-;; Mode line
-
-(setq eol-mnemonic-dos  "(\\DOS)")              ; Readable end-of-line identifiers for the modeline
-(setq eol-mnemonic-unix "(:UNIX)")              ; the default one-char is still in there, maybe I'll learn some day
-(setq eol-mnemonic-mac  "(/MAC)")
-(setq eol-mnemonic-undecided "(-UNDECIDED)")
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward) ; uniquify.el buffer names :  name|its/dir   <->   name<2>
-
 ;; Color theme
 
 (setq load-path
@@ -27,6 +7,7 @@
 
 ;; (set-face-attribute 'default nil :font "Inconsolata-16")
 (set-default-font "Inconsolata-15")
+;(set-default-font "Monospace-15")
 
 (setq calendar-location-name "Berlin, Germany")
 (setq calendar-latitude 13.3833)
@@ -45,4 +26,11 @@
 ;(require 'theme-changer)
 ;(setq theme-changer-mode "color-theme")
 ;(change-theme 'color-theme-sanityinc-tomorrow-day 'color-theme-sanityinc-tomorrow-night)
+
+;(color-theme-sanityinc-solarized-dark)
+;(color-theme-sanityinc-solarized-light)
+;(color-theme-sanityinc-tomorrow-blue)
+;(color-theme-sanityinc-tomorrow-bright)
 (color-theme-sanityinc-tomorrow-day)
+;(color-theme-sanityinc-tomorrow-eighties)
+;(color-theme-sanityinc-tomorrow-night)
