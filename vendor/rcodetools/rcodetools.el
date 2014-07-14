@@ -82,7 +82,7 @@ See also `rct-interactive'. "
 (defun xmpfilter-command (&optional option)
   "The xmpfilter command line, DWIM."
   (setq option (or option ""))
-  (flet ((in-block (beg-re)
+  (cl-flet ((in-block (beg-re)
                    (save-excursion
                      (goto-char (point-min))
                      (when (re-search-forward beg-re nil t)
