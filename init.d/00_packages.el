@@ -12,7 +12,7 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
-(package-install 'magit)
+(package-require 'magit)
 
 ;; general purpose
 (package-require 'magit)
@@ -32,6 +32,7 @@
 (package-require 'js2-mode)
 (package-require 'json-mode)
 (package-require 'markdown-mode)
+(package-require 'org)
 (package-require 'sass-mode)
 (package-require 'scss-mode)
 (package-require 'slim-mode)
@@ -44,6 +45,10 @@
 (package-require 'rspec-mode)
 (package-require 'yard-mode)
 (package-require 'evil)
+(package-require 'flycheck)
+(package-require 'flymake-jslint)
+(package-require 'flymake-ruby)
+(package-require 'auto-complete)
 
 ;; themes
 (package-require 'color-theme-sanityinc-solarized)
@@ -57,24 +62,20 @@
 (package-require 'f)
 (package-require 's)
 
-;; other
-(package-require 'auto-complete)
+;; additional language-specific support stuff
 (package-require 'cider)
+(package-require 'inf-ruby)
+(package-require 'ruby-additional)
+(package-require 'chruby)
+(package-require 'ruby-hash-syntax)
+
+;; other
 (package-require 'expand-region)
-(package-require 'flycheck)
-(package-require 'flymake-jslint)
-(package-require 'flymake-ruby)
 (package-require 'fm)
 (package-require 'hide-comnt)
-(package-require 'inf-ruby)
-(package-require 'org)
 (package-require 'outline-magic)
-(package-require 'ruby-additional)
 
 ;(package-require 'bison-wisent)
 ;(package-require 'dired-fixups)
 ;(package-require 'gimme-cat)
 ;(package-require 'ox-reveal)
-
-(package-require 'chruby)
-(package-require 'ruby-hash-syntax)

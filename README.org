@@ -1,0 +1,37 @@
+* Arnemacs / Plexmacs
+
+  Emacs as I intended it.
+
+** History
+
+   Although I had given Emacs cursory glances before, I only took up Emacsery in earnest in 2006.
+   I had a single =.emacs= file that disabled the toolbar and set up a nicer color scheme. Gradually
+   this file grew to roughly a thousand lines, including lots of copy pasted stuff, and my first
+   doodles of Emacs Lisp.
+
+   Eventually this happened
+
+#+BEGIN_QUOTE commit dcb52f06ad321dc247b480f06f6470a7afbf263e Author: Arne Brasseur <arne.brasseur@rendaosolutions.com> Date:   Tue Jun 26 16:33:11 2012 +0200      .emacs bankruptcy, starting with a more modular approach #+END_QUOTE
+
+   =package.el= already existed at that time I think, but that I didn't know, so I split things up
+   into a =vendor/= and an =init.d/= directory, and gradually pulled stuff over from my old config
+   whenever I found an actual need.
+
+** Approach
+
+   The top level =init.el= adds =vendor/= and =init.d/= to the load path, and loads everything under
+   the latter. It also sets up some "customize" settings.
+
+   =init.d/00_packages.el= lists all packages in use, with a handy =package-require= function I
+   borrowed from Bodil Stokke.
+
+** Scope
+
+   I mostly do Ruby/Rails and web stuff, and lately also some Clojure.
+
+
+site:    http://www.arnebrasseur.net
+twitter: @plexus
+github:  plexus
+
+(C) 2012-2014 Arne Brasseur - LICENSE : http://www.opensource.org/licenses/mit-license.php.
