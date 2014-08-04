@@ -19,7 +19,6 @@
   (transpose-lines 1)
   (forward-line -1))
 
-
 (global-set-key (kbd "M-<up>") 'move-line-up)
 (global-set-key (kbd "M-<down>") 'move-line-down)
 
@@ -216,21 +215,18 @@
 ;; (el4r-boot)
 
 
-(define-skeleton org-skeleton
-  "Header info for a emacs-org file."
-  "Title: "
-  "#+TITLE:" str " \n"
-  "#+AUTHOR: Your Name\n"
-  "#+email: your-email@server.com\n"
-  "#+INFOJS_OPT: \n"
-  "#+BABEL: :session *ruby* :cache yes :results output graphics :exports both :tangle yes \n"
-  "-----"
- )
-(global-set-key (kbd "H-o") 'org-skeleton)
+(setq ffip-patterns '("*.html" "*.org" "*.txt" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.coffee" "*.c" "*.css" "*.scss" "*.sass" "*.rake"))
+(setq ffip-limit most-positive-fixnum)
 
-;; (require 'ox-reveal)
+(setq erc-server-reconnect-attempts 10)
 
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
+(require 'ido)
+(ido-mode t)
+
+(global-set-key (kbd "<f8>") 'evil-mode)
+(global-set-key (kbd "<f9>") 'evil-mode)
+
+(setq send-mail-function 'smtpmail-send-it)
+(setq smtpmail-smtp-server "smtp.gmail.com")
+(setq smtpmail-smtp-service 25)
+(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 25 nil nil)))

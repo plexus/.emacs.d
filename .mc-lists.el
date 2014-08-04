@@ -19,8 +19,12 @@
         org-kill-line
         org-self-insert-command
         org-yank
+        paredit-backward-kill-word
+        paredit-forward-kill-word
+        paredit-semicolon
         ruby-electric-brace
         sgml-slash
+        sh-assignment
         skeleton-pair-insert-maybe
         sp--self-insert-command
         uncomment-region
@@ -35,6 +39,7 @@
       '(
         coffee-dedent-line-backspace
         haml-electric-backspace
+        help-for-help
         markdown-demote
         org-ctrl-c-ctrl-c
         xmp

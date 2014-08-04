@@ -21,3 +21,5 @@
 ;; Expansion
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "H-g") 'magit-status)
+(global-set-key (kbd "M-t") 'find-file-in-project)
+(global-set-key (kbd "C-x C-f") 'ido-find-file)

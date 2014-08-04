@@ -27,10 +27,12 @@
 ;(setq theme-changer-mode "color-theme")
 ;(change-theme 'color-theme-sanityinc-tomorrow-day 'color-theme-sanityinc-tomorrow-night)
 
+;; set through customize
+
 ;(color-theme-sanityinc-solarized-dark)
 ;(color-theme-sanityinc-solarized-light)
 ;(color-theme-sanityinc-tomorrow-blue)
 ;(color-theme-sanityinc-tomorrow-bright)
-(color-theme-sanityinc-tomorrow-day)
+;(color-theme-sanityinc-tomorrow-day)
 ;(color-theme-sanityinc-tomorrow-eighties)
 ;(color-theme-sanityinc-tomorrow-night)

@@ -13,3 +13,8 @@
 (setq uniquify-buffer-name-style 'post-forward)
 
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(setq backup-directory-alist `((".*" . ,(concat user-emacs-directory "backup"))))
+
+`(3 4 5 ~(+ 4 5))
+()

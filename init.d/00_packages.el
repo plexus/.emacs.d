@@ -40,7 +40,6 @@
 (package-require 'yaml-mode)
 
 ;; minor modes
-(package-require 'textmate)
 (package-require 'rainbow-mode)
 (package-require 'rspec-mode)
 (package-require 'yard-mode)
@@ -49,6 +48,7 @@
 (package-require 'flymake-jslint)
 (package-require 'flymake-ruby)
 (package-require 'auto-complete)
+(package-require 'find-file-in-project)
 
 ;; themes
 (package-require 'color-theme-sanityinc-solarized)
@@ -74,6 +74,10 @@
 (package-require 'fm)
 (package-require 'hide-comnt)
 (package-require 'outline-magic)
+(package-require 'rainbow-delimiters)
+(package-require 'notmuch)
+(package-require 'rsense)
+
 
 ;(package-require 'bison-wisent)
 ;(package-require 'dired-fixups)
