@@ -215,7 +215,9 @@
 ;; (el4r-boot)
 
 
-(setq ffip-patterns '("*.html" "*.org" "*.txt" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erl" "*.hs" "*.ml" "*.coffee" "*.c" "*.css" "*.scss" "*.sass" "*.rake"))
+(setq ffip-patterns '("*.html" "*.org" "*.txt" "*.md" "*.el" "*.clj" "*.py" "*.rb" "*.js" "*.pl" "*.sh" "*.erb" "*.hs" "*.ml" "*.coffee" "*.c" "*.css" "*.scss" "*.sass" "*.rake"))
+(setq ffip-patterns '("*.rb" "*.js" "*.sh" "*.erb" "*.coffee" "*.css" "*.scss" "*.rake"))
+(setq ffip-find-options "-not -name \"tmp\" -not -name \"log\" -not -name \"extra\"")
 (setq ffip-limit most-positive-fixnum)
 
 (setq erc-server-reconnect-attempts 10)
@@ -223,10 +225,21 @@
 (require 'ido)
 (ido-mode t)
 
-(global-set-key (kbd "<f8>") 'evil-mode)
-(global-set-key (kbd "<f9>") 'evil-mode)
 
 (setq send-mail-function 'smtpmail-send-it)
 (setq smtpmail-smtp-server "smtp.gmail.com")
 (setq smtpmail-smtp-service 25)
 (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 25 nil nil)))
+
+(add-hook 'ruby-mode-hook
+              '(lambda ()
+                 (outline-minor-mode)
+                 (setq outline-regexp " *\\(def \\|class\\|module\\)")))
+
+(add-hook 'rspec-mode-hook
+              '(lambda ()
+                 (setq outline-regexp " *\\(def \\|class \\|module \\|describe \\|context \\|it \\|specify \\)")))
+
+(projectile-global-mode)
+
+(eval-after-load 'image '(require 'image+))

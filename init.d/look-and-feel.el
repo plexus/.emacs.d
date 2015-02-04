@@ -6,8 +6,11 @@
 ;;        load-path))
 
 ;; (set-face-attribute 'default nil :font "Inconsolata-16")
-(set-default-font "Inconsolata-15")
-;(set-default-font "Monospace-15")
+(set-frame-font "Inconsolata-14")
+;(set-frame-font "Monospace-15")
+
+;; Emoji!
+(set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
 (setq calendar-location-name "Berlin, Germany")
 (setq calendar-latitude 13.3833)
@@ -33,6 +36,6 @@
 ;(color-theme-sanityinc-solarized-light)
 ;(color-theme-sanityinc-tomorrow-blue)
 ;(color-theme-sanityinc-tomorrow-bright)
-;(color-theme-sanityinc-tomorrow-day)
+(color-theme-sanityinc-tomorrow-day)
 ;(color-theme-sanityinc-tomorrow-eighties)
 ;(color-theme-sanityinc-tomorrow-night)

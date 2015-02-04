@@ -9,3 +9,13 @@
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
+
+(defun plexus-prepend-env-path (env-var path)
+  (setenv env-var
+          (s-join ":"
+                  (-uniq
+                   (append
+                    (list path)
+                    (if (getenv env-var)
+                        (s-split ":"  (getenv env-var) "")
+                      '() ))))))

@@ -3,25 +3,45 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        backward-sexp
         beginning-of-buffer
         c-electric-pound
         c-electric-star
+        coffee-indent-shift-left
+        delete-horizontal-space
+        electric-newline-and-maybe-indent
         end-of-buffer
         goto-line
         ido-switch-buffer
         indent-for-tab-command
         kbd-macro-query
         kill-region
+        kill-sexp
         markdown-exdent-or-delete
+        markdown-promote
         org-beginning-of-line
         org-end-of-line
         org-force-self-insert
         org-kill-line
+        org-metaright
         org-self-insert-command
         org-yank
+        paredit-backward
         paredit-backward-kill-word
+        paredit-backward-slurp-sexp
+        paredit-doublequote
+        paredit-forward
+        paredit-forward-barf-sexp
+        paredit-forward-delete
+        paredit-forward-down
         paredit-forward-kill-word
+        paredit-forward-slurp-sexp
+        paredit-kill
+        paredit-newline
+        paredit-open-round
+        paredit-open-square
         paredit-semicolon
+        paredit-splice-sexp-killing-backward
         ruby-electric-brace
         sgml-slash
         sh-assignment
@@ -29,6 +49,7 @@
         sp--self-insert-command
         uncomment-region
         undefined
+        universal-argument-minus
         wdired-finish-edit
         yaml-electric-backspace
         yaml-electric-dash-and-dot
@@ -37,10 +58,17 @@
 
 (setq mc/cmds-to-run-once
       '(
+        backward-kill-sentence
         coffee-dedent-line-backspace
+        evil-execute-in-emacs-state
+        evil-local-mode
         haml-electric-backspace
         help-for-help
+        kmacro-start-macro
         markdown-demote
         org-ctrl-c-ctrl-c
+        paredit-backslash
+        paredit-mode
+        toggle-input-method
         xmp
         ))

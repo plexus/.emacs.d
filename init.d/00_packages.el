@@ -1,10 +1,10 @@
 (require 'package)
+
 (setq package-archives
   '(("gnu"         . "http://elpa.gnu.org/packages/")
-    ("org"         . "http://orgmode.org/elpa/")
-    ("melpa"       . "http://melpa.milkbox.net/packages/")
-    ;("marmalade"   . "http://marmalade-repo.org/packages/")
-    ))
+    ("melpa"       . "http://melpa.milkbox.net/packages/")))
+
+(package-refresh-contents)
 (package-initialize)
 
 (defun package-require (pkg)
@@ -12,10 +12,11 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
-(package-require 'magit)
+(package-require 'imagex)
 
 ;; general purpose
 (package-require 'magit)
+(package-require 'git-timemachine)
 (package-require 'multiple-cursors)
 (package-require 'popwin)
 (package-require 'paredit)
@@ -23,7 +24,6 @@
 
 ;; major modes
 (package-require 'arduino-mode)
-(package-require 'clojure-mode)
 (package-require 'coffee-mode)
 (package-require 'gitconfig-mode)
 (package-require 'haml-mode)
@@ -38,6 +38,7 @@
 (package-require 'slim-mode)
 (package-require 'web-mode)
 (package-require 'yaml-mode)
+(package-require 'elixir-mode)
 
 ;; minor modes
 (package-require 'rainbow-mode)
@@ -63,7 +64,6 @@
 (package-require 's)
 
 ;; additional language-specific support stuff
-(package-require 'cider)
 (package-require 'inf-ruby)
 (package-require 'ruby-additional)
 (package-require 'chruby)
@@ -76,7 +76,8 @@
 (package-require 'outline-magic)
 (package-require 'rainbow-delimiters)
 (package-require 'notmuch)
-(package-require 'rsense)
+(package-require 'highlight)
+(package-require 'eval-sexp-fu)
 
 
 ;(package-require 'bison-wisent)

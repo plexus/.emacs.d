@@ -9,3 +9,5 @@
 (add-to-list 'auto-mode-alist '("\\.hbs.erb\\'" . web-mode))
 
 (setq web-mode-engines-alist '(("ctemplate" . "\\.hbs.erb\\'")))
+
+(add-hook 'css-mode-hook 'rainbow-mode)

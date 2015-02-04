@@ -2,7 +2,22 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("(semantic-langdev.info-1) Language Support Overview"
+(("org-capture-last-stored-marker"
+ (filename . "~/Doku/org/notes.org")
+ (front-context-string . "** TODO foobarba")
+ (rear-context-string . "other]]\n* other\n")
+ (position . 336))
+("org-refile-last-stored"
+ (filename . "~/Doku/org/notes.org")
+ (front-context-string . "** TODO foobarba")
+ (rear-context-string . "other]]\n* other\n")
+ (position . 336))
+("org-capture-last-stored"
+ (filename . "~/Doku/org/notes.org")
+ (front-context-string . "** TODO foobarba")
+ (rear-context-string . "rg::*foo][foo]]\n")
+ (position . 243))
+("(semantic-langdev.info-1) Language Support Overview"
  (front-context-string . "Starting with ve")
  (rear-context-string . "**************\n\n")
  (position . 4290)

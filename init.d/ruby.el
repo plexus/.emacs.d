@@ -41,16 +41,6 @@
                                           "vendor/rcodetools")))
 
 
-(defun plexus-prepend-env-path (env-var path)
-  (setenv env-var
-          (s-join ":"
-                  (-uniq
-                   (append
-                    (list path)
-                    (if (getenv env-var)
-                        (s-split ":"  (getenv env-var) "")
-                      '() ))))))
-
 (defun plexus-set-rct-env ()
   (plexus-prepend-env-path "PATH" (concat plexus-rct-rcodetools-path "/bin"))
   (plexus-prepend-env-path "RUBYLIB" (concat plexus-rct-rcodetools-path "/lib")))
@@ -65,6 +55,7 @@
 ;; (require 'web-mode)
 (require 'ruby-hash-syntax)
 (define-key ruby-mode-map (kbd "H-;") 'ruby-toggle-hash-syntax)
+(define-key ruby-mode-map (kbd "C-c M-j") 'inf-ruby-console-auto)
 ;; (define-key web-mode-map  (kbd "H-;") 'ruby-toggle-hash-syntax)
 
 (add-hook 'ruby-mode-hook 'plexus-activate-rcodetools)
@@ -74,10 +65,12 @@
             ;(robe-mode)
 
 
+;;
 ;; "Fix" Ruby indentation, for example.
 ;; f(
 ;;   :bar => :baz
 ;; )
+;;
 (setq ruby-deep-indent-paren nil)
 (defadvice ruby-indent-line (after unindent-closing-paren activate)
   (let ((column (current-column))
@@ -115,4 +108,4 @@
 (global-set-key (kbd "H-r") 'temp-ruby-buffer)
 
 (require 'chruby)
-(chruby "1.9.3")
+(chruby "2.1.4-O3")

@@ -10,8 +10,7 @@
         handlebars-mode-hook
         markdown-mode-hook
         slim-mode-hook
-        ruby-mode-hook
-        ))
+        ruby-mode-hook))
 
 (mapcar
  (lambda(mode)
@@ -30,10 +29,12 @@
     (local-set-key (kbd "H-a") 'plexus-align-to-character)
     (local-set-key (kbd "H-t") 'plexus-align-table)
     (local-set-key (kbd "C-c d") 'plexus-duplicate-line)
+    (local-set-key (kbd "H-b") 'magit-blame-mode)
+    (local-set-key (kbd "H-h") 'git-timemachine)
+    (local-set-key (kbd "RET") 'plexus-newline-or-continue-comment)
 
     ;;(whitespace-mode)
-    (setq whitespace-style '(face empty tabs lines-tail trailing))
-))
+    (setq whitespace-style '(face empty tabs lines-tail trailing))))
 
 (defun plexus-align-to-character (char prefix)
   (interactive "c\nP")
@@ -61,3 +62,9 @@
   (open-line 1)
   (next-line 1)
   (yank))
+
+(defun plexus-newline-or-continue-comment ()
+  (interactive)
+  (if (eq 'comment (syntax-ppss-context (syntax-ppss)))
+      (comment-indent-new-line)
+    (newline)))
