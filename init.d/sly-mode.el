@@ -14,8 +14,9 @@
 
 (defun sly-forward ()
   (interactive)
-  (incf *sly-idx*)
-  (sly-display (nth *sly-idx* *sly-slides*)))
+  (when (< *sly-idx* (- (length *sly-slides*) 1))
+    (incf *sly-idx*)
+    (sly-display (nth *sly-idx* *sly-slides*))))
 
 (defun sly-keyword-find (list keyword)
   (if list
@@ -43,7 +44,7 @@
   (let-keys ((file scale) filespec)
     (find-file file)
     (sly-set-scale scale)
-    (when (s-ends-with? "jpg" file)
+    (when (or (s-ends-with? "jpg" file) (s-ends-with? "png" file))
       (imagex-auto-adjust-mode)))
   (sly-mode 1))
 

@@ -10,7 +10,7 @@
 ;(set-frame-font "Monospace-15")
 
 ;; Emoji!
-(set-fontset-font t 'unicode "Symbola" nil 'prepend)
+;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
 (setq calendar-location-name "Berlin, Germany")
 (setq calendar-latitude 13.3833)

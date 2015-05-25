@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: :create_vanilla_account
+# key: :c
+# binding: direct-keybinding
+# --
+:create_vanilla_account

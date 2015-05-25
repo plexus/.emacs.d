@@ -3,14 +3,17 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        backward-kill-sexp
         backward-sexp
         beginning-of-buffer
         c-electric-pound
         c-electric-star
         coffee-indent-shift-left
         delete-horizontal-space
+        dired-unmark-backward
         electric-newline-and-maybe-indent
         end-of-buffer
+        forward-sexp
         goto-line
         ido-switch-buffer
         indent-for-tab-command
@@ -23,9 +26,11 @@
         org-end-of-line
         org-force-self-insert
         org-kill-line
+        org-metaleft
         org-metaright
         org-self-insert-command
         org-yank
+        overwrite-mode
         paredit-backward
         paredit-backward-kill-word
         paredit-backward-slurp-sexp
@@ -42,6 +47,7 @@
         paredit-open-square
         paredit-semicolon
         paredit-splice-sexp-killing-backward
+        plexus-duplicate-line
         ruby-electric-brace
         sgml-slash
         sh-assignment

@@ -27,7 +27,7 @@
     (local-set-key (kbd "H-u") 'uncomment-region)
     (local-set-key (kbd "H-i") 'indent-region)
     (local-set-key (kbd "H-a") 'plexus-align-to-character)
-    (local-set-key (kbd "H-t") 'plexus-align-table)
+    (local-set-key (kbd "H-t") 'plexus-align-1table)
     (local-set-key (kbd "C-c d") 'plexus-duplicate-line)
     (local-set-key (kbd "H-b") 'magit-blame-mode)
     (local-set-key (kbd "H-h") 'git-timemachine)

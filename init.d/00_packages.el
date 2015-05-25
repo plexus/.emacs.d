@@ -4,7 +4,7 @@
   '(("gnu"         . "http://elpa.gnu.org/packages/")
     ("melpa"       . "http://melpa.milkbox.net/packages/")))
 
-(package-refresh-contents)
+;; (package-refresh-contents)
 (package-initialize)
 
 (defun package-require (pkg)
@@ -12,7 +12,7 @@
   (when (not (package-installed-p pkg))
     (package-install pkg)))
 
-(package-require 'imagex)
+;; (package-require 'imagex)
 
 ;; general purpose
 (package-require 'magit)
@@ -20,25 +20,29 @@
 (package-require 'multiple-cursors)
 (package-require 'popwin)
 (package-require 'paredit)
+(package-require 'smartparens)
 (package-require 'yasnippet)
+(package-require 'wgrep)
 
 ;; major modes
-(package-require 'arduino-mode)
+;; (package-require 'arduino-mode)
 (package-require 'coffee-mode)
 (package-require 'gitconfig-mode)
 (package-require 'haml-mode)
 (package-require 'handlebars-mode)
-(package-require 'haskell-mode)
+;; (package-require 'haskell-mode)
 (package-require 'js2-mode)
 (package-require 'json-mode)
 (package-require 'markdown-mode)
 (package-require 'org)
 (package-require 'sass-mode)
 (package-require 'scss-mode)
-(package-require 'slim-mode)
+;; (package-require 'slim-mode)
 (package-require 'web-mode)
 (package-require 'yaml-mode)
-(package-require 'elixir-mode)
+;; (package-require 'elixir-mode)
+(package-require 'rust-mode)
+(package-require 'toml-mode)
 
 ;; minor modes
 (package-require 'rainbow-mode)

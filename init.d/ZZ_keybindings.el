@@ -30,6 +30,9 @@
                   (interactive)
                   (cider-interactive-eval "(overtone.live/stop)")))
 
-(require 'evil)
+(global-set-key (kbd "<f12>") 'transpose-lines)
 (global-set-key (kbd "<f8>") 'evil-local-mode)
 (global-set-key (kbd "<f9>") 'paredit-mode)
+
+(kbd "<up>")
+(require 'evil)

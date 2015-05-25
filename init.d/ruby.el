@@ -108,4 +108,4 @@
 (global-set-key (kbd "H-r") 'temp-ruby-buffer)
 
 (require 'chruby)
-(chruby "2.1.4-O3")
+(chruby "2.1.6")
