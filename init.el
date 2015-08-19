@@ -1,3 +1,10 @@
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (autoload 'ruby-mode "~/github/ruby/misc/ruby-mode" "Ruby Mode." t)
 
 (setq *hostname* (substring (shell-command-to-string "hostname") 0 -1))
@@ -71,6 +78,9 @@
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
  '(org-src-fontify-natively t)
+ '(package-selected-packages
+   (quote
+    (yasnippet yard-mode yaml-mode wgrep web-mode web toml-mode theme-changer textmate solarized-theme smex smartparens slim-mode scss-mode sass-mode rust-mode ruby-refactor ruby-hash-syntax ruby-additional rspec-mode rainbow-mode rainbow-delimiters projectile popwin paredit outline-magic org notmuch multiple-cursors markdown-mode magit json-mode js2-mode inf-ruby image+ hide-comnt haskell-mode handlebars-mode gitconfig-mode git-timemachine fm flymake-ruby flymake-jslint flycheck find-file-in-project f expand-region evil eval-sexp-fu epresent elixir-mode dash-functional csv-mode command-log-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cider chruby auto-complete arduino-mode android-mode)))
  '(rspec-key-command-prefix (kbd "H-s"))
  '(safe-local-variable-values (quote ((rainbow-mode . t) (encoding . utf-8))))
  '(vc-annotate-background nil)

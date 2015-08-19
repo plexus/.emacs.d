@@ -12,6 +12,9 @@
 ;; Emoji!
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
 
+(defun 💩-do-stuff () 'just-for-andy)
+(💩-do-stuff)
+
 (setq calendar-location-name "Berlin, Germany")
 (setq calendar-latitude 13.3833)
 (setq calendar-longitude 52.5167)

@@ -303,3 +303,13 @@
         ("H-s n" sp-add-to-next-sexp)
         ("H-s j" sp-join-sexp)
         ("H-s s" sp-split-sexp)))
+
+(defun plexus/look-simple-rgrep ()
+  (interactive)
+  (rgrep
+   (read-regexp (concat "Pattern (" (buffer-substring (mark) (point)) "): ")
+                (buffer-substring (mark) (point)))
+   "*"
+   (read-directory-name "Dir: ")))
+
+(global-set-key (kbd "H-l") 'plexus/look-simple-rgrep)

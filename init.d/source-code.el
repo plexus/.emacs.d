@@ -16,7 +16,7 @@
  (lambda(mode)
    (add-hook mode (lambda () (plexus-source-mode-init)))) plexus-source-mode-hooks)
 
-(setq-default tab-width 2)
+(setq-default tab-width 8)
 
 (defun plexus-source-mode-init ()
   (progn

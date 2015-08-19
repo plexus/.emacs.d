@@ -43,6 +43,7 @@
 ;; (package-require 'elixir-mode)
 (package-require 'rust-mode)
 (package-require 'toml-mode)
+(package-require 'android-mode)
 
 ;; minor modes
 (package-require 'rainbow-mode)
