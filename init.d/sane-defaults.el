@@ -1,3 +1,11 @@
+;; * SANE DEFAULTS *
+
+;; Various things that really should have been configured this way
+;; out of the box. This is mostly copied from Magnar Sveen's config,
+;; but some opt-in behavior (e.g. winner-mode) has been moved to
+;; setup-emacs.el, and configuration related to packages (e.g.
+;; smooth-scrolling), is in setup-packages.el
+
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
@@ -51,17 +59,7 @@
 
 ;; Lines should be 80 characters wide, not 72
 (setq fill-column 80)
-
-;; Save a list of recent files visited. (open recent file with C-x f)
-(recentf-mode 1)
-(setq recentf-max-saved-items 100) ;; just 20 is too recent
-
-;; Save minibuffer history
-(savehist-mode 1)
-(setq history-length 1000)
-
-;; Undo/redo window configuration with C-c <left>/<right>
-(winner-mode 1)
+(set-default 'fill-column 80)
 
 ;; Never insert tabs
 (set-default 'indent-tabs-mode nil)
@@ -75,31 +73,14 @@
 ;; Don't break lines for me, please
 (setq-default truncate-lines t)
 
-;; Keep cursor away from edges when scrolling up/down
-(require 'smooth-scrolling)
-
 ;; Allow recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
 ;; Don't be so stingy on the memory, we have lots now. It's the distant future.
 (setq gc-cons-threshold 20000000)
 
-;; org-mode: Don't ruin S-arrow to switch windows please (use M-+ and M-- instead to toggle)
-(setq org-replace-disputed-keys t)
-
-;; Fontify org-mode code blocks
-(setq org-src-fontify-natively t)
-
-;; Represent undo-history as an actual tree (visualize with C-x u)
-(setq undo-tree-mode-lighter "")
-(require 'undo-tree)
-(global-undo-tree-mode)
-
 ;; Sentences do not need double spaces to end. Period.
 (set-default 'sentence-end-double-space nil)
-
-;; 80 chars is a good width.
-(set-default 'fill-column 80)
 
 ;; Add parts of each file's directory to the buffer name if not unique
 (require 'uniquify)
@@ -130,12 +111,12 @@
 
 ;; Offer to create parent directories if they do not exist
 ;; http://iqbalansari.github.io/blog/2014/12/07/automatically-create-parent-directories-on-visiting-a-new-file-in-emacs/
-(defun my-create-non-existent-directory ()
+(defun magnars/create-non-existent-directory ()
   (let ((parent-directory (file-name-directory buffer-file-name)))
     (when (and (not (file-exists-p parent-directory))
                (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
       (make-directory parent-directory t))))
 
-(add-to-list 'find-file-not-found-functions 'my-create-non-existent-directory)
+(add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
 
 (provide 'sane-defaults)

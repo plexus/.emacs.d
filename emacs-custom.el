@@ -33,9 +33,11 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (highlight-escape-sequences guide-key elisp-slime-nav ido-vertical-mode fill-column-indicator move-text dash yasnippet yard-mode yaml-mode wgrep web-mode web toml-mode theme-changer textmate solarized-theme smex smartparens slim-mode scss-mode sass-mode rust-mode ruby-refactor ruby-hash-syntax ruby-additional rspec-mode rainbow-mode rainbow-delimiters projectile popwin paredit outline-magic org notmuch multiple-cursors markdown-mode magit json-mode js2-mode inf-ruby image+ hide-comnt haskell-mode handlebars-mode gitconfig-mode git-timemachine fm flymake-ruby flymake-jslint flycheck find-file-in-project f expand-region evil eval-sexp-fu epresent elixir-mode dash-functional csv-mode command-log-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cider chruby auto-complete arduino-mode android-mode)))
+    (duplicate-thing smooth-scrolling cider-eval-sexp-fu clj-refactor clojure-mode-extra-font-locking clojure-mode undo-tree highlight-escape-sequences guide-key elisp-slime-nav ido-vertical-mode fill-column-indicator move-text dash yasnippet yard-mode yaml-mode wgrep web-mode web toml-mode theme-changer textmate solarized-theme smex smartparens slim-mode scss-mode sass-mode rust-mode ruby-refactor ruby-hash-syntax ruby-additional rspec-mode rainbow-mode rainbow-delimiters projectile popwin paredit outline-magic org notmuch multiple-cursors markdown-mode magit json-mode js2-mode inf-ruby image+ hide-comnt haskell-mode handlebars-mode gitconfig-mode git-timemachine fm flymake-ruby flymake-jslint flycheck find-file-in-project f expand-region evil eval-sexp-fu epresent elixir-mode dash-functional csv-mode command-log-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cider chruby auto-complete arduino-mode android-mode)))
  '(rspec-key-command-prefix (kbd "H-s"))
  '(safe-local-variable-values (quote ((rainbow-mode . t) (encoding . utf-8))))
+ '(smartparens-global-mode t)
+ '(sp-base-key-bindings (quote paredit))
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
