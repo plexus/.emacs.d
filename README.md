@@ -33,3 +33,6 @@ Some principles I try to follow
 * Add enough comments so that any Emacs novice can easily find their way
 * Separate the things people generally agree on from the things people are more likely to personalize
 * Allow easy opting out of features that don't apply to a persons job or workflow
+
+Custom functions of my own devising are prefixed with `plexus/`. Those
+I've "borrowed" from others have been prefixed for attribution.
