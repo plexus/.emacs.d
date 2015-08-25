@@ -5,7 +5,6 @@
    cider-eval-sexp-fu
    clj-refactor))
 
-
 (require 'clj-refactor)
 
 (defun plexus/clojure-mode-hook ()
@@ -19,3 +18,4 @@
 (add-hook 'clojure-mode-hook #'plexus/clojure-mode-hook)
 
 (provide 'setup-clojure)
+

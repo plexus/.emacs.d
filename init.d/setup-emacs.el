@@ -36,4 +36,7 @@
 (unless (server-running-p)
   (server-start))
 
+;; Highlight matching parentheses when moving over them
+(show-paren-mode)
+
 (provide 'setup-emacs)

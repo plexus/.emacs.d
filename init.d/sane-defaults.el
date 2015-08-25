@@ -71,7 +71,7 @@
 (global-subword-mode 1)
 
 ;; Don't break lines for me, please
-(setq-default truncate-lines t)
+;; (setq-default truncate-lines t)
 
 ;; Allow recursive minibuffers
 (setq enable-recursive-minibuffers t)

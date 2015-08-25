@@ -47,6 +47,8 @@ re-downloaded in order to locate PACKAGE."
      fill-column-indicator
      yasnippet
      smartparens
+     ido
+     flx-ido
      ido-vertical-mode
      elisp-slime-nav
      guide-key
@@ -63,6 +65,7 @@ re-downloaded in order to locate PACKAGE."
      eval-sexp-fu
      smooth-scrolling
      duplicate-thing
+     projectile
      )))
 
 (condition-case nil
@@ -108,22 +111,41 @@ re-downloaded in order to locate PACKAGE."
 (require 'smartparens-config)
 
 
-;; = ido-vertical-mode =
-;; Interactively do things - vertically
+;; = ido =
+;; Interactively do things
+;; - ido-vertical-mode: show matches below one another instead of one line
+;; - flx-ido: smarter substring matching
 
 (require 'ido)
+(require 'flx-ido)
+
 (ido-mode t)
+(ido-everywhere t)
+(flx-ido-mode t)
+(ido-vertical-mode t)
+
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
 
 
 ;; = elisp-slime-nav =
 ;; Navigate in elisp with M-. and M-,
 
 
-;; = guide-key =
-;; Make prefix keys easier to use
+;; = guide-key = 
+;; Pop up an overview of possible combinations when using a prefix key
+;; and waiting a bit
 
 (require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x v" "C-x 8" "C-x +" "C-h"))
+(setq guide-key/guide-key-sequence '("C-x r" ;; register functions
+                                     "C-x 4" ;; window functions
+                                     "C-x v" ;; vc-* 
+                                     "C-x 8" ;; insert special characters
+                                     "C-h"   ;; help
+                                     "C-c p" ;; projectile (default)
+                                     "H-p"   ;; projectile (custom)
+                                     ))
 (guide-key-mode 1)
 (setq guide-key/recursive-key-sequence-flag t)
 (setq guide-key/popup-window-position 'bottom)
@@ -195,5 +217,17 @@ re-downloaded in order to locate PACKAGE."
 ;; = duplicate-thing =
 ;; Duplicate line or region 
 
+
+;; = projectile =
+;; Project-aware operations
+;;
+;; This is mostly here as a replacement for find-file-at-point, but
+;; has other niceties like switching between a source file and its
+;; tests, or closing all buffers relating to a project.
+;;
+;; All projectile mappings are under C-c p
+
+(require 'projectile)
+(projectile-global-mode)
 
 (provide 'setup-packages)
