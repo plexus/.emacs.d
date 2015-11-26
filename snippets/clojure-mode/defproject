@@ -1,0 +1,21 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: defproject
+# key: defproj
+# binding: direct-keybinding
+# --
+(defproject $1 "0.0.1-SNAPSHOT"
+  :description "$2"
+  :url "$3"
+  :license {:name "Mozilla Public License, Version 2.0"
+            :url "https://www.mozilla.org/MPL/2.0/"}
+
+  :source-paths ["src/clj"]
+  :test-paths   ["test/clj"]
+
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.48" :scope "provided"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
+
+  :min-lein-version "2.5.0"
+
+  :uberjar-name "$1.jar")

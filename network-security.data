@@ -1,0 +1,6 @@
+(
+ (:id "sha1:2f07fe09112ee955ac34ef5f82e304ebd0ad7af9" :fingerprint "sha1:0f:64:41:39:66:22:db:5d:d2:fd:0a:34:95:98:e3:32:39:81:7f:b7")
+ (:id "sha1:99fc3adf5718a8881640692d6c94fd79b751692f" :fingerprint "sha1:0f:64:41:39:66:22:db:5d:d2:fd:0a:34:95:98:e3:32:39:81:7f:b7")
+ (:id "sha1:c07eea1de4bf3737f4e0bb1bf5339a7341b4ae1d" :fingerprint "sha1:0f:64:41:39:66:22:db:5d:d2:fd:0a:34:95:98:e3:32:39:81:7f:b7" :host "mail.arnebrasseur.net:993" :conditions (:no-host-match))
+ (:id "sha1:4158b124e1e8d2d100f3297176fcf240ba85542a" :fingerprint "sha1:ae:b9:36:bf:6f:41:7c:b4:59:61:33:39:ca:db:9f:d0:30:97:f9:33" :host "melpa.milkbox.net:443" :conditions (:no-host-match))
+)

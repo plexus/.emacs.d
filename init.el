@@ -20,19 +20,141 @@
 (require 'setup-javascript)
 (require 'setup-web)
 (require 'setup-ruby)
+(require 'setup-code-editing)
 
 (require 'look-and-feel)
 (require 'key-bindings)
 
 ;; Waiting to become MELPA packages
 
-(defadvice self-insert-command (around automagic-sudo activate)
-  "Ask to re-open a file with sudo if it's read-only and you try to edit it."
-  (condition-case nil
-      ad-do-it
-    (buffer-read-only 
-      (let ((path (buffer-file-name))
-            (buff (current-buffer)))
-        (when (and path (y-or-n-p "File is read-only, reopen with sudo?"))
-          (find-file (concat "/sudo:root@localhost:" path))
-          (kill-buffer buff))))))
+;; (defun autosudo--edit-command-wrapper (orig-fun &rest args)
+;;   "Ask to re-open a file with sudo if it's read-only and you try to edit it.
+;; Will maintain the position of point, and insert the typed character after
+;; switching to the sudo version."
+;;   (if buffer-read-only
+;;       (let ((path (buffer-file-name))
+;;             (buff (current-buffer))
+;;             (point (point))
+;;             (event last-command-event))
+;;         (when (and path (y-or-n-p "File is read-only, reopen with sudo?"))
+;;           (find-file (concat "/sudo:root@localhost:" path))
+;;           (goto-char point)
+;;           (kill-buffer buff)
+;;           (setq last-command-event event)))))
+
+;; (advice-add 'self-insert-command :before #'autosudo--edit-command-wrapper)
+;; (advice-add 'newline :before #'autosudo--edit-command-wrapper)
+;; (advice-add 'yank :before #'autosudo--edit-command-wrapper)
+;; (advice-add 'indent-for-tab-command :before #'autosudo--edit-command-wrapper)
+
+(defun make-temp-ruby-buffer-name ()
+  (let* ((dir (concat (getenv "HOME") "/projects/ruby-tmp"))
+         (last-buffer (car (last (directory-files dir nil "^[0-9]+\.rb")))))
+    (or (file-directory-p dir) (mkdir dir))
+    (format "%s/%05d.rb"
+            dir
+            (+ 1 (string-to-number
+                  (first (split-string
+                          (if last-buffer last-buffer "00000.rb")
+                          "\\.")))))))
+
+(defun temp-ruby-buffer ()
+  (interactive)
+  (let ((buffer (make-temp-ruby-buffer-name)))
+    (write-region "" nil buffer)
+    (find-file buffer)
+    (ruby-mode)))
+
+(global-set-key (kbd "H-r") 'temp-ruby-buffer)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rcodetools
+
+(require 'f)
+
+(defun plexus/rcodetools-path ()
+  (f-join
+   (shell-command-to-string "gem which rcodetools/xmpfilter")
+   "../../.."))
+
+(defun plexus/add-load-path (path)
+  (if (not (-contains? load-path path))
+      (setq load-path
+            (append (list path)
+                    load-path))))
+
+(plexus/add-load-path (plexus/rcodetools-path))
+
+(require 'rcodetools)
+
+(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GNUS
+
+(setq gnus-select-method
+      '(nnimap "emacs"
+              (nnimap-address "homie.mail.dreamhost.com")
+              (nnimap-server-port 143)
+              (nnimap-stream starttls)
+              (nnir-search-engine imap)
+              ))
+
+(setq gnus-secondary-select-methods
+      '((nnimap "clojure"
+                (nnimap-address "homie.mail.dreamhost.com")
+                (nnimap-server-port 143)
+                (nnimap-stream starttls)
+                (nnir-search-engine imap)
+                )
+        (nnimap "lambdaisland"
+                (nnimap-address "homie.mail.dreamhost.com")
+                (nnimap-server-port 143)
+                (nnimap-stream starttls)
+                (nnir-search-engine imap)
+                )))
+
+(setq send-mail-function    'smtpmail-send-it
+      smtpmail-smtp-server  "homie.mail.dreamhost.com"
+      smtpmail-stream-type  'starttls
+      smtpmail-smtp-service 587
+      smtpmail-local-domain "arnebrasseur.net")
+
+(load-library "smtpmail")
+
+(desktop-save-mode 1)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Make sure TLS certificates are checked
+
+;; https://glyph.twistedmatrix.com/2015/11/editor-malware.html
+
+(let ((trustfile
+       (replace-regexp-in-string
+        "\\\\" "/"
+        (replace-regexp-in-string
+         "\n" ""
+         (shell-command-to-string "python -m certifi")))))
+  (setq tls-program
+        (list
+         (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
+                 (if (eq window-system 'w32) ".exe" "") trustfile)))
+  (setq gnutls-verify-error t)
+  (setq gnutls-trustfiles (list trustfile)))
+
+
+;; test if it's checked
+'(let ((bad-hosts
+        (loop for bad
+              in `("https://wrong.host.badssl.com/"
+                   "https://self-signed.badssl.com/")
+              if (condition-case e
+                     (url-retrieve
+                      bad (lambda (retrieved) t))
+                   (error nil))
+              collect bad)))
+   (if bad-hosts
+       (error (format "tls misconfigured; retrieved %s ok"
+                      bad-hosts))
+     (url-retrieve "https://badssl.com"
+                   (lambda (retrieved) t))))

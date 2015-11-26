@@ -11,8 +11,12 @@
  '(doc-view-resolution 100)
  '(fci-rule-color "#eee8d5")
  '(flymake-coffee-coffeelint-configuration-file "/home/arne/.coffeelint.json")
+ '(helm-ag-insert-at-point (quote symbol))
+ '(helm-ag-use-agignore t)
+ '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-indent-level 2)
+ '(magit-completing-read-function (quote magit-ido-completing-read))
  '(org-babel-load-languages
    (quote
     ((perl . t)
@@ -28,10 +32,15 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (wgrep web-mode undo-tree smooth-scrolling smex smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode ido-vertical-mode highlight-escape-sequences guide-key flymake-coffee flx-ido fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu)))
+    (outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu)))
+ '(popwin-mode t)
+ '(popwin:popup-window-height 27)
  '(safe-local-variable-values (quote ((rainbow-mode . t) (encoding . utf-8))))
+ '(send-mail-function (quote smtpmail-send-it))
  '(smartparens-global-mode t)
- '(sp-base-key-bindings (quote paredit)))
+ '(smartparens-global-strict-mode t)
+ '(sp-base-key-bindings (quote paredit))
+ '(tls-checktrust t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

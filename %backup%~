@@ -1,0 +1,27 @@
+127.0.0.1	localhost foo.ticketsolvedev.com giaf.ticketsolvedev.com bacontheatre.ticketsolvedev.com vid.pluralsight.com olark.com www.olark.com doubleclick.net livechatinc.com secure.livechatinc.com
+127.0.1.1	lutze
+
+#95.142.170.154 foo.ticketsolvedev.com
+
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+# 82.195.158.81 zhaan
+# 82.195.158.83 aeryn
+# 82.195.158.84 chiana
+# 82.195.158.82 keiko
+# 82.195.158.90 rygel
+# 82.195.158.89 talyn
+
+10.10.1.10 keiko
+10.10.1.11 aeryn
+10.10.1.12 chiana
+10.10.1.13 talyn
+10.10.2.10 zhaan
+10.10.2.13 rygel
+

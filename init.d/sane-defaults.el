@@ -9,6 +9,9 @@
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
+;; Don't save #..# files
+(setq auto-save-default nil)
+
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
 
@@ -47,9 +50,6 @@
 (put 'transient-mark-mode 'permanent-local t)
 (setq-default transient-mark-mode t)
 
-;; Remove text in active region if inserting text
-(delete-selection-mode 1)
-
 ;; Don't highlight matches with jump-char - it's distracting
 (setq jump-char-lazy-highlight-face nil)
 
@@ -77,7 +77,7 @@
 (setq enable-recursive-minibuffers t)
 
 ;; Don't be so stingy on the memory, we have lots now. It's the distant future.
-(setq gc-cons-threshold 20000000)
+;;(setq gc-cons-threshold 2000000)
 
 ;; Sentences do not need double spaces to end. Period.
 (set-default 'sentence-end-double-space nil)

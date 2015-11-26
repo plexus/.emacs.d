@@ -4,5 +4,7 @@
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
 
+(define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region)
+
 (provide 'setup-elisp)
 

@@ -7,8 +7,8 @@
 (require 'package)
 
 ;; Add melpa to package repos
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (package-initialize)
 
@@ -47,13 +47,11 @@ re-downloaded in order to locate PACKAGE."
      fill-column-indicator
      yasnippet
      smartparens
-     ido
-     flx-ido
-     ido-vertical-mode
+     helm
+     helm-ag
      elisp-slime-nav
      guide-key
      highlight-escape-sequences
-     smex
      multiple-cursors
      popwin
      color-theme-sanityinc-solarized
@@ -63,9 +61,10 @@ re-downloaded in order to locate PACKAGE."
      wgrep
      undo-tree
      eval-sexp-fu
-     smooth-scrolling
+     ;smooth-scrolling
      duplicate-thing
      projectile
+     rainbow-mode
      )))
 
 (condition-case nil
@@ -86,9 +85,9 @@ re-downloaded in order to locate PACKAGE."
 ;; Better string manipulation functions
 
 
-;; = f =     
+;; = f =
 ;; better file path manipulation functions
-     
+
 
 ;; = magit =
 ;; magical interface to git
@@ -110,41 +109,29 @@ re-downloaded in order to locate PACKAGE."
 
 (require 'smartparens-config)
 
+;; = helm + helm-projectile =
 
-;; = ido =
-;; Interactively do things
-;; - ido-vertical-mode: show matches below one another instead of one line
-;; - flx-ido: smarter substring matching
-
-(require 'ido)
-(require 'flx-ido)
-
-(ido-mode t)
-(ido-everywhere t)
-(flx-ido-mode t)
-(ido-vertical-mode t)
-
-;; disable ido faces to see flx highlights.
-(setq ido-enable-flex-matching t)
-(setq ido-use-faces nil)
-
+(require 'helm-config)
+(require 'helm-projectile)
+(helm-mode 1)
 
 ;; = elisp-slime-nav =
 ;; Navigate in elisp with M-. and M-,
 
 
-;; = guide-key = 
+;; = guide-key =
 ;; Pop up an overview of possible combinations when using a prefix key
 ;; and waiting a bit
 
 (require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" ;; register functions
-                                     "C-x 4" ;; window functions
-                                     "C-x v" ;; vc-* 
-                                     "C-x 8" ;; insert special characters
-                                     "C-h"   ;; help
-                                     "C-c p" ;; projectile (default)
-                                     "H-p"   ;; projectile (custom)
+(setq guide-key/guide-key-sequence '("C-x r"   ; register functions
+                                     "C-x 4"   ; window functions
+                                     "C-x v"   ; vc-*
+                                     "C-x 8"   ; insert special characters
+                                     "C-h"     ; help
+                                     "C-c p"   ; projectile (default)
+                                     "H-p"     ; projectile (custom)
+                                     "C-c C-m" ; clj-refactor
                                      ))
 (guide-key-mode 1)
 (setq guide-key/recursive-key-sequence-flag t)
@@ -159,13 +146,6 @@ re-downloaded in order to locate PACKAGE."
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
 
-;; = smex =
-;; Smarter M-x
-
-(require 'smex)
-(smex-initialize)
-
-
 ;; = multiple-cursors =
 ;; What is says
 
@@ -175,6 +155,11 @@ re-downloaded in order to locate PACKAGE."
 ;; = popwin =
 ;; Better behaviour for popup windows
 
+(require 'popwin)
+
+(setq display-buffer-function 'popwin:display-buffer)
+(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+(push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
 
 ;; = expand-region =
 ;; Smart region expansion
@@ -211,11 +196,11 @@ re-downloaded in order to locate PACKAGE."
 ;; = smooth-scrolling =
 ;; Keep cursor away from edges when scrolling up/down
 
-(require 'smooth-scrolling)
+;(require 'smooth-scrolling)
 
 
 ;; = duplicate-thing =
-;; Duplicate line or region 
+;; Duplicate line or region
 
 
 ;; = projectile =

@@ -3,56 +3,38 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-        backward-kill-sexp
-        backward-sexp
-        beginning-of-buffer
-        c-electric-pound
-        c-electric-star
-        coffee-indent-shift-left
+        cljr-slash
+        coffee-dedent-line-backspace
         delete-horizontal-space
-        dired-unmark-backward
-        electric-newline-and-maybe-indent
         end-of-buffer
-        forward-sexp
-        goto-line
-        ido-switch-buffer
+        end-of-defun
         indent-for-tab-command
-        kbd-macro-query
         kill-region
         kill-sexp
+        mark-whole-buffer
         markdown-exdent-or-delete
-        markdown-promote
-        org-beginning-of-line
-        org-end-of-line
-        org-force-self-insert
-        org-kill-line
-        org-metaleft
-        org-metaright
         org-self-insert-command
-        org-yank
-        overwrite-mode
-        ruby-electric-brace
-        sgml-slash
-        sh-assignment
-        skeleton-pair-insert-maybe
-        sp--self-insert-command
-        uncomment-region
-        undefined
-        universal-argument-minus
+        sp-backward-delete-char
+        sp-backward-delete-char
+        sp-backward-kill-sexp
+        sp-backward-kill-word
+        sp-backward-sexp
+        sp-delete-char
+        sp-forward-sexp
+        sp-forward-slurp-sexp
+        sp-kill-hybrid-sexp
+        sp-kill-word
+        sp-splice-sexp-killing-backward
         wdired-finish-edit
-        yaml-electric-backspace
-        yaml-electric-dash-and-dot
+        wgrep-finish-edit
         yas-expand
+        yas-expand
+        downcase-region
         ))
 
 (setq mc/cmds-to-run-once
       '(
-        haml-electric-backspace
-        help-for-help
-        kmacro-start-macro
-        markdown-demote
-        org-ctrl-c-ctrl-c
-        paredit-backslash
-        xmp
+        helm-M-x
+        helm-ag--edit-commit
+        switch-to-buffer
         ))
-
