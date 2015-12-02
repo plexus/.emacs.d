@@ -6,3 +6,6 @@ recentf
 smex-items
 tramp
 projectile-bookmarks.eld
+.emacs.desktop
+backup
+eshell
