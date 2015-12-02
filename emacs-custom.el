@@ -32,7 +32,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu)))
+    (clojure-mode outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking clj-refactor cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 27)
  '(safe-local-variable-values (quote ((rainbow-mode . t) (encoding . utf-8))))

@@ -129,12 +129,7 @@
 
 ;; https://glyph.twistedmatrix.com/2015/11/editor-malware.html
 
-(let ((trustfile
-       (replace-regexp-in-string
-        "\\\\" "/"
-        (replace-regexp-in-string
-         "\n" ""
-         (shell-command-to-string "python -m certifi")))))
+(let ((trustfile (expand-file-name "cacert.pem" user-emacs-directory)))
   (setq tls-program
         (list
          (format "gnutls-cli%s --x509cafile %s -p %%p %%h"
@@ -144,17 +139,17 @@
 
 
 ;; test if it's checked
-'(let ((bad-hosts
-        (loop for bad
-              in `("https://wrong.host.badssl.com/"
-                   "https://self-signed.badssl.com/")
-              if (condition-case e
-                     (url-retrieve
-                      bad (lambda (retrieved) t))
-                   (error nil))
-              collect bad)))
-   (if bad-hosts
-       (error (format "tls misconfigured; retrieved %s ok"
-                      bad-hosts))
-     (url-retrieve "https://badssl.com"
-                   (lambda (retrieved) t))))
+(let ((bad-hosts
+       (loop for bad
+             in `("https://wrong.host.badssl.com/"
+                  "https://self-signed.badssl.com/")
+             if (condition-case e
+                    (url-retrieve
+                     bad (lambda (retrieved) t))
+                  (error nil))
+             collect bad)))
+  (if bad-hosts
+      (error (format "tls misconfigured; retrieved %s ok"
+                     bad-hosts))
+    (url-retrieve "https://badssl.com"
+                  (lambda (retrieved) t))))
