@@ -1,5 +1,5 @@
-;;(set-frame-font "Inconsolata-14")
-(set-frame-font "Anonymous Pro-14")
+(set-frame-font "Inconsolata-18")
+;;(set-frame-font "Anonymous Pro-14")
 
 ;; Emoji! 💩
 ;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)

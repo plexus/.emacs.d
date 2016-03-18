@@ -6,6 +6,7 @@
         cljr-slash
         coffee-dedent-line-backspace
         delete-horizontal-space
+        downcase-region
         end-of-buffer
         end-of-defun
         indent-for-tab-command
@@ -14,6 +15,7 @@
         mark-whole-buffer
         markdown-exdent-or-delete
         org-self-insert-command
+        paredit-semicolon
         sp-backward-delete-char
         sp-backward-delete-char
         sp-backward-kill-sexp
@@ -29,7 +31,6 @@
         wgrep-finish-edit
         yas-expand
         yas-expand
-        downcase-region
         ))
 
 (setq mc/cmds-to-run-once

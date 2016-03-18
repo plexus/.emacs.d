@@ -67,6 +67,7 @@ re-downloaded in order to locate PACKAGE."
      duplicate-thing
      projectile
      rainbow-mode
+     which-key
      )))
 
 (condition-case nil
@@ -216,5 +217,7 @@ re-downloaded in order to locate PACKAGE."
 
 (require 'projectile)
 (projectile-global-mode)
+
+
 
 (provide 'setup-packages)
