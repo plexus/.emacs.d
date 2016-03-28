@@ -153,3 +153,20 @@
                      bad-hosts))
     (url-retrieve "https://badssl.com"
                   (lambda (retrieved) t))))
+
+
+;; lambda island
+
+(defun plexus/resize-for-lambda-island ()
+  (setq frame-resize-pixelwise t)
+  (set-frame-width (selected-frame) 1265 nil t)
+  (set-frame-height (selected-frame) 717 nil t))
+
+(defun plexus/ffmpeg-position ()
+  (let* ((f (frame-position))
+         (x (car f))
+         (y (cdr f)))
+    ;; these offsets have been carefully, experimentally verified. They
+    ;; compensate for the drop shadow and title bar that is somehow considered
+    ;; part of the frame
+    (format "%d,%d" (mod (+ x 10) 1920) (+ y 35))))

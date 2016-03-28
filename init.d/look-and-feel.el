@@ -1,4 +1,4 @@
-(set-frame-font "Inconsolata-18")
+(set-frame-font "Inconsolata-17")
 ;;(set-frame-font "Anonymous Pro-14")
 
 ;; Emoji! 💩

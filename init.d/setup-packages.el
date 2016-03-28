@@ -68,6 +68,7 @@ re-downloaded in order to locate PACKAGE."
      projectile
      rainbow-mode
      which-key
+     markdown-mode
      )))
 
 (condition-case nil
