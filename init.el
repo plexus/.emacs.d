@@ -1,11 +1,14 @@
+(setq package-archives
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
 (package-initialize)
 
-;; Turn off mouse interface early in startup to avoid momentary display
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(unless (file-exists-p "~/.emacs.d/elpa/archives/melpa")
+  (package-refresh-contents))
 
-(setq inhibit-startup-message t)
+(package-install 'use-package)
 
 (add-to-list 'load-path (expand-file-name "init.d" user-emacs-directory))
 
@@ -13,6 +16,17 @@
 
 (require 'setup-emacs)
 (require 'setup-packages)
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->"         . mc/mark-next-like-this)
+         ("C-<"         . mc/mark-previous-like-this)
+         ("C-c C-<"     . mc/mark-all-like-this)))
+
+(use-package magit
+  :ensure t
+  :bind (("H-g" . magit-status)))
 
 (require 'setup-elisp)
 (require 'setup-clojure)
@@ -170,3 +184,39 @@
     ;; compensate for the drop shadow and title bar that is somehow considered
     ;; part of the frame
     (format "%d,%d" (mod (+ x 10) 1920) (+ y 35))))
+
+(defun plexus/cider-current-ns-file-name ()
+  (let* ((ns (cider-current-ns))
+         (ns-path (replace-regexp-in-string "\\." "/" ns))
+         (clj-file (concat "/" ns-path ".clj"))
+         (cljs-file (concat "/" ns-path ".cljs"))
+         (classpath (cider-sync-request:classpath))
+         (files (-reduce-r-from (lambda (path l)
+                                  (list*
+                                   (concat path cljs-file)
+                                   (concat path clj-file)
+                                   l))
+                                '()
+                                classpath)))
+    (-find 'file-exists-p files)))
+
+(defun plexus/cider-current-ns-find-file ()
+  (interactive)
+  (if-let ((f (plexus/cider-current-ns-file-name)))
+      (find-file f)))
+
+(defun plexus/cider-goto-test-file ()
+  (interactive)
+  (let* ((ns (cider-current-ns))
+         (src-file (plexus/cider-current-ns-file-name))
+         (ns-path (replace-regexp-in-string "\\." "/" ns))
+         (ext (f-ext src-file)))
+    (find-file (concat (projectile-project-root) "test/" ns-path "_test." ext))))
+
+;; from https://www.emacswiki.org/emacs/SqlMode
+;; PostgreSQL databases with underscores in their names trip up the prompt specified in sql.el. I work around this with the following. Warning, this sets the prompt globally, which is fine by me since I only ever use Postgres.
+
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (setq sql-prompt-regexp "^[_[:alpha:]]*[=][#>] ")
+            (setq sql-prompt-cont-regexp "^[_[:alpha:]]*[-][#>] ")))

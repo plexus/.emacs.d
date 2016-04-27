@@ -1,27 +1,13 @@
-127.0.0.1	localhost foo.ticketsolvedev.com giaf.ticketsolvedev.com bacontheatre.ticketsolvedev.com vid.pluralsight.com olark.com www.olark.com doubleclick.net livechatinc.com secure.livechatinc.com
-127.0.1.1	lutze
-
-#95.142.170.154 foo.ticketsolvedev.com
-
-
-# The following lines are desirable for IPv6 capable hosts
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-# 82.195.158.81 zhaan
-# 82.195.158.83 aeryn
-# 82.195.158.84 chiana
-# 82.195.158.82 keiko
-# 82.195.158.90 rygel
-# 82.195.158.89 talyn
-
-10.10.1.10 keiko
-10.10.1.11 aeryn
-10.10.1.12 chiana
-10.10.1.13 talyn
-10.10.2.10 zhaan
-10.10.2.13 rygel
-
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda7 during installation
+UUID=04857906-9369-4db3-a002-16821eff0232 /               ext4    errors=remount-ro 0       1
+# /boot/efi was on /dev/sda2 during installation
+UUID=1893-1F43  /boot/efi       vfat    umask=0077      0       1
+# swap was on /dev/sda8 during installation
+UUID=b57ca57e-243f-4caf-a6de-6203739cc01c none            swap    sw              0       0

@@ -22,6 +22,7 @@
       (package-install it)))
   (delete-other-windows))
 
+
 ;;; On-demand installation of packages
 
 (defun require-package (package &optional min-version no-refresh)
@@ -44,7 +45,6 @@ re-downloaded in order to locate PACKAGE."
      dash
      s
      f
-     magit
      fill-column-indicator
      yasnippet
      smartparens
@@ -54,7 +54,6 @@ re-downloaded in order to locate PACKAGE."
      elisp-slime-nav
      guide-key
      highlight-escape-sequences
-     multiple-cursors
      popwin
      color-theme-sanityinc-solarized
      color-theme-sanityinc-tomorrow
@@ -63,12 +62,13 @@ re-downloaded in order to locate PACKAGE."
      wgrep
      undo-tree
      eval-sexp-fu
-     ;smooth-scrolling
+                                        ;smooth-scrolling
      duplicate-thing
      projectile
      rainbow-mode
      which-key
      markdown-mode
+     sql-indent
      )))
 
 (condition-case nil
@@ -91,10 +91,6 @@ re-downloaded in order to locate PACKAGE."
 
 ;; = f =
 ;; better file path manipulation functions
-
-
-;; = magit =
-;; magical interface to git
 
 
 ;; = fill-column-indicator =
@@ -150,11 +146,6 @@ re-downloaded in order to locate PACKAGE."
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
 
-;; = multiple-cursors =
-;; What is says
-
-(require 'multiple-cursors)
-
 
 ;; = popwin =
 ;; Better behaviour for popup windows
@@ -200,7 +191,7 @@ re-downloaded in order to locate PACKAGE."
 ;; = smooth-scrolling =
 ;; Keep cursor away from edges when scrolling up/down
 
-;(require 'smooth-scrolling)
+                                        ;(require 'smooth-scrolling)
 
 
 ;; = duplicate-thing =

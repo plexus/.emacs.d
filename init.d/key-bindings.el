@@ -41,8 +41,17 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Custom commands
+;; PrtScr...
 
 (global-set-key (kbd "C-c d") 'duplicate-thing)
+
+(setq plexus-prtscr-keymap (make-keymap "PrtScr"))
+(setq plexus-prtscr-g-keymap (make-keymap "goto..."))
+
+(global-set-key (kbd "<print>") plexus-prtscr-keymap)
+
+(define-key plexus-prtscr-keymap "g" plexus-prtscr-g-keymap)
+(define-key plexus-prtscr-g-keymap "t" 'plexus/cider-goto-test-file)
+
 
 (provide 'key-bindings)
