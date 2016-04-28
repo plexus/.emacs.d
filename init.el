@@ -17,6 +17,8 @@
 (require 'setup-emacs)
 (require 'setup-packages)
 
+
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -27,6 +29,16 @@
 (use-package magit
   :ensure t
   :bind (("H-g" . magit-status)))
+
+(use-package sql-indent
+  :ensure t)
+
+(use-package sql-interactive-mode
+  :init
+  (setq sql-prompt-regexp "^[_[:alnum:]]*[=][#>] ")
+  (setq sql-prompt-cont-regexp "^[_[:alnum:]]*[-][#>] "))
+
+
 
 (require 'setup-elisp)
 (require 'setup-clojure)
@@ -215,8 +227,3 @@
 
 ;; from https://www.emacswiki.org/emacs/SqlMode
 ;; PostgreSQL databases with underscores in their names trip up the prompt specified in sql.el. I work around this with the following. Warning, this sets the prompt globally, which is fine by me since I only ever use Postgres.
-
-(add-hook 'sql-interactive-mode-hook
-          (lambda ()
-            (setq sql-prompt-regexp "^[_[:alpha:]]*[=][#>] ")
-            (setq sql-prompt-cont-regexp "^[_[:alpha:]]*[-][#>] ")))
