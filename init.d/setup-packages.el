@@ -58,7 +58,6 @@ re-downloaded in order to locate PACKAGE."
      color-theme-sanityinc-solarized
      color-theme-sanityinc-tomorrow
      expand-region
-     rainbow-delimiters
      wgrep
      undo-tree
      eval-sexp-fu

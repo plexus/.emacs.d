@@ -47,7 +47,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (htmlize db-pg sql-indent org which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refactor clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package clojure-mode outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    (:rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent org which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refactor clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package clojure-mode outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
  '(safe-local-variable-values

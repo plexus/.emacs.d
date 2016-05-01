@@ -12,7 +12,7 @@
 
 (add-to-list 'load-path (expand-file-name "init.d" user-emacs-directory))
 
-(require 'sane-defaults)
+(require 'better-defaults)
 
 (require 'setup-emacs)
 (require 'setup-packages)
@@ -38,6 +38,10 @@
   (setq sql-prompt-regexp "^[_[:alnum:]]*[=][#>] ")
   (setq sql-prompt-cont-regexp "^[_[:alnum:]]*[-][#>] "))
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package htmlize :ensure t)
 
 
 (require 'setup-elisp)

@@ -1,15 +1,21 @@
-(add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+(use-package emacs-lisp-mode
+  :config
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
-;; Elisp go-to-definition with M-. and back again with M-,
-(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-(add-hook
- 'emacs-lisp-mode-hook
- (lambda ()
-   (elisp-slime-nav-mode t)
-   (eldoc-mode 1)
-   (auto-complete-mode)
-   (paredit-mode)))
+  ;; Elisp go-to-definition with M-. and back again with M-,
+  (use-package elisp-slime-nav
+    :config
+    (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
+    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
-(define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region)
+  (use-package paredit
+    :ensure t
+    :config
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
+
+  (define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region))
 
 (provide 'setup-elisp)

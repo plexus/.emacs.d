@@ -9,3 +9,4 @@ projectile-bookmarks.eld
 .emacs.desktop
 backup
 eshell
+.emacs.desktop.lock

@@ -1,4 +1,4 @@
-;; * SANE DEFAULTS *
+;; * BETTER DEFAULTS *
 
 ;; Various things that really should have been configured this way
 ;; out of the box. This is mostly copied from Magnar Sveen's config,
@@ -94,7 +94,7 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
-;; A saner ediff
+;; A betterr ediff
 (setq ediff-diff-options "-w")
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -127,4 +127,4 @@
 
 (add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
 
-(provide 'sane-defaults)
+(provide 'better-defaults)
