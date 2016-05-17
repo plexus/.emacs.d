@@ -1,7 +1,8 @@
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
 
 (package-initialize)
 
@@ -43,6 +44,15 @@
 
 (use-package htmlize :ensure t)
 
+(use-package org
+  :ensure t
+  :pin org
+  :config
+  (use-package org-bullets :ensure t))
+
+(package-install 'org)
+
+(use-package nginx-mode :ensure t)
 
 (require 'setup-elisp)
 (require 'setup-clojure)
@@ -231,3 +241,140 @@
 
 ;; from https://www.emacswiki.org/emacs/SqlMode
 ;; PostgreSQL databases with underscores in their names trip up the prompt specified in sql.el. I work around this with the following. Warning, this sets the prompt globally, which is fine by me since I only ever use Postgres.
+
+
+;; Avoid third person in screencast scripts
+(defface plexus/third-person-face
+  '((((supports :underline (:style wave)))
+     :underline (:style wave :color "DarkOrange"))
+    (((class color) (background light))
+     (:inherit font-lock-warning-face :background "moccasin"))
+    (((class color) (background dark))
+     (:inherit font-lock-warning-face :background "DarkOrange")))
+  "Face for highlighting use of the third person")
+
+(defun plexus/third-person-font-lock-keywords ()
+  (list (list (rx word-start
+                  (or "we" "We" "us" "let's" "Let's" "we'll" "We'll")
+                  word-end)
+	      0 (quote 'plexus/third-person-face) 'prepend)))
+
+(defun plexus/third-person-turn-on ()
+  "Turn on syntax highlighting for third person"
+  (interactive)
+  (font-lock-add-keywords
+   nil
+   (plexus/third-person-font-lock-keywords) t))
+
+
+;; Syntax highlighting for systemd config files
+(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.target\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.mount\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.slice\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.socket\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.path\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.netdev\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.network\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
+(add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Hiccup
+
+(defun plexus/sexp-to-hiccup-attrs (attrs)
+  (if attrs
+      (concat " {"
+              (s-join " "
+                      (loop for attr in attrs
+                            collect (concat
+                                     ":"
+                                     (symbol-name (car attr))
+                                     " "
+                                     (format "%S" (cdr attr)))))
+              "}")))
+
+
+(defun plexus/sexp-to-hiccup-children (cs)
+  (if cs
+      (loop for ch in cs
+            concat (concat " " (if (stringp ch)
+                                   (format "%S" ch)
+                                 (plexus/sexp-to-hiccup ch))))))
+
+(defun plexus/sexp-to-hiccup (s)
+  (concat "[:"
+          (symbol-name (car s))
+          (plexus/sexp-to-hiccup-attrs (cadr s))
+          (plexus/sexp-to-hiccup-children (cddr s))
+          "]"))
+
+(defun plexus/region-to-hiccup ()
+  (let* ((html (libxml-parse-html-region (point) (mark)))
+         (inner (caddr (caddr html))))
+    (plexus/sexp-to-hiccup inner)))
+
+(defun plexus/convert-region-to-hiccup ()
+  (interactive)
+  (let ((hiccup (plexus/region-to-hiccup)))
+    (delete-region (point) (mark))
+    (insert hiccup)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; edit source blocks in markdown
+
+
+(defvar plexus/restore-mode-map (make-sparse-keymap)
+  "Keymap while plexus/restore-mode is active.")
+
+(define-minor-mode plexus/restore-mode
+  "A temporary minor mode to go back to the markdown you're editing"
+  nil
+  :lighter " ♻"
+  plexus/restore-mode-map)
+
+
+(defun plexus/edit-md-source-block ()
+  (interactive)
+  (let ((buffer nil))
+    (save-excursion
+      (re-search-backward "\n```\[a-z- \]+\n")
+      (re-search-forward "\n``` *")
+      (let ((lang (thing-at-point 'word))
+            (md-buffer (current-buffer)))
+        (forward-line)
+        (let ((start (point)))
+          (re-search-forward "\n```")
+          (let* ((end (- (point) 4))
+                 (source (buffer-substring-no-properties start end)))
+            (setq buffer (get-buffer-create (concat "*markdown-" lang "*")))
+            (set-buffer buffer)
+            (erase-buffer)
+            (insert source)
+            (setq restore-start start)
+            (setq restore-end end)
+            (setq restore-buffer md-buffer)
+            (make-local-variable 'restore-start)
+            (make-local-variable 'restore-end)
+            (make-local-variable 'restore-buffer)
+            (funcall (intern (concat lang "-mode")))))))
+    (switch-to-buffer buffer)
+    (plexus/restore-mode 1)))
+
+
+(defun plexus/restore-md-source-block ()
+  (interactive)
+  (let ((contents (buffer-string)))
+    (save-excursion
+      (set-buffer restore-buffer)
+      (delete-region restore-start restore-end)
+      (goto-char restore-start)
+      (insert contents)))
+  (switch-to-buffer restore-buffer))
+
+(bind-key (kbd "C-c '") 'plexus/edit-md-source-block markdown-mode-map)
+(bind-key (kbd "C-c '") 'plexus/restore-md-source-block plexus/restore-mode-map)

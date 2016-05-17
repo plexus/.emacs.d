@@ -3,9 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        backward-sexp
         cljr-slash
         cljr-splice-sexp-killing-backward
         coffee-dedent-line-backspace
+        complete-symbol
         delete-horizontal-space
         downcase-region
         end-of-buffer
@@ -16,9 +18,18 @@
         kill-sexp
         mark-whole-buffer
         markdown-exdent-or-delete
+        org-end-of-line
         org-self-insert-command
+        paredit-backward
         paredit-backward-kill-word
+        paredit-close-round
+        paredit-doublequote
+        paredit-forward
+        paredit-forward-slurp-sexp
+        paredit-kill
         paredit-open-curly
+        paredit-open-round
+        paredit-open-square
         paredit-semicolon
         sp-backward-delete-char
         sp-backward-delete-char
@@ -33,6 +44,7 @@
         sp-kill-word
         sp-splice-sexp-killing-backward
         sp-up-sexp
+        upcase-region
         wdired-finish-edit
         wgrep-finish-edit
         yas-expand

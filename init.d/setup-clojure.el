@@ -4,11 +4,10 @@
   (add-hook 'clojure-mode-hook 'cider-mode)
 
   ;;;; Optional: add structural editing
-  ;;
-  ;; (use-package paredit
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'clojure-mode-hook 'paredit-mode))
+  (use-package paredit
+    :ensure t
+    :config
+    (add-hook 'clojure-mode-hook 'paredit-mode))
 
     ;;; Give matching parentheses matching colors
   (use-package rainbow-delimiters
@@ -24,7 +23,8 @@
     (use-package clj-refactor
       :ensure t
       :config
-      (add-hook 'clojure-mode-hook 'clj-refactor-mode)))
+      (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+      (cljr-add-keybindings-with-prefix "H-m")))
 
   (put-clojure-indent 'GET 2)
   (put-clojure-indent 'POST 2)

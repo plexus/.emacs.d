@@ -4,18 +4,6 @@
 ;; and installs and configures a set of base packages that no
 ;; Emacser should be without.
 
-(require 'package)
-
-(setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")))
-
-(package-initialize)
-
-(unless (file-exists-p "~/.emacs.d/elpa/archives/melpa")
-  (package-refresh-contents))
-
 (defun packages-install (packages)
   (dolist (it packages)
     (when (not (package-installed-p it))
