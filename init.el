@@ -302,8 +302,11 @@
   (if cs
       (loop for ch in cs
             concat (concat " " (if (stringp ch)
-                                   (format "%S" ch)
+                                   (if (string-match-p "^\s*$" ch)
+                                       ""
+                                     (format "%S" ch))
                                  (plexus/sexp-to-hiccup ch))))))
+
 
 (defun plexus/sexp-to-hiccup (s)
   (concat "[:"
@@ -376,5 +379,5 @@
       (insert contents)))
   (switch-to-buffer restore-buffer))
 
-(bind-key (kbd "C-c '") 'plexus/edit-md-source-block markdown-mode-map)
-(bind-key (kbd "C-c '") 'plexus/restore-md-source-block plexus/restore-mode-map)
+(define-key markdown-mode-map (kbd "C-c '") 'plexus/edit-md-source-block)
+(define-key plexus/restore-mode-map (kbd "C-c '") 'plexus/restore-md-source-block)

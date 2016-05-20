@@ -7,7 +7,8 @@
   (use-package paredit
     :ensure t
     :config
-    (add-hook 'clojure-mode-hook 'paredit-mode))
+    (add-hook 'clojure-mode-hook 'paredit-mode)
+    (define-key clojure-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
     ;;; Give matching parentheses matching colors
   (use-package rainbow-delimiters
@@ -51,5 +52,10 @@
           (cider-eval-last-sexp)))))
 
   (define-key cider-mode-map (kbd "C-x C-e") 'plexus/cider-eval-and-insert))
+
+(setq cider-cljs-lein-repl
+      "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel!)
+           (figwheel-sidecar.repl-api/cljs-repl))")
 
 (provide 'setup-clojure)
