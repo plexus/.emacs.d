@@ -26,6 +26,27 @@
 ;;     switch to the ruby process buffer after sending their text.
 
 
-(chruby "2.1.6")
+(chruby "2.3.0")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rcodetools
+
+(require 'f)
+
+(defun plexus/rcodetools-path ()
+  (f-join
+   (shell-command-to-string "gem which rcodetools/xmpfilter")
+   "../../.."))
+
+(defun plexus/add-load-path (path)
+  (if (not (-contains? load-path path))
+      (setq load-path
+            (append (list path)
+                    load-path))))
+
+'(plexus/add-load-path (plexus/rcodetools-path))
+'(require 'rcodetools)
+'(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+
 
 (provide 'setup-ruby)

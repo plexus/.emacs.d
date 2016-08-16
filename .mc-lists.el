@@ -9,34 +9,48 @@
         coffee-dedent-line-backspace
         complete-symbol
         delete-horizontal-space
+        delete-indentation
         downcase-region
+        electric-newline-and-maybe-indent
         end-of-buffer
         end-of-defun
         forward-sexp
+        helm-projectile-find-file
         indent-for-tab-command
         kill-region
         kill-sexp
         mark-whole-buffer
         markdown-exdent-or-delete
         org-end-of-line
+        org-force-self-insert
+        org-kill-line
         org-self-insert-command
         paredit-backward
+        paredit-backward-barf-sexp
         paredit-backward-kill-word
+        paredit-close-curly
         paredit-close-round
         paredit-doublequote
         paredit-forward
+        paredit-forward-barf-sexp
+        paredit-forward-delete
+        paredit-forward-kill-word
         paredit-forward-slurp-sexp
         paredit-kill
+        paredit-newline
         paredit-open-curly
         paredit-open-round
         paredit-open-square
         paredit-semicolon
+        paredit-splice-sexp-killing-backward
+        plexus/cider-eval-and-insert
         sp-backward-delete-char
         sp-backward-delete-char
         sp-backward-down-sexp
         sp-backward-kill-sexp
         sp-backward-kill-word
         sp-backward-sexp
+        sp-copy-sexp
         sp-delete-char
         sp-forward-sexp
         sp-forward-slurp-sexp
@@ -44,6 +58,7 @@
         sp-kill-word
         sp-splice-sexp-killing-backward
         sp-up-sexp
+        transpose-sexps
         upcase-region
         wdired-finish-edit
         wgrep-finish-edit
@@ -55,5 +70,6 @@
       '(
         helm-M-x
         helm-ag--edit-commit
+        plexus/edit-md-source-block
         switch-to-buffer
         ))

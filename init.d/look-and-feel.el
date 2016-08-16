@@ -2,7 +2,8 @@
 ;;(set-frame-font "Anonymous Pro-14")
 
 ;; Emoji! 💩
-;; (set-fontset-font t 'unicode "Symbola" nil 'prepend)
+;;(set-fontset-font t 'unicode "Symbola" nil 'prepend)
+(set-fontset-font t 'unicode "Emoji One Color" nil 'prepend)
 
 (require-package 'color-theme-sanityinc-solarized)
 (require-package 'color-theme-sanityinc-tomorrow)

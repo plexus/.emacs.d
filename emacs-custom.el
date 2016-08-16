@@ -4,6 +4,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-cljs-lein-repl
+   "(do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl))")
  '(cider-docview-javadoc-path
    (quote
     ("/home/arne/opt/javadoc/api" "/home/arne/opt/javadoc/docs/api")))
@@ -28,6 +30,9 @@
       ("To" "clojure@googlegroups.com")))))
  '(helm-ag-insert-at-point (quote symbol))
  '(helm-ag-use-agignore t)
+ '(http-twiddle-show-request t)
+ '(http-twiddle-tls nil)
+ '(inhibit-eol-conversion t)
  '(js-indent-level 2)
  '(js2-basic-offset 2)
  '(js2-indent-level 2)
@@ -48,9 +53,10 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent org which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refactor clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package clojure-mode outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    (ox-gfm restclient http-twiddle "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent org which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refactor clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package clojure-mode outline-magic cider rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
+ '(projectile-create-missing-test-files t)
  '(safe-local-variable-values
    (quote
     ((org-html-table-align-individual-fields)
@@ -80,5 +86,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(font-lock-constant-face ((t (:foreground "#4271ae" :family "Inconsolata"))))
+ '(markdown-pre-face ((t (:inherit font-lock-constant-face :height 1.1))))
  '(plexus/third-person-face ((t (:background "orange" :foreground "black" :underline (:color "DarkOrange" :style wave)))))
  '(writegood-weasels-face ((t (:background "orange" :foreground "black" :underline (:color "DarkOrange" :style wave))))))

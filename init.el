@@ -18,8 +18,6 @@
 (require 'setup-emacs)
 (require 'setup-packages)
 
-
-
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -48,11 +46,23 @@
   :ensure t
   :pin org
   :config
-  (use-package org-bullets :ensure t))
+  (use-package org-bullets :ensure t)
+  (use-package org-present
+    :ensure t
+    :bind (:map org-present-mode-keymap
+                (("<next>" . org-present-next)
+                 ("<prior>" . org-present-prev))))
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  :bind (:map org-mode-map
+              (("C-c M-j" . cider-jack-in))))
 
 (package-install 'org)
 
+
 (use-package nginx-mode :ensure t)
+
+(use-package string-edit :ensure t)
 
 (require 'setup-elisp)
 (require 'setup-clojure)
@@ -61,6 +71,8 @@
 (require 'setup-web)
 (require 'setup-ruby)
 (require 'setup-code-editing)
+(require 'setup-markdown)
+(require 'setup-org-mode)
 
 (require 'look-and-feel)
 (require 'key-bindings)
@@ -106,28 +118,6 @@
     (ruby-mode)))
 
 (global-set-key (kbd "H-r") 'temp-ruby-buffer)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; rcodetools
-
-(require 'f)
-
-(defun plexus/rcodetools-path ()
-  (f-join
-   (shell-command-to-string "gem which rcodetools/xmpfilter")
-   "../../.."))
-
-(defun plexus/add-load-path (path)
-  (if (not (-contains? load-path path))
-      (setq load-path
-            (append (list path)
-                    load-path))))
-
-(plexus/add-load-path (plexus/rcodetools-path))
-
-(require 'rcodetools)
-
-(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GNUS
@@ -179,7 +169,7 @@
 
 
 ;; test if it's checked
-(let ((bad-hosts
+'(let ((bad-hosts
        (loop for bad
              in `("https://wrong.host.badssl.com/"
                   "https://self-signed.badssl.com/")
@@ -197,10 +187,15 @@
 
 ;; lambda island
 
+(defun plexus/lambdaisland-recording-setup ()
+  (interactive)
+  (set-frame-font "Inconsolata-17" t
+                  (list (make-frame '((name . "islandmacs"))))))
+
 (defun plexus/resize-for-lambda-island ()
   (setq frame-resize-pixelwise t)
   (set-frame-width (selected-frame) 1265 nil t)
-  (set-frame-height (selected-frame) 717 nil t))
+  (set-frame-height (selected-frame) 720 nil t))
 
 (defun plexus/ffmpeg-position ()
   (let* ((f (frame-position))
@@ -327,57 +322,19 @@
     (insert hiccup)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; edit source blocks in markdown
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; record-controller
 
+(setq plexus/record-counter (propertize "**" 'face 'bold))
 
-(defvar plexus/restore-mode-map (make-sparse-keymap)
-  "Keymap while plexus/restore-mode is active.")
-
-(define-minor-mode plexus/restore-mode
-  "A temporary minor mode to go back to the markdown you're editing"
-  nil
-  :lighter " ♻"
-  plexus/restore-mode-map)
-
-
-(defun plexus/edit-md-source-block ()
+(defun plexus/show-record-counter-in-modeline ()
   (interactive)
-  (let ((buffer nil))
-    (save-excursion
-      (re-search-backward "\n```\[a-z- \]+\n")
-      (re-search-forward "\n``` *")
-      (let ((lang (thing-at-point 'word))
-            (md-buffer (current-buffer)))
-        (forward-line)
-        (let ((start (point)))
-          (re-search-forward "\n```")
-          (let* ((end (- (point) 4))
-                 (source (buffer-substring-no-properties start end)))
-            (setq buffer (get-buffer-create (concat "*markdown-" lang "*")))
-            (set-buffer buffer)
-            (erase-buffer)
-            (insert source)
-            (setq restore-start start)
-            (setq restore-end end)
-            (setq restore-buffer md-buffer)
-            (make-local-variable 'restore-start)
-            (make-local-variable 'restore-end)
-            (make-local-variable 'restore-buffer)
-            (funcall (intern (concat lang "-mode")))))))
-    (switch-to-buffer buffer)
-    (plexus/restore-mode 1)))
+  (setq mode-line-format
+        (append mode-line-format '(">>>" (:eval plexus/record-counter) "<<<"))))
 
+(defun plexus/set-record-counter (i)
+  (setq plexus/record-counter (propertize (number-to-string i) 'face 'bold)))
 
-(defun plexus/restore-md-source-block ()
-  (interactive)
-  (let ((contents (buffer-string)))
-    (save-excursion
-      (set-buffer restore-buffer)
-      (delete-region restore-start restore-end)
-      (goto-char restore-start)
-      (insert contents)))
-  (switch-to-buffer restore-buffer))
+(make-face 'plexus/writing-face)
 
-(define-key markdown-mode-map (kbd "C-c '") 'plexus/edit-md-source-block)
-(define-key plexus/restore-mode-map (kbd "C-c '") 'plexus/restore-md-source-block)
+(set-face-font 'plexus/writing-face "Lato")

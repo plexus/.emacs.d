@@ -119,8 +119,10 @@ re-downloaded in order to locate PACKAGE."
                                      "C-c p"   ; projectile (default)
                                      "H-p"     ; projectile (custom)
                                      "C-c C-m" ; clj-refactor
+                                     "C-x w"   ; highlight
+                                     "M-m"
                                      ))
-(guide-key-mode 1)
+(guide-key-mode t)
 (setq guide-key/recursive-key-sequence-flag t)
 (setq guide-key/popup-window-position 'bottom)
 

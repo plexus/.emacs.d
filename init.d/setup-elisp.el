@@ -1,4 +1,4 @@
-(use-package emacs-lisp-mode
+(use-package elisp-mode
   :config
   (use-package rainbow-delimiters
     :ensure t
@@ -14,7 +14,8 @@
   (use-package paredit
     :ensure t
     :config
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+    (define-key emacs-lisp-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
   (define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region))
 
