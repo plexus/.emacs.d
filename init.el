@@ -5,11 +5,10 @@
         ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
 
 (package-initialize)
-
-(unless (file-exists-p "~/.emacs.d/elpa/archives/melpa")
-  (package-refresh-contents))
-
+(unless (file-exists-p "~/.emacs.d/elpa/archives/melpa") (package-refresh-contents))
 (package-install 'use-package)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path (expand-file-name "init.d" user-emacs-directory))
 
@@ -17,52 +16,7 @@
 
 (require 'setup-emacs)
 (require 'setup-packages)
-
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->"         . mc/mark-next-like-this)
-         ("C-<"         . mc/mark-previous-like-this)
-         ("C-c C-<"     . mc/mark-all-like-this)))
-
-(use-package magit
-  :ensure t
-  :bind (("H-g" . magit-status)))
-
-(use-package sql-indent
-  :ensure t)
-
-(use-package sql-interactive-mode
-  :init
-  (setq sql-prompt-regexp "^[_[:alnum:]]*[=][#>] ")
-  (setq sql-prompt-cont-regexp "^[_[:alnum:]]*[-][#>] "))
-
-(use-package haskell-mode
-  :ensure t)
-
-(use-package htmlize :ensure t)
-
-(use-package org
-  :ensure t
-  :pin org
-  :config
-  (use-package org-bullets :ensure t)
-  (use-package org-present
-    :ensure t
-    :bind (:map org-present-mode-keymap
-                (("<next>" . org-present-next)
-                 ("<prior>" . org-present-prev))))
-  :init
-  (add-hook 'org-mode-hook 'org-bullets-mode)
-  :bind (:map org-mode-map
-              (("C-c M-j" . cider-jack-in))))
-
-(package-install 'org)
-
-
-(use-package nginx-mode :ensure t)
-
-(use-package string-edit :ensure t)
+(require 'setup-mode-packages)
 
 (require 'setup-elisp)
 (require 'setup-clojure)
@@ -77,7 +31,10 @@
 (require 'look-and-feel)
 (require 'key-bindings)
 
-;; Waiting to become MELPA packages
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Random stuff below this line
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 ;; (defun autosudo--edit-command-wrapper (orig-fun &rest args)
 ;;   "Ask to re-open a file with sudo if it's read-only and you try to edit it.

@@ -5,8 +5,8 @@
 ;;(set-fontset-font t 'unicode "Symbola" nil 'prepend)
 (set-fontset-font t 'unicode "Emoji One Color" nil 'prepend)
 
-(require-package 'color-theme-sanityinc-solarized)
-(require-package 'color-theme-sanityinc-tomorrow)
+(use-package color-theme-sanityinc-solarized :ensure t)
+(use-package color-theme-sanityinc-tomorrow :ensure t)
 
 (require 'color-theme-sanityinc-tomorrow)
 (require 'sanityinc-tomorrow-day-theme)

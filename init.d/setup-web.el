@@ -10,6 +10,10 @@
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
+(use-package htmlize :ensure t)
+(use-package http-twiddle :ensure t)
+(use-package nginx-mode :ensure t)
+
 (provide 'setup-web)
 
 ;; C-c C-m jump to matching <tag>

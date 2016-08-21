@@ -7,6 +7,7 @@
     :ensure t
     :config
     (add-hook 'clojure-mode-hook 'paredit-mode)
+    (add-hook 'clojure-mode-hook 'yas-minor-mode)
     (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp)
     (define-key paredit-mode-map (kbd "C-M-{") 'paredit-wrap-curly)
     (define-key paredit-mode-map (kbd "C-M-<") 'paredit-wrap-square)
@@ -28,6 +29,7 @@
       :ensure t
       :config
       (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+      (add-hook 'cider-mode-hook 'clj-refactor-mode)
       (cljr-add-keybindings-with-prefix "H-m")))
 
   (put-clojure-indent 'GET 2)

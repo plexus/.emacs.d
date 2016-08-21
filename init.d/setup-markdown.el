@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; edit source blocks in markdown
 
+(use-package markdown-mode :ensure t)
 
 (defvar plexus/restore-mode-map (make-sparse-keymap)
   "Keymap while plexus/restore-mode is active.")
@@ -10,7 +11,6 @@
   nil
   :lighter " ♻"
   plexus/restore-mode-map)
-
 
 (defun plexus/edit-md-source-block ()
   (interactive)

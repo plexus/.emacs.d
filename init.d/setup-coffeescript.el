@@ -1,10 +1,6 @@
-(packages-install
- '(coffee-mode
-   flymake-coffee))
-
-(require 'coffee-mode)
-(require 'flymake-coffee)
-
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
+(use-package coffee-mode :ensure t)
+(use-package flymake-coffee :ensure t
+  :config
+  (add-hook 'coffee-mode-hook 'flymake-coffee-load))
 
 (provide 'setup-coffeescript)

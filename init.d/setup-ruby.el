@@ -1,24 +1,27 @@
-(packages-install
- '(chruby
-   inf-ruby
-   ruby-hash-syntax))
+(use-package chruby 
+  :ensure t
+  :config
+  (chruby "2.3.0"))
+(use-package inf-ruby :ensure t)
+(use-package ruby-hash-syntax :ensure t)
 
-(require 'ruby-mode)
+(use-package ruby-mode
+  :config
 
-(define-key ruby-mode-map (kbd "H-;") 'ruby-toggle-hash-syntax)
+  (define-key ruby-mode-map (kbd "H-;") 'ruby-toggle-hash-syntax)
 
-;; mimics CIDER keybindings
+  ;; mimics CIDER keybindings
 
-;; switches the current buffer to the ruby process buffer.
-(define-key ruby-mode-map (kbd "C-c C-z") 'ruby-switch-to-inf)
+  ;; switches the current buffer to the ruby process buffer.
+  (define-key ruby-mode-map (kbd "C-c C-z") 'ruby-switch-to-inf)
 
-(define-key ruby-mode-map (kbd "C-c M-j") 'inf-ruby-console-auto)
+  (define-key ruby-mode-map (kbd "C-c M-j") 'inf-ruby-console-auto)
 
-;; sends the current definition to the ruby process.
-(define-key ruby-mode-map (kbd "C-M-x") 'ruby-send-definition)
+  ;; sends the current definition to the ruby process.
+  (define-key ruby-mode-map (kbd "C-M-x") 'ruby-send-definition)
 
-;; sends the current region to the ruby process.
-(define-key ruby-mode-map (kbd "C-C C-r") 'ruby-send-region)
+  ;; sends the current region to the ruby process.
+  (define-key ruby-mode-map (kbd "C-C C-r") 'ruby-send-region))
 
 
 
@@ -26,27 +29,27 @@
 ;;     switch to the ruby process buffer after sending their text.
 
 
-(chruby "2.3.0")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; rcodetools
+;; rcodetools / xmpfilter
 
-(require 'f)
+;; (require 'f)
 
-(defun plexus/rcodetools-path ()
-  (f-join
-   (shell-command-to-string "gem which rcodetools/xmpfilter")
-   "../../.."))
+;; (defun plexus/rcodetools-path ()
+;;   (f-join
+;;    (shell-command-to-string "gem which rcodetools/xmpfilter")
+;;    "../../.."))
 
-(defun plexus/add-load-path (path)
-  (if (not (-contains? load-path path))
-      (setq load-path
-            (append (list path)
-                    load-path))))
+;; (defun plexus/add-load-path (path)
+;;   (if (not (-contains? load-path path))
+;;       (setq load-path
+;;             (append (list path)
+;;                     load-path))))
 
-'(plexus/add-load-path (plexus/rcodetools-path))
-'(require 'rcodetools)
-'(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+;; (plexus/add-load-path (plexus/rcodetools-path))
+;; (require 'rcodetools)
+;; (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
 
 
 (provide 'setup-ruby)

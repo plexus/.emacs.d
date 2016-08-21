@@ -4,25 +4,41 @@
 ;; Fontify org-mode code blocks
 (setq org-src-fontify-natively t)
 
-(provide 'setup-org-mode)
+
+(use-package org
+  :ensure t
+  :pin org
+  :config
+  (use-package org-bullets :ensure t)
+  (use-package org-present
+    :ensure t
+    :bind (:map org-present-mode-keymap
+                (("<next>" . org-present-next)
+                 ("<prior>" . org-present-prev))))
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  :bind (:map org-mode-map
+              (("C-c M-j" . cider-jack-in))))
+
+(package-install 'org)
 
 
-(add-to-list 'org-latex-classes
-             '("scrbook" "\\documentclass{scrbook}"
-               ("\\part{%s}" . "\\part*{%s}")
-               ("\\chapter{%s}" . "\\chapter*{%s}")
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+;; (add-to-list 'org-latex-classes
+;;              '("scrbook" "\\documentclass{scrbook}"
+;;                ("\\part{%s}" . "\\part*{%s}")
+;;                ("\\chapter{%s}" . "\\chapter*{%s}")
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
 
-(add-to-list 'org-latex-classes
-          '("koma-article"
-             "\\documentclass{scrartcl}"
-             ("\\section{%s}" . "\\section*{%s}")
-             ("\\subsection{%s}" . "\\subsection*{%s}")
-             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-             ("\\paragraph{%s}" . "\\paragraph*{%s}")
-             ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;; (add-to-list 'org-latex-classes
+;;           '("koma-article"
+;;              "\\documentclass{scrartcl}"
+;;              ("\\section{%s}" . "\\section*{%s}")
+;;              ("\\subsection{%s}" . "\\subsection*{%s}")
+;;              ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;              ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;              ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 
 (setq
@@ -78,3 +94,15 @@
       '(("frame" "lines")
         ("fontsize" "\\scriptsize")
         ("linenos" "")))
+
+
+(defun lambdaisland/export-guides ()
+  (interactive)
+  (with-current-buffer (find-file-noselect "/home/arne/github/lambdaisland-guides/repls.org")
+    (org-html-export-to-html)
+    (org-latex-export-to-pdf)
+    (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.mobi")
+    (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.epub")
+    (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/app/resources/guides")))
+
+(provide 'setup-org-mode)
