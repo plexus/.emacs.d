@@ -29,8 +29,9 @@
       :ensure t
       :config
       (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-      (add-hook 'cider-mode-hook 'clj-refactor-mode)
-      (cljr-add-keybindings-with-prefix "H-m")))
+      (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
+      (cljr-add-keybindings-with-prefix "H-m")
+      (setq cljr-warn-on-eval nil)))
 
   (put-clojure-indent 'GET 2)
   (put-clojure-indent 'POST 2)
@@ -47,7 +48,7 @@
 
   (put-clojure-indent 'component 1)
 
-  (setq plexus/clojure-fill-column 40)
+  (setq plexus/clojure-fill-column 20)
 
   (defun plexus/cider-eval-and-insert (&optional prefix)
     (interactive "P")

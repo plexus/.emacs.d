@@ -27,15 +27,19 @@
         org-self-insert-command
         paredit-backward
         paredit-backward-barf-sexp
+        paredit-backward-down
         paredit-backward-kill-word
+        paredit-backward-up
         paredit-close-curly
         paredit-close-round
         paredit-doublequote
         paredit-forward
         paredit-forward-barf-sexp
         paredit-forward-delete
+        paredit-forward-down
         paredit-forward-kill-word
         paredit-forward-slurp-sexp
+        paredit-forward-up
         paredit-kill
         paredit-newline
         paredit-open-curly
@@ -68,6 +72,8 @@
 
 (setq mc/cmds-to-run-once
       '(
+        beginning-of-buffer
+        cljr-create-fn-from-example
         helm-M-x
         helm-ag--edit-commit
         plexus/edit-md-source-block
