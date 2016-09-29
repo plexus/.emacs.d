@@ -38,6 +38,7 @@
   (put-clojure-indent 'PUT 2)
   (put-clojure-indent 'DELETE 2)
   (put-clojure-indent 'context 2)
+  (put-clojure-indent 'case-of 2)
 
   (put-clojure-indent 'js/React.createElement 2)
   (put-clojure-indent 'element 2)

@@ -127,4 +127,8 @@
 
 (add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
 
+;; disable fringes... not sure yet if I want this
+(fringe-mode 0)
+;;(fringe-mode nil) ;; reset to default
+
 (provide 'better-defaults)

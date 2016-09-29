@@ -10,4 +10,10 @@
 
 (use-package haskell-mode :ensure t)
 
+(use-package elm-mode :ensure t)
+
+(use-package haml-mode :ensure t)
+(use-package yaml-mode :ensure t)
+(use-package feature-mode :ensure t)
+
 (provide 'setup-mode-packages)

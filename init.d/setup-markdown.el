@@ -35,10 +35,9 @@
             (make-local-variable 'restore-start)
             (make-local-variable 'restore-end)
             (make-local-variable 'restore-buffer)
-            (funcall (intern (concat lang "-mode")))))))
+            (funcall (intern (concat (downcase lang) "-mode")))))))
     (switch-to-buffer buffer)
     (plexus/restore-mode 1)))
-
 
 (defun plexus/restore-md-source-block ()
   (interactive)

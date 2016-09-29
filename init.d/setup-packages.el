@@ -113,4 +113,15 @@
 
 (use-package string-edit :ensure t)
 
+;; Highlight Symbol
+(use-package highlight-symbol
+  :ensure t
+  :init
+  (progn
+    (add-hook 'prog-mode-hook
+	      (lambda ()
+		(highlight-symbol-mode)
+		(highlight-symbol-nav-mode)))
+    (setq highlight-symbol-idle-delay 0.25)))
+
 (provide 'setup-packages)

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: :mpl
+# key: :mpl
+# --
+:license {:name "Mozilla Public License 2.0"
+          :url "https://www.mozilla.org/en-US/MPL/2.0/"}

@@ -25,10 +25,12 @@
         org-force-self-insert
         org-kill-line
         org-self-insert-command
+        org-yank
         paredit-backward
         paredit-backward-barf-sexp
         paredit-backward-down
         paredit-backward-kill-word
+        paredit-backward-slurp-sexp
         paredit-backward-up
         paredit-close-curly
         paredit-close-round
@@ -68,6 +70,7 @@
         wgrep-finish-edit
         yas-expand
         yas-expand
+        haml-electric-backspace
         ))
 
 (setq mc/cmds-to-run-once

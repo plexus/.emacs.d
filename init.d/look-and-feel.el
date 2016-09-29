@@ -21,4 +21,10 @@
 ;(color-theme-sanityinc-tomorrow-eighties)
 (color-theme-sanityinc-tomorrow-night)
 
+;; (add-hook 'prog-mode-hook
+;; 	  (lambda ()
+;; 	    ;; Show line number
+;; 	    ;; (linum-mode 1)
+;; 	    (hl-line-mode 1)))
+
 (provide 'look-and-feel)
