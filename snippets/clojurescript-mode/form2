@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: form2
+# key: form2
+# --
+(defn $1 []
+  $2
+  (fn []
+    $3))

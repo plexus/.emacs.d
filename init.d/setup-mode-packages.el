@@ -16,4 +16,9 @@
 (use-package yaml-mode :ensure t)
 (use-package feature-mode :ensure t)
 
+(use-package restclient
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.rest$" . restclient-mode)))
+
 (provide 'setup-mode-packages)

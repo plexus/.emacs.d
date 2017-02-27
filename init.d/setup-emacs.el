@@ -7,8 +7,20 @@
       `(("." . ,(expand-file-name
                  (concat user-emacs-directory "backups")))))
 
+(setq backup-by-copying t      ; don't clobber symlinks
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)       ; use versioned backups
+
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
+
+;; Do save #..# files
+(setq auto-save-default t)
+
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name (concat user-emacs-directory "autosave")) t)))
 
 ;; Save point position between sessions
 (require 'saveplace)

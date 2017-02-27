@@ -8,7 +8,7 @@
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector [base00 base08 base0B base0A base0D base0E base0D base05])
  '(ansi-term-color-vector
-   [unspecified base00 base08 base0B base0A base0D base0E base0D base05])
+   [unspecified base00 base08 base0B base0A base0D base0E base0D base05] t)
  '(cider-cljs-lein-repl
    "(do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl))")
  '(cider-docview-javadoc-path
@@ -58,13 +58,52 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe ox-gfm restclient http-twiddle "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    (sass-mode aggressive-indent seq cider clojure-mode clj-refactor rest-client
+               (dash "2.12.0")
+               (dash "2.13.0")
+               package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe ox-gfm restclient http-twiddle "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep web-mode undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
  '(projectile-create-missing-test-files t)
  '(safe-local-variable-values
    (quote
-    ((org-html-table-align-individual-fields)
+    ((cider-cljs-lein-repl . "(do (reloaded.repl/go) (user/cljs-repl))")
+     (cider-cljs-lein-repl . "(do (reloaded-repl/go) (user/cljs-repl))")
+     (cider-cljs-lein-repl . "(do (user/go) (user/cljs-repl))")
+     (cider-cljs-lein-repl . "(user/cljs-repl)")
+     (cider-cljs-lein-repl . "(do (user/run) (user/browser-repl))")
+     (cider-cljs-lein-repl . "(do (dev) (go) (cljs-repl))")
+     (cider-refresh-after-fn . "reloaded.repl/resume")
+     (cider-refresh-before-fn . "reloaded.repl/suspend")
+     (eval when
+           (and
+            (buffer-file-name)
+            (file-regular-p
+             (buffer-file-name))
+            (string-match-p "^[^.]"
+                            (buffer-file-name)))
+           (unless
+               (featurep
+                (quote package-build))
+             (let
+                 ((load-path
+                   (cons "../package-build" load-path)))
+               (require
+                (quote package-build))))
+           (package-build-minor-mode)
+           (set
+            (make-local-variable
+             (quote package-build-working-dir))
+            (expand-file-name "../working/"))
+           (set
+            (make-local-variable
+             (quote package-build-archive-dir))
+            (expand-file-name "../packages/"))
+           (set
+            (make-local-variable
+             (quote package-build-recipes-dir))
+            default-directory))
+     (org-html-table-align-individual-fields)
      (eval font-lock-add-keywords nil
            (\`
             (((\,

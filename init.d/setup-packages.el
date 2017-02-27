@@ -21,7 +21,10 @@
   (setq fci-rule-color "#111122"))
 
 ;; Expand snippets
-(use-package yasnippet :ensure t)
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all))
 
 ;; Intelligent sexp editing. M-x customize-group smartparens
 (use-package smartparens
@@ -114,14 +117,14 @@
 (use-package string-edit :ensure t)
 
 ;; Highlight Symbol
-(use-package highlight-symbol
-  :ensure t
-  :init
-  (progn
-    (add-hook 'prog-mode-hook
-	      (lambda ()
-		(highlight-symbol-mode)
-		(highlight-symbol-nav-mode)))
-    (setq highlight-symbol-idle-delay 0.25)))
+;; (use-package highlight-symbol
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     (remove-hook 'prog-mode-hook
+;; 	      (lambda ()
+;; 		(highlight-symbol-mode)
+;; 		(highlight-symbol-nav-mode)))
+;;     (setq highlight-symbol-idle-delay 0.25)))
 
 (provide 'setup-packages)

@@ -2,16 +2,20 @@
   :ensure t
 
   :config
+  (add-hook 'clojure-mode-hook 'yas-minor-mode)
+  (add-hook 'clojure-mode-hook 'subword-mode)
+
   ;;;; Optional: add structural editing
   (use-package paredit
     :ensure t
     :config
     (add-hook 'clojure-mode-hook 'paredit-mode)
-    (add-hook 'clojure-mode-hook 'yas-minor-mode)
     (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp)
     (define-key paredit-mode-map (kbd "C-M-{") 'paredit-wrap-curly)
     (define-key paredit-mode-map (kbd "C-M-<") 'paredit-wrap-square)
-    (define-key paredit-mode-map (kbd "C-M-(") 'paredit-wrap-round))
+    (define-key paredit-mode-map (kbd "C-M-(") 'paredit-wrap-round)
+    (define-key paredit-mode-map (kbd "C-M-f") 'clojure-forward-logical-sexp)
+    (define-key paredit-mode-map (kbd "C-M-b") 'clojure-backward-logical-sexp))
 
     ;;; Give matching parentheses matching colors
   (use-package rainbow-delimiters
@@ -19,11 +23,17 @@
     :config
     (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode))
 
+  (use-package aggressive-indent
+    :ensure t
+    :config
+    (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+
     ;;; Integrated REPL environment
   (use-package cider
     :ensure t
     :config
     (add-hook 'clojure-mode-hook 'cider-mode)
+    (setq nrepl-prompt-to-kill-server-buffer-on-quit nil)
     (use-package cider-eval-sexp-fu :ensure t)
     (use-package clj-refactor
       :ensure t
@@ -31,44 +41,53 @@
       (add-hook 'clojure-mode-hook 'clj-refactor-mode)
       (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
       (cljr-add-keybindings-with-prefix "H-m")
-      (setq cljr-warn-on-eval nil)))
+      (setq cljr-warn-on-eval nil)
+      (setq cljr-favor-prefix-notation nil)))
 
-  (put-clojure-indent 'GET 2)
-  (put-clojure-indent 'POST 2)
-  (put-clojure-indent 'PUT 2)
-  (put-clojure-indent 'DELETE 2)
-  (put-clojure-indent 'context 2)
-  (put-clojure-indent 'case-of 2)
-
-  (put-clojure-indent 'js/React.createElement 2)
-  (put-clojure-indent 'element 2)
-  (put-clojure-indent 's/fdef 1)
-  (put-clojure-indent 'filter-routes 1)
-  (put-clojure-indent 'catch-pg-key-error 1)
-  (put-clojure-indent 'handle-pg-key-error 2)
+  (define-clojure-indent
+    (GET 2)
+    (POST 2)
+    (PUT 2)
+    (DELETE 2)
+    (context 2)
+    (case-of 2)
+    (js/React.createElement 2)
+    (element 2)
+    (s/fdef 1)
+    (filter-routes 1)
+    (catch-pg-key-error 1)
+    (handle-pg-key-error 2)
+    (at 1))
 
   (put-clojure-indent 'component 1)
 
   (setq plexus/clojure-fill-column 20)
 
-  (defun plexus/cider-eval-and-insert (&optional prefix)
-    (interactive "P")
-    (if t ;;prefix
-        (let ((pos (point)))
-          (cider-eval-last-sexp t)
-          (goto-char pos)
-          (insert (format (format "%%%ds ;;=> " (- plexus/clojure-fill-column (current-column))) "")))
+  (defun plexus/cider-eval-and-insert ()
+    (interactive)
+    (let* ((lbp (line-beginning-position))
+           (comment-pos (search-backward ";;=>" lbp t)))
+      (if comment-pos
+          (progn
+            (goto-char comment-pos)
+            (delete-region comment-pos (line-end-position))
+            (cider-eval-last-sexp t)
+            (goto-char comment-pos)
+            (insert ";;=> "))
+        (progn
+          (delete-horizontal-space)
+          (let ((pos (point)))
+            (cider-eval-last-sexp t)
+            (goto-char pos)
+            (insert
+             (format
+              (format "%%%ds;;=> " (max 1 (if (= (current-column) 0)
+                                              1
+                                            (1+ (- plexus/clojure-fill-column (current-column))))))
+              "")))))))
 
-      (let* ((lbp (line-beginning-position))
-             (comment-pos (search-backward ";;=>" lbp t)))
-        (if comment-pos
-            (progn
-              (goto-char comment-pos)
-              (delete-region comment-pos (line-end-position))
-              (cider-eval-last-sexp t)
-              (goto-char comment-pos)
-              (insert ";;=> "))
-          (cider-eval-last-sexp)))))
+
+
 
   (define-key cider-mode-map (kbd "C-x C-e") 'cider-eval-last-sexp)
   (define-key cider-mode-map (kbd "C-x C-w") 'plexus/cider-eval-and-insert)
@@ -105,5 +124,29 @@
 
   :else
   (throw (ex-info \"Failed to initialize CLJS repl. Add com.cemerick/piggieback and optionally figwheel-sidecar to your project.\" {})))")
+
+(defun cider-quit-all ()
+  (interactive)
+  (progn
+    (dolist (connection cider-connections)
+      (cider--quit-connection connection))
+    (message "All active nREPL connections were closed")))
+
+;; override this to use interrupt-process (SIGINT) instead of kill-process
+;; (SIGKILL) so process can clean up
+(defun nrepl--maybe-kill-server-buffer (server-buf)
+  "Kill SERVER-BUF and its process, subject to user confirmation.
+Do nothing if there is a REPL connected to that server."
+  (with-current-buffer server-buf
+    ;; Don't kill the server if there is a REPL connected to it.
+    (when (and (not nrepl-client-buffers)
+               (or (not nrepl-prompt-to-kill-server-buffer-on-quit)
+                   (y-or-n-p "Also kill server process and buffer? ")))
+
+      (let ((proc (get-buffer-process server-buf)))
+        (when (process-live-p proc)
+          (set-process-query-on-exit-flag proc nil)
+          (interrupt-process proc)) ;; <-- s/kill/interrupt/
+        (kill-buffer server-buf)))))
 
 (provide 'setup-clojure)

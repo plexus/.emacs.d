@@ -5,7 +5,7 @@
         ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
 
 (package-initialize)
-(unless (file-exists-p "~/.emacs.d/elpa/archives/melpa") (package-refresh-contents))
+(unless (file-exists-p (expand-file-name "elpa/archives/melpa" user-emacs-directory)) (package-refresh-contents))
 (package-install 'use-package)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -237,10 +237,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Hiccup
 
-
-(defun -> (&rest args)
-  (reduce (lambda (x y) (y x))
-          (sequence args)))
+;; threading macros copied from https://github.com/sroccaserra/emacs/blob/master/tools.el
 
 (defmacro -> (x &optional form &rest more)
   (cond ((not (null more))
@@ -326,7 +323,7 @@
 (defun plexus/show-record-counter-in-modeline ()
   (interactive)
   (setq mode-line-format
-        (append mode-line-format '(">>>" (:eval plexus/record-counter) "<<<"))))
+        (append '(">>>" (:eval plexus/record-counter) "<<<") mode-line-format)))
 
 (defun plexus/set-record-counter (i)
   (setq plexus/record-counter (propertize (number-to-string i) 'face 'bold)))
@@ -334,3 +331,17 @@
 (make-face 'plexus/writing-face)
 
 (set-face-font 'plexus/writing-face "Lato")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; backup / autosave
+
+(setq
+   backup-by-copying t      ; don't clobber symlinks
+   backup-directory-alist
+    '(("." . "~/.saves"))    ; don't litter my fs tree
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)       ; use versioned backups
+
+(expand-file-name "backups" user-emacs-directory)

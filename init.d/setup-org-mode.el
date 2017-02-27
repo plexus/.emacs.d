@@ -10,6 +10,7 @@
   :pin org
   :config
   (use-package org-bullets :ensure t)
+  (use-package ox-gfm :ensure t)
   (use-package org-present
     :ensure t
     :bind (:map org-present-mode-keymap
@@ -96,6 +97,9 @@
         ("linenos" "")))
 
 
+;; don't sum 24 hours to a day, just total hours
+(setq org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+
 (defun lambdaisland/export-guides ()
   (interactive)
   (with-current-buffer (find-file-noselect "/home/arne/github/lambdaisland-guides/repls.org")
@@ -103,6 +107,6 @@
     (org-latex-export-to-pdf)
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.mobi")
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.epub")
-    (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/app/resources/guides")))
+    (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/App/resources/guides")))
 
 (provide 'setup-org-mode)

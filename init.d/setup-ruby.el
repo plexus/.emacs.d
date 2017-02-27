@@ -1,4 +1,4 @@
-(use-package chruby 
+(use-package chruby
   :ensure t
   :config
   (chruby "2.3.0"))
@@ -34,22 +34,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; rcodetools / xmpfilter
 
-;; (require 'f)
+(require 'f)
 
-;; (defun plexus/rcodetools-path ()
-;;   (f-join
-;;    (shell-command-to-string "gem which rcodetools/xmpfilter")
-;;    "../../.."))
+(defun plexus/rcodetools-path ()
+  (f-join
+   (shell-command-to-string "gem which rcodetools/xmpfilter")
+   "../../.."))
 
-;; (defun plexus/add-load-path (path)
-;;   (if (not (-contains? load-path path))
-;;       (setq load-path
-;;             (append (list path)
-;;                     load-path))))
+(defun plexus/add-load-path (path)
+  (if (not (-contains? load-path path))
+      (setq load-path
+            (append (list path)
+                    load-path))))
 
-;; (plexus/add-load-path (plexus/rcodetools-path))
-;; (require 'rcodetools)
-;; (define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
+(plexus/add-load-path (plexus/rcodetools-path))
+(require 'rcodetools)
+(define-key ruby-mode-map (kbd "C-c C-c") 'xmp)
 
 
 (provide 'setup-ruby)

@@ -30,6 +30,8 @@
 
 (global-set-key (kbd "H-s") 'helm-projectile-ag) ; search in project on steroids
 
+(global-set-key (kbd "H-k") 'kill-this-buffer)
+
 ;; Alternative to C-c p, but keeping the original binding as well
 (define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
 

@@ -4,8 +4,11 @@
 (setq mc/cmds-to-run-for-all
       '(
         backward-sexp
+        cider-eval-last-sexp
         cljr-slash
         cljr-splice-sexp-killing-backward
+        clojure-backward-logical-sexp
+        clojure-forward-logical-sexp
         coffee-dedent-line-backspace
         complete-symbol
         delete-horizontal-space
@@ -14,13 +17,17 @@
         electric-newline-and-maybe-indent
         end-of-buffer
         end-of-defun
+        eval-last-sexp
         forward-sexp
+        haml-electric-backspace
+        handle-switch-frame
         helm-projectile-find-file
         indent-for-tab-command
         kill-region
         kill-sexp
         mark-whole-buffer
         markdown-exdent-or-delete
+        org-beginning-of-line
         org-end-of-line
         org-force-self-insert
         org-kill-line
@@ -67,10 +74,10 @@
         transpose-sexps
         upcase-region
         wdired-finish-edit
+        wdired-next-line
         wgrep-finish-edit
         yas-expand
         yas-expand
-        haml-electric-backspace
         ))
 
 (setq mc/cmds-to-run-once

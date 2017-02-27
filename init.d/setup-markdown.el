@@ -72,6 +72,4 @@
   (define-key plexus/restore-mode-map (kbd "C-c '") 'plexus/restore-md-source-block)
   (add-hook 'markdown-mode-hook 'yas-minor-mode))
 
-
-
 (provide 'setup-markdown)

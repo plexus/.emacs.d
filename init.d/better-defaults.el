@@ -17,9 +17,6 @@
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
-;; Don't save #..# files
-(setq auto-save-default nil)
-
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
 
@@ -130,5 +127,8 @@
 ;; disable fringes... not sure yet if I want this
 (fringe-mode 0)
 ;;(fringe-mode nil) ;; reset to default
+
+;; Keep org-mode timestamps in English, e.g. [2016-11-05 Sat 10:03]
+(setq system-time-locale "C")
 
 (provide 'better-defaults)
