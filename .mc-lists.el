@@ -28,6 +28,7 @@
         mark-whole-buffer
         markdown-exdent-or-delete
         org-beginning-of-line
+        org-delete-indentation
         org-end-of-line
         org-force-self-insert
         org-kill-line

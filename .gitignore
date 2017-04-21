@@ -11,3 +11,5 @@ backup
 eshell
 .emacs.desktop.lock
 %backup%~
+\#\!*
+url/cookies

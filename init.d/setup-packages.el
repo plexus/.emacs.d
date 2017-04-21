@@ -59,7 +59,9 @@
                                        "H-p"     ; projectile (custom)
                                        "C-c C-m" ; clj-refactor
                                        "C-x w"   ; highlight
-                                       "M-m"))
+                                       "M-m"
+                                       "H-m" ; clj-refactor
+                                       ))
   (guide-key-mode t)
   (setq guide-key/recursive-key-sequence-flag t)
   (setq guide-key/popup-window-position 'bottom))
@@ -126,5 +128,10 @@
 ;; 		(highlight-symbol-mode)
 ;; 		(highlight-symbol-nav-mode)))
 ;;     (setq highlight-symbol-idle-delay 0.25)))
+
+(use-package ace-jump-mode :ensure t
+  :bind (("H-'" . ace-jump-mode)
+         ("H-," . ace-jump-mode-pop-mark))
+  :config (ace-jump-mode-enable-mark-sync))
 
 (provide 'setup-packages)
