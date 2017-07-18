@@ -69,6 +69,7 @@
   :config
   (define-key markdown-mode-map (kbd "C-c C-l") 'plexus/md-insert-link)
   (define-key markdown-mode-map (kbd "C-c '") 'plexus/edit-md-source-block)
+  (define-key markdown-mode-map (kbd "C-M-w") 'sp-copy-sexp)
   (define-key plexus/restore-mode-map (kbd "C-c '") 'plexus/restore-md-source-block)
   (add-hook 'markdown-mode-hook 'yas-minor-mode))
 

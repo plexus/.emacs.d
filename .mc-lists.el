@@ -28,10 +28,12 @@
         mark-whole-buffer
         markdown-exdent-or-delete
         org-beginning-of-line
+        org-cycle
         org-delete-indentation
         org-end-of-line
         org-force-self-insert
         org-kill-line
+        org-metaright
         org-self-insert-command
         org-yank
         paredit-backward
@@ -42,6 +44,7 @@
         paredit-backward-up
         paredit-close-curly
         paredit-close-round
+        paredit-close-square
         paredit-doublequote
         paredit-forward
         paredit-forward-barf-sexp
@@ -58,6 +61,7 @@
         paredit-semicolon
         paredit-splice-sexp-killing-backward
         plexus/cider-eval-and-insert
+        pug-electric-backspace
         sp-backward-delete-char
         sp-backward-delete-char
         sp-backward-down-sexp
@@ -77,6 +81,7 @@
         wdired-finish-edit
         wdired-next-line
         wgrep-finish-edit
+        yaml-electric-dash-and-dot
         yas-expand
         yas-expand
         ))
@@ -84,9 +89,11 @@
 (setq mc/cmds-to-run-once
       '(
         beginning-of-buffer
+        cider-eval-defun-at-point
         cljr-create-fn-from-example
         helm-M-x
         helm-ag--edit-commit
         plexus/edit-md-source-block
         switch-to-buffer
+        yaml-electric-backspace
         ))

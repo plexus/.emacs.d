@@ -4,11 +4,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector [base00 base08 base0B base0A base0D base0E base0D base05])
- '(ansi-term-color-vector
-   [unspecified base00 base08 base0B base0A base0D base0E base0D base05] t)
  '(cider-cljs-lein-repl
    "(do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl))")
  '(cider-docview-javadoc-path
@@ -17,6 +12,9 @@
  '(cider-javadoc-path
    (quote
     ("/home/arne/opt/javadoc/api" "/home/arne/opt/javadoc/docs/api")))
+ '(cljr-cljc-clojure-test-declaration "[clojure.test :refer [deftest testing is are]]")
+ '(cljr-cljs-clojure-test-declaration "[clojure.test :refer [deftest testing is are async]]")
+ '(cljr-clojure-test-declaration "[clojure.test :refer :all]")
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
@@ -26,8 +24,10 @@
  '(elfeed-feeds
    (quote
     ("https://pragtob.wordpress.com/feed/" "http://devblog.avdi.org/feed/" "https://blog.eventgonegood.com/feed.xml" "http://devblog.arnebrasseur.net/feed.xml" "http://www.plantseedstoday.com/see-all-posts?format=RSS" "http://endlessparentheses.com/atom.xml")))
+ '(emojify-emoji-styles (quote (unicode)))
  '(fci-rule-color "#eee8d5")
  '(flymake-coffee-coffeelint-configuration-file "/home/arne/.coffeelint.json")
+ '(global-emojify-mode t)
  '(gnus-posting-styles
    (quote
     ((".*clojure.*"
@@ -58,16 +58,33 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
-                   (dash "2.12.0")
-                   (dash "2.13.0")
-                   package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    (a 4clojure slime lua-mode ob-restclient dired+ dired-plus company json-mode pug-mode html-to-hiccup emojify mastodon ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
+       (dash "2.12.0")
+       (dash "2.13.0")
+       package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
  '(projectile-create-missing-test-files t)
  '(safe-local-variable-values
    (quote
-    ((cider-refresh-after-fn . "reloaded.repl/go")
+    ((inf-clojure-repl-type . clojure)
+     (inf-clojure-program . "lein figwheel")
+     (inf-clojure-lein-cmd . "lein figwheel")
+     (inf-clojure-repl-type quote clojure)
+     (inf-clojure-lein-cmd . "nc localhost 5555")
+     (dired-actual-switches . "-AlhrG --color=always")
+     (dired-listing-switches . "-alr")
+     (helm-ag-command-option . "--clojure")
+     (buffer-save-without-query . t)
+     (cider-boot-parameters . "editor-dev")
+     (eval define-clojure-indent
+           (assert 1)
+           (assoc 1)
+           (ex-info 1)
+           (match 1)
+           (merge-with 1)
+           (with-redefs-fn 1))
+     (cider-refresh-after-fn . "reloaded.repl/go")
      (cider-refresh-before-fn . "reloaded.repl/stop")
      (cider-cljs-lein-repl . "(do (reloaded.repl/go) (user/cljs-repl))")
      (cider-cljs-lein-repl . "(do (reloaded-repl/go) (user/cljs-repl))")

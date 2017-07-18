@@ -13,6 +13,21 @@
 (use-package htmlize :ensure t)
 (use-package http-twiddle :ensure t)
 (use-package nginx-mode :ensure t)
+(use-package rainbow-mode :ensure t)
+
+(defun haml-indent-block ()
+  (interactive)
+  (beginning-of-line)
+  (haml-mark-sexp-but-not-next-line)
+  (haml-reindent-region-by haml-indent-offset))
+
+(use-package haml-mode
+  :ensure t
+  :config
+  (define-key haml-mode-map (kbd "<C-tab>") 'haml-indent-block))
+
+
+
 
 (provide 'setup-web)
 

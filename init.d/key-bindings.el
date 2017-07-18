@@ -41,19 +41,11 @@
 
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 
+;; Not having this work everywhere is a major source of frustration
+(global-set-key (kbd "C-M-k") #'sp-kill-sexp)
+(global-set-key (kbd "C-M-w") #'sp-copy-sexp)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PrtScr...
-
-(global-set-key (kbd "C-c d") 'duplicate-thing)
-
-(setq plexus-prtscr-keymap (make-keymap "PrtScr"))
-(setq plexus-prtscr-g-keymap (make-keymap "goto..."))
-
-(global-set-key (kbd "<print>") plexus-prtscr-keymap)
-
-(define-key plexus-prtscr-keymap "g" plexus-prtscr-g-keymap)
-(define-key plexus-prtscr-g-keymap "t" 'plexus/cider-goto-test-file)
-
+(global-set-key (kbd "s-`") #'hs-toggle-hiding)
+(global-set-key (kbd "M-:") #'eval-expression)
 
 (provide 'key-bindings)

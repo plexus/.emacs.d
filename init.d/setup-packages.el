@@ -134,4 +134,19 @@
          ("H-," . ace-jump-mode-pop-mark))
   :config (ace-jump-mode-enable-mark-sync))
 
+(use-package mastodon :ensure t
+  :init
+  (setq mastodon-instance-url
+        "https://toot.cat"
+        ;;"https://mastodon.social"
+        ))
+
+(use-package emojify :ensure t
+  :config
+  (global-emojify-mode))
+
+(use-package edn :ensure t)
+
+(use-package dired+ :ensure t)
+
 (provide 'setup-packages)

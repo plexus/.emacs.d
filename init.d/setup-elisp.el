@@ -21,6 +21,11 @@
   ;; Flash sexps when evaluating them
   (use-package eval-sexp-fu :ensure t)
 
-  (define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region))
+  (define-key emacs-lisp-mode-map (kbd "C-C C-r") 'eval-region)
+
+  (add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode)))
+
+
+(add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-mode)
 
 (provide 'setup-elisp)

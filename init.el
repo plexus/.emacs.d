@@ -1,16 +1,29 @@
 (setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
+      '(("lambdaisland" . "https://lambdaisland.github.io/elpa/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
+        ("org" . "http://orgmode.org/elpa/")  ;; no https :(
+        ))
+
+(require 'package-x)
+
+(setq package-archive-upload-base "/home/arne/LambdaIsland/elpa")
+
+(setq package-user-dir
+      (expand-file-name (concat "elpa-" emacs-version) user-emacs-directory))
 
 (package-initialize)
-(unless (file-exists-p (expand-file-name "elpa/archives/melpa" user-emacs-directory)) (package-refresh-contents))
+(unless (file-exists-p (expand-file-name "archives/melpa" package-user-dir)) (package-refresh-contents))
+
 (package-install 'use-package)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path (expand-file-name "init.d" user-emacs-directory))
+(add-to-list 'load-path "/home/arne/github/unrepl.el")
+(add-to-list 'load-path "/home/arne/github/clj-parse")
+(add-to-list 'load-path "/home/arne/github/a.el")
 
 (require 'better-defaults)
 
@@ -19,6 +32,7 @@
 (require 'setup-mode-packages)
 
 (require 'setup-elisp)
+(require 'setup-common-lisp)
 (require 'setup-clojure)
 (require 'setup-coffeescript)
 (require 'setup-javascript)
@@ -163,34 +177,6 @@
     ;; part of the frame
     (format "%d,%d" (mod (+ x 10) 1920) (+ y 35))))
 
-(defun plexus/cider-current-ns-file-name ()
-  (let* ((ns (cider-current-ns))
-         (ns-path (replace-regexp-in-string "\\." "/" ns))
-         (clj-file (concat "/" ns-path ".clj"))
-         (cljs-file (concat "/" ns-path ".cljs"))
-         (classpath (cider-sync-request:classpath))
-         (files (-reduce-r-from (lambda (path l)
-                                  (list*
-                                   (concat path cljs-file)
-                                   (concat path clj-file)
-                                   l))
-                                '()
-                                classpath)))
-    (-find 'file-exists-p files)))
-
-(defun plexus/cider-current-ns-find-file ()
-  (interactive)
-  (if-let ((f (plexus/cider-current-ns-file-name)))
-      (find-file f)))
-
-(defun plexus/cider-goto-test-file ()
-  (interactive)
-  (let* ((ns (cider-current-ns))
-         (src-file (plexus/cider-current-ns-file-name))
-         (ns-path (replace-regexp-in-string "\\." "/" ns))
-         (ext (f-ext src-file)))
-    (find-file (concat (projectile-project-root) "test/" ns-path "_test." ext))))
-
 ;; from https://www.emacswiki.org/emacs/SqlMode
 ;; PostgreSQL databases with underscores in their names trip up the prompt specified in sql.el. I work around this with the following. Warning, this sets the prompt globally, which is fine by me since I only ever use Postgres.
 
@@ -263,3 +249,130 @@
    version-control t)       ; use versioned backups
 
 (expand-file-name "backups" user-emacs-directory)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ERT stuff
+
+
+(defun plexus/ert-run-quietly (selector &optional output-buffer-name message-fn)
+  "Run the tests specified by SELECTOR and display the results in a buffer.
+
+SELECTOR works as described in `ert-select-tests'.
+OUTPUT-BUFFER-NAME and MESSAGE-FN should normally be nil; they
+are used for automated self-tests and specify which buffer to use
+and how to display message."
+  (interactive
+   (list (let ((default (if ert--selector-history
+                            ;; Can't use `first' here as this form is
+                            ;; not compiled, and `first' is not
+                            ;; defined without cl.
+                            (car ert--selector-history)
+                          "t")))
+           (read
+            (completing-read (if (null default)
+                                 "Run tests: "
+                               (format "Run tests (default %s): " default))
+                             obarray #'ert-test-boundp nil nil
+                             'ert--selector-history default nil)))
+         nil))
+  (unless message-fn (setq message-fn 'message))
+  (let ((output-buffer-name output-buffer-name)
+        buffer
+        listener
+        (message-fn message-fn))
+    (setq listener
+          (lambda (event-type &rest event-args)
+            (cl-ecase event-type
+              (run-started
+               (cl-destructuring-bind (stats) event-args
+                 (setq buffer (ert--setup-results-buffer stats
+                                                         listener
+                                                         output-buffer-name))
+                 ;;(pop-to-buffer buffer)
+                 ))
+              (run-ended
+               (cl-destructuring-bind (stats abortedp) event-args
+                 (funcall message-fn
+                          "%sRan %s tests, %s results were as expected%s%s"
+                          (if (not abortedp)
+                              ""
+                            "Aborted: ")
+                          (ert-stats-total stats)
+                          (ert-stats-completed-expected stats)
+                          (let ((unexpected
+                                 (ert-stats-completed-unexpected stats)))
+                            (if (zerop unexpected)
+                                ""
+                              (format ", %s unexpected" unexpected)))
+                          (let ((skipped
+                                 (ert-stats-skipped stats)))
+                            (if (zerop skipped)
+                                ""
+                              (format ", %s skipped" skipped))))
+                 (ert--results-update-stats-display (with-current-buffer buffer
+                                                      ert--results-ewoc)
+                                                    stats)
+                 (when (not (zerop (ert-stats-completed-unexpected stats)))
+                   (pop-to-buffer "*ert*"))))
+              (test-started
+               (cl-destructuring-bind (stats test) event-args
+                 (with-current-buffer buffer
+                   (let* ((ewoc ert--results-ewoc)
+                          (pos (ert--stats-test-pos stats test))
+                          (node (ewoc-nth ewoc pos)))
+                     (cl-assert node)
+                     (setf (ert--ewoc-entry-test (ewoc-data node)) test)
+                     (aset ert--results-progress-bar-string pos
+                           (ert-char-for-test-result nil t))
+                     (ert--results-update-stats-display-maybe ewoc stats)
+                     (ewoc-invalidate ewoc node)))))
+              (test-ended
+               (cl-destructuring-bind (stats test result) event-args
+                 (with-current-buffer buffer
+                   (let* ((ewoc ert--results-ewoc)
+                          (pos (ert--stats-test-pos stats test))
+                          (node (ewoc-nth ewoc pos)))
+                     (when (ert--ewoc-entry-hidden-p (ewoc-data node))
+                       (setf (ert--ewoc-entry-hidden-p (ewoc-data node))
+                             (ert-test-result-expected-p test result)))
+                     (aset ert--results-progress-bar-string pos
+                           (ert-char-for-test-result result
+                                                     (ert-test-result-expected-p
+                                                      test result)))
+                     (ert--results-update-stats-display-maybe ewoc stats)
+                     (ewoc-invalidate ewoc node))))))))
+    (with-current-buffer (get-buffer-create "*ert*")
+      (ert-run-tests
+       selector
+       listener))))
+
+(global-set-key (kbd "H-\\") (lambda ()
+                               (interactive)
+                               (require 'ert)
+                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/clj-parse/")))
+                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/a.el/")))
+                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/unrepl.el/")))
+                               (ert-delete-all-tests)
+
+                               (load "/home/arne/github/clj-parse/clj-lex.el")
+                               (load "/home/arne/github/clj-parse/clj-parse.el")
+                               (load "/home/arne/github/clj-parse/clj-edn.el")
+                               (load "/home/arne/github/clj-parse/clj-ast.el")
+
+                               (load "/home/arne/github/clj-parse/test/clj-parse-test.el")
+                               (load "/home/arne/github/clj-parse/test/clj-lex-test.el")
+                               (load "/home/arne/github/clj-parse/test/clj-unparse-test.el")
+                               (load "/home/arne/github/clj-parse/test/clj-edn-el-parity-test.el")
+                               (load "/home/arne/github/clj-parse/test/clj-edn-test.el")
+                               (load "/home/arne/github/clj-parse/test/clj-ast-test.el")
+
+                               (load "/home/arne/github/a.el/a.el")
+                               (load "/home/arne/github/a.el/test/a-test.el")
+
+                               (load "/home/arne/github/unrepl.el/unrepl.el")
+                               (load "/home/arne/github/unrepl.el/unrepl-test.el")
+                               (load "/home/arne/github/unrepl.el/unrepl-reader.el")
+                               (load "/home/arne/github/unrepl.el/unrepl-writer.el")
+                               (load "/home/arne/github/unrepl.el/unrepl-acceptance-test.el")
+
+                               (plexus/ert-run-quietly t)))

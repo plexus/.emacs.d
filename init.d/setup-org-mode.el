@@ -1,21 +1,55 @@
-;; org-mode: Don't ruin S-arrow to switch windows please (use M-+ and M-- instead to toggle)
-(setq org-replace-disputed-keys t)
-
-;; Fontify org-mode code blocks
-(setq org-src-fontify-natively t)
-
-
 (use-package org
   :ensure t
   :pin org
   :config
   (use-package org-bullets :ensure t)
+  (use-package ob-restclient :ensure t)
   (use-package ox-gfm :ensure t)
   (use-package org-present
     :ensure t
     :bind (:map org-present-mode-keymap
                 (("<next>" . org-present-next)
                  ("<prior>" . org-present-prev))))
+
+  ;; org-mode: Don't ruin S-arrow to switch windows please (use M-+ and M-- instead to toggle)
+  (setq org-replace-disputed-keys t)
+
+  ;; Fontify org-mode code blocks
+  (setq org-src-fontify-natively t)
+
+  (setq org-directory "~/Doku/org/")
+
+  (setq org-capture-templates `(("p"
+                                 "Protocol"
+                                 entry
+                                 (file+headline "/home/arne/LambdaIsland/notes/learnings.org"
+                                                "Inbox"
+                                                ;(lambda () (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
+                                                )
+                                 "* %(shell-command-to-string \"echo -n $(date +%Y-%m-%d)\")\n** %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n")
+                                ("L"
+                                 "Protocol Link"
+                                 entry
+                                 (file+headline "/home/arne/LambdaIsland/notes/learnings.org"
+                                                "Inbox"
+                                                ;(lambda () (shell-command-to-string "echo -n $(date +%Y-%m-%d)"))
+                                                )
+                                 "* %(shell-command-to-string \"echo -n $(date +%Y-%m-%d)\")\n** [[%:link][%:description]] \n")))
+
+  (require 'org-capture)
+  (require 'org-protocol)
+
+  (defun plexus/org-find-olp+resolve-lambdas (old-fn &rest args)
+    (prin1 args)
+    (apply old-fn
+           (mapcar (lambda (arg)
+                     (if (functionp arg)
+                         (apply arg ())
+                       arg))
+                   args)))
+
+  (advice-add 'org-find-olp :around #'plexus/org-find-olp+resolve-lambdas)
+
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
   :bind (:map org-mode-map
@@ -108,5 +142,15 @@
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.mobi")
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.epub")
     (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/App/resources/guides")))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)
+   (js . t)
+   (clojure . t)
+   (ruby . t)
+   (emacs-lisp . t)
+   (restclient . t)))
+
 
 (provide 'setup-org-mode)
