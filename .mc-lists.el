@@ -10,6 +10,7 @@
         clojure-backward-logical-sexp
         clojure-forward-logical-sexp
         coffee-dedent-line-backspace
+        company-complete
         complete-symbol
         delete-horizontal-space
         delete-indentation
@@ -17,16 +18,19 @@
         electric-newline-and-maybe-indent
         end-of-buffer
         end-of-defun
+        end-of-visual-line
         eval-last-sexp
         forward-sexp
         haml-electric-backspace
         handle-switch-frame
         helm-projectile-find-file
+        ido-switch-buffer
         indent-for-tab-command
         kill-region
         kill-sexp
         mark-whole-buffer
         markdown-exdent-or-delete
+        markdown-outdent-or-delete
         org-beginning-of-line
         org-cycle
         org-delete-indentation
@@ -34,6 +38,7 @@
         org-force-self-insert
         org-kill-line
         org-metaright
+        org-return-indent
         org-self-insert-command
         org-yank
         paredit-backward
@@ -73,6 +78,7 @@
         sp-forward-sexp
         sp-forward-slurp-sexp
         sp-kill-hybrid-sexp
+        sp-kill-sexp
         sp-kill-word
         sp-splice-sexp-killing-backward
         sp-up-sexp
@@ -95,5 +101,6 @@
         helm-ag--edit-commit
         plexus/edit-md-source-block
         switch-to-buffer
+        wdired-change-to-wdired-mode
         yaml-electric-backspace
         ))

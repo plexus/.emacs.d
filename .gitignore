@@ -1,4 +1,5 @@
 elpa
+elpa-*
 backups
 auto-save-list
 history
@@ -13,3 +14,6 @@ eshell
 %backup%~
 \#\!*
 url/cookies
+mastodon.plstore
+.cask
+ido.last

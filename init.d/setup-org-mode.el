@@ -145,12 +145,15 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((shell . t)
-   (js . t)
-   (clojure . t)
-   (ruby . t)
+ '((clojure . t)
+   (ditaa . t)
+   (dot . t)
    (emacs-lisp . t)
-   (restclient . t)))
-
+   (js . t)
+   (perl . t)
+   (python . t)
+   (restclient . t)
+   (ruby . t)
+   (shell . t)))
 
 (provide 'setup-org-mode)

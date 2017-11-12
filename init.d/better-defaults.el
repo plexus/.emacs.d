@@ -19,6 +19,7 @@
 
 ;; Auto refresh buffers
 (global-auto-revert-mode 1)
+(diminish 'auto-revert-mode)
 
 ;; Also auto refresh dired, but be quiet about it
 (setq global-auto-revert-non-file-buffers t)
@@ -74,6 +75,7 @@
 
 ;; Easily navigate sillycased words
 (global-subword-mode 1)
+(diminish 'subword-mode)
 
 ;; Don't break lines for me, please
 ;; (setq-default truncate-lines t)
@@ -130,5 +132,9 @@
 
 ;; Keep org-mode timestamps in English, e.g. [2016-11-05 Sat 10:03]
 (setq system-time-locale "C")
+
+;; Improves rendering of long lines.
+;; Not for everyone. If you plan on working with Arabic or other bidi languages don't use this.
+(setq-default bidi-display-reordering nil)
 
 (provide 'better-defaults)

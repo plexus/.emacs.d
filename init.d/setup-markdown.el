@@ -1,7 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; edit source blocks in markdown
 
-(use-package markdown-mode :ensure t)
+(use-package markdown-mode :ensure t
+  :config
+  (add-hook 'markdown-mode-hook #'visual-line-mode))
 
 (defvar plexus/restore-mode-map (make-sparse-keymap)
   "Keymap while plexus/restore-mode is active.")

@@ -8,12 +8,15 @@
   ;; Elisp go-to-definition with M-. and back again with M-,
   (use-package elisp-slime-nav
     :ensure t
+    :diminish elisp-slime-nav-mode
+    :diminish eldoc-mode
     :config
     (add-hook 'emacs-lisp-mode-hook 'elisp-slime-nav-mode)
     (add-hook 'emacs-lisp-mode-hook 'eldoc-mode))
 
   (use-package paredit
     :ensure t
+    :diminish paredit-mode
     :config
     (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
     (define-key emacs-lisp-mode-map (kbd "C-M-w") 'sp-copy-sexp))

@@ -35,20 +35,35 @@
 ;; All projectile mappings are under C-c p
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
   :config
   (projectile-global-mode))
 
 ;; IDO-like navigation
-(use-package helm :ensure t
+;; (use-package helm :ensure t
+;;   :config
+;;   (helm-mode 1)
+;;   (use-package helm-ag :ensure t)
+;;   (use-package helm-projectile :ensure t))
+
+(use-package helm-projectile :ensure t
+  :diminish helm-mode)
+
+(use-package ido :ensure t
   :config
-  (helm-mode 1)
-  (use-package helm-ag :ensure t)
-  (use-package helm-projectile :ensure t))
+  (ido-mode t)
+  (setq ido-auto-merge-work-directories-length -1)
+  (setq ido-default-buffer-method 'selected-window)
+  (define-key ido-file-completion-map (kbd "<left>") #'ido-delete-backward-updir))
+
+(alist-get 'left (cdddr ido-completion-map))
+
 
 ;; Pop up an overview of possible combinations when using a prefix key
 ;; and waiting a bit
 (use-package guide-key
   :ensure t
+  :diminish guide-key-mode
   :config
   (setq guide-key/guide-key-sequence '("C-x r"   ; register functions
                                        "C-x 4"   ; window functions
@@ -148,5 +163,9 @@
 (use-package edn :ensure t)
 
 (use-package dired+ :ensure t)
+
+(use-package so-long
+  :config
+  (so-long-enable))
 
 (provide 'setup-packages)

@@ -16,9 +16,15 @@
 (use-package yaml-mode :ensure t)
 (use-package feature-mode :ensure t)
 
+(use-package elixir-mode :ensure t)
+
 (use-package restclient
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.rest$" . restclient-mode)))
+
+(use-package avy :ensure t
+  :config
+  (global-set-key (kbd "C-:") 'avy-goto-char))
 
 (provide 'setup-mode-packages)

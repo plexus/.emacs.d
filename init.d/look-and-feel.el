@@ -1,7 +1,7 @@
 (set-frame-font "Inconsolata-17")
 ;;(set-frame-font "Anonymous Pro-14")
 
-(set-frame-parameter nil 'left-fringe 12)
+(set-frame-parameter nil 'left-fringe 18)
 
 ;; Emoji! 💩
 ;;(set-fontset-font t 'unicode "Symbola" nil 'prepend)
@@ -11,7 +11,7 @@
 (use-package color-theme-sanityinc-tomorrow :ensure t)
 
 (require 'color-theme-sanityinc-tomorrow)
-(require 'sanityinc-tomorrow-day-theme)
+;;(require 'sanityinc-tomorrow-day-theme)
 
 (require 'sanityinc-tomorrow-night-theme)
 
@@ -21,7 +21,7 @@
 ;(color-theme-sanityinc-tomorrow-bright)
 ;(color-theme-sanityinc-tomorrow-eighties)
 
-;(color-theme-sanityinc-tomorrow-day)
+;; (color-theme-sanityinc-tomorrow-day)
 (color-theme-sanityinc-tomorrow-night)
 
 ;; (add-hook 'prog-mode-hook

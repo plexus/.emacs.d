@@ -3,6 +3,7 @@
 
   :config
   (add-hook 'clojure-mode-hook 'yas-minor-mode)
+  (diminish 'yas-minor-mode)
   (add-hook 'clojure-mode-hook 'subword-mode)
 
   ;;;; Optional: add structural editing
@@ -25,12 +26,12 @@
 
   (use-package aggressive-indent
     :ensure t
+    :diminish aggressive-indent-mode
     :config
     (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
   (use-package html-to-hiccup :ensure t)
 
-    ;;; Integrated REPL environment
   (use-package cider
     :ensure t
     :config
@@ -40,6 +41,7 @@
     (use-package cider-eval-sexp-fu :ensure t)
 
     (use-package company :ensure t
+      :diminish company-mode
       :config
       (add-hook 'cider-repl-mode-hook #'company-mode)
       (add-hook 'cider-mode-hook #'company-mode)
@@ -52,7 +54,8 @@
       (add-hook 'cider-repl-mode-hook 'clj-refactor-mode)
       (cljr-add-keybindings-with-prefix "H-m")
       (setq cljr-warn-on-eval nil)
-      (setq cljr-favor-prefix-notation nil)))
+      (setq cljr-favor-prefix-notation nil))
+    )
 
   (define-clojure-indent
     (GET 2)
@@ -67,11 +70,12 @@
     (filter-routes 1)
     (catch-pg-key-error 1)
     (handle-pg-key-error 2)
+    (prop/for-all 1)
     (at 1))
 
   (put-clojure-indent 'component 1)
 
-  (setq plexus/clojure-fill-column 20)
+  (setq plexus/clojure-fill-column 45)
 
   (defun plexus/cider-eval-and-insert ()
     (interactive)
@@ -198,29 +202,29 @@ be reused."
         exact-buff)
     (or (cider--select-zombie-buffer repl-buffers) 'new)))
 
-(defun cljr--add-test-declarations ()
-  (save-excursion
-    (let* ((ns (clojure-find-ns))
-           (source-ns (cljr--find-source-ns-of-test-ns ns (buffer-file-name))))
-      (cljr--insert-in-ns ":require")
-      (when source-ns
-        (cond ((cljr--cljs-file-p)
-               (insert "[" source-ns " :refer []]"))
-              ((cljr--cljc-file-p)
-               (insert "[" source-ns " :refer []]"))
-              (t
-               (insert "[" source-ns " :refer :all]"))))
-      (cljr--insert-in-ns ":require")
-      (insert (cond
-               ((cljr--project-depends-on-p "midje")
-                cljr-midje-test-declaration)
-               ((cljr--project-depends-on-p "expectations")
-                cljr-expectations-test-declaration)
-               ((cljr--cljs-file-p)
-                cljr-cljs-clojure-test-declaration)
-               ((cljr--cljc-file-p)
-                cljr-cljc-clojure-test-declaration)
-               (t cljr-clojure-test-declaration))))
-    (indent-region (point-min) (point-max))))
+;; (defun cljr--add-test-declarations ()
+;;   (save-excursion
+;;     (let* ((ns (clojure-find-ns))
+;;            (source-ns (cljr--find-source-ns-of-test-ns ns (buffer-file-name))))
+;;       (cljr--insert-in-ns ":require")
+;;       (when source-ns
+;;         (cond ((cljr--cljs-file-p)
+;;                (insert "[" source-ns " :refer []]"))
+;;               ((cljr--cljc-file-p)
+;;                (insert "[" source-ns " :refer []]"))
+;;               (t
+;;                (insert "[" source-ns " :refer :all]"))))
+;;       (cljr--insert-in-ns ":require")
+;;       (insert (cond
+;;                ((cljr--project-depends-on-p "midje")
+;;                 cljr-midje-test-declaration)
+;;                ((cljr--project-depends-on-p "expectations")
+;;                 cljr-expectations-test-declaration)
+;;                ((cljr--cljs-file-p)
+;;                 cljr-cljs-clojure-test-declaration)
+;;                ((cljr--cljc-file-p)
+;;                 cljr-cljc-clojure-test-declaration)
+;;                (t cljr-clojure-test-declaration))))
+;;     (indent-region (point-min) (point-max))))
 
 (provide 'setup-clojure)

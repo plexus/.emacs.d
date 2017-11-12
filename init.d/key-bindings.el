@@ -19,7 +19,7 @@
 
 ;; replace built-ins
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 ;; Hyper!
 (global-set-key (kbd "H-]") 'er/expand-region)
@@ -47,5 +47,21 @@
 
 (global-set-key (kbd "s-`") #'hs-toggle-hiding)
 (global-set-key (kbd "M-:") #'eval-expression)
+
+(global-set-key (kbd "H-y") (lambda () (interactive) (insert (pop kill-ring-yank-pointer))))
+(global-set-key (kbd "H-Y") (lambda ()
+                              (interactive)
+                              (insert (pop kill-ring-yank-pointer))
+                              (insert "\n") (recenter 20)))
+(global-set-key (kbd "H-j") (lambda () (interactive) (insert "\n") (recenter 20)))
+;; (global-set-key (kbd "C-x C-f") #'ido-find-file)
+
+;; disable suspend
+(global-unset-key [(control z)])
+(global-unset-key [(control x) (control z)])
+
+;; might as well
+(global-set-key [(control z)] 'undo)
+(global-set-key [(control shift z)] 'undo-tree-redo)
 
 (provide 'key-bindings)

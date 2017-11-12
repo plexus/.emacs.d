@@ -43,31 +43,27 @@
  '(js2-indent-level 2)
  '(magit-completing-read-function (quote magit-ido-completing-read))
  '(org-babel-clojure-backend (quote cider))
- '(org-babel-load-languages
-   (quote
-    ((perl . t)
-     (ruby . t)
-     (sh . t)
-     (python . t)
-     (emacs-lisp . t)
-     (clojure . t)
-     (dot . t)
-     (ditaa . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    (a 4clojure slime lua-mode ob-restclient dired+ dired-plus company json-mode pug-mode html-to-hiccup emojify mastodon ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
-       (dash "2.12.0")
-       (dash "2.13.0")
-       package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    ("a" ruby-rubocop flycheck avy avy-mode elixir-mode :ido clojure-mode paredit a 4clojure slime lua-mode ob-restclient dired+ dired-plus company json-mode pug-mode html-to-hiccup emojify mastodon ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
+     (dash "2.12.0")
+     (dash "2.13.0")
+     package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
  '(projectile-create-missing-test-files t)
  '(safe-local-variable-values
    (quote
-    ((inf-clojure-repl-type . clojure)
+    ((plexus/keep-trailing-whitespace . t)
+     (projectile-project-type rails-rspec)
+     (projectile-project-type
+      (quote rails-rspec))
+     (projectile-project-type "rails-rspec")
+     (projectile-project-type "rspec-rails")
+     (inf-clojure-repl-type . clojure)
      (inf-clojure-program . "lein figwheel")
      (inf-clojure-lein-cmd . "lein figwheel")
      (inf-clojure-repl-type quote clojure)
@@ -171,7 +167,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(font-lock-constant-face ((t (:foreground "#4271ae" :family "Inconsolata"))))
+ '(font-lock-constant-face ((((class color) (min-colors 89)) (:foreground "#81a2be"))))
+ '(header-line ((t (:inherit mode-line-inactive :background "#1D1F21" :foreground "#8abeb7"))))
+ '(linum ((t (:background "#1d1f21" :foreground "#454545" :underline nil :slant normal :height 160 :width normal :family "Inconsolata"))))
  '(markdown-pre-face ((t (:inherit font-lock-constant-face :height 1.1))))
  '(plexus/third-person-face ((t (:background "orange" :foreground "black" :underline (:color "DarkOrange" :style wave)))))
  '(writegood-weasels-face ((t (:background "orange" :foreground "black" :underline (:color "DarkOrange" :style wave))))))

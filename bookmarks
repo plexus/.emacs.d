@@ -1,10 +1,10 @@
-;;;; Emacs Bookmark Format Version 1 ;;;;
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "~/LambdaIsland/notes/learnings.org")
- (front-context-string . "** 2017-07-05\n**")
- (rear-context-string . ")\n    #+END_SRC\n")
- (position . 1081))
+ (front-context-string . "** 2017-10-09\n**")
+ (rear-context-string . "rt/maria Wiki]]\n")
+ (position . 1088))
 )

@@ -1,17 +1,18 @@
 (setq package-archives
-      '(("lambdaisland" . "https://lambdaisland.github.io/elpa/")
+      '(;;("lambdaisland" . "https://lambdaisland.github.io/elpa/")
         ("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
         ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")  ;; no https :(
-        ))
+        ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
+
 
 (require 'package-x)
 
 (setq package-archive-upload-base "/home/arne/LambdaIsland/elpa")
 
 (setq package-user-dir
-      (expand-file-name (concat "elpa-" emacs-version) user-emacs-directory))
+      (expand-file-name (concat "elpa-" (substring emacs-version 0 (string-match "\\." emacs-version 3)))
+			user-emacs-directory))
 
 (package-initialize)
 (unless (file-exists-p (expand-file-name "archives/melpa" package-user-dir)) (package-refresh-contents))
@@ -21,9 +22,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path (expand-file-name "init.d" user-emacs-directory))
-(add-to-list 'load-path "/home/arne/github/unrepl.el")
-(add-to-list 'load-path "/home/arne/github/clj-parse")
-(add-to-list 'load-path "/home/arne/github/a.el")
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (require 'better-defaults)
 
@@ -44,6 +43,7 @@
 
 (require 'look-and-feel)
 (require 'key-bindings)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Random stuff below this line
@@ -346,33 +346,63 @@ and how to display message."
        selector
        listener))))
 
+(add-to-list 'load-path "/home/arne/github/unrepl.el")
+(add-to-list 'load-path "/home/arne/github/parseclj")
+(add-to-list 'load-path "/home/arne/github/a.el")
+
 (global-set-key (kbd "H-\\") (lambda ()
                                (interactive)
                                (require 'ert)
-                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/clj-parse/")))
-                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/a.el/")))
-                               (save-some-buffers t (lambda () (equal default-directory "/home/arne/github/unrepl.el/")))
                                (ert-delete-all-tests)
 
-                               (load "/home/arne/github/clj-parse/clj-lex.el")
-                               (load "/home/arne/github/clj-parse/clj-parse.el")
-                               (load "/home/arne/github/clj-parse/clj-edn.el")
-                               (load "/home/arne/github/clj-parse/clj-ast.el")
+                               (seq-doseq (dir ["/home/arne/github/a.el/"
+                                                "/home/arne/github/parseclj/"
+                                                "/home/arne/github/unrepl.el/"])
+                                 (save-some-buffers t (lambda () (equal default-directory dir)))
+                                 (seq-doseq (file (directory-files dir t "^[^\.].*\.el"))
+                                   (load file))
 
-                               (load "/home/arne/github/clj-parse/test/clj-parse-test.el")
-                               (load "/home/arne/github/clj-parse/test/clj-lex-test.el")
-                               (load "/home/arne/github/clj-parse/test/clj-unparse-test.el")
-                               (load "/home/arne/github/clj-parse/test/clj-edn-el-parity-test.el")
-                               (load "/home/arne/github/clj-parse/test/clj-edn-test.el")
-                               (load "/home/arne/github/clj-parse/test/clj-ast-test.el")
-
-                               (load "/home/arne/github/a.el/a.el")
-                               (load "/home/arne/github/a.el/test/a-test.el")
-
-                               (load "/home/arne/github/unrepl.el/unrepl.el")
-                               (load "/home/arne/github/unrepl.el/unrepl-test.el")
-                               (load "/home/arne/github/unrepl.el/unrepl-reader.el")
-                               (load "/home/arne/github/unrepl.el/unrepl-writer.el")
-                               (load "/home/arne/github/unrepl.el/unrepl-acceptance-test.el")
+                                 (seq-doseq (file (directory-files (concat dir "test/") t "^[^\.].*\.el"))
+                                   (unless (member file '("/home/arne/github/parseclj/test/test-helper.el"
+                                                          "/home/arne/github/a.el/test/test-helper.el"))
+                                     (load file))))
 
                                (plexus/ert-run-quietly t)))
+
+(defun plexus/clojure-pretty-print (ast indent)
+  (if (parseclj-ast-leaf-node? ast)
+      (insert (a-get ast :form))
+    (cl-case (parseclj-ast-node-type ast)
+      (:root (parseclj-unparse--collection ast "" ""))
+      (:list (parseclj-unparse--collection ast "(" ")"))
+      (:vector (parseclj-unparse--collection ast "[" "]"))
+      (:set (parseclj-unparse--collection ast "#{" "}"))
+      (:map (parseclj-unparse--collection ast "{" "}"))
+      (:tag (parseclj-unparse--tag ast)))))
+
+(defun plexus/format-clojure-region (start end)
+  (interactive "r")
+  (narrow-to-region start end)
+  (let ((ast (save-excursion
+               (goto-char (point-min))
+               (parseclj-parse-clojure))))))
+
+(defun plexus/read-dotenv-file ()
+  (interactive)
+  (let ((dir (locate-dominating-file "/home/arne/MGE/marimba/spec/send_grid/" ".env")))
+    (when dir
+      (let* ((dotenv (f-join dir ".env"))
+             (contents (with-temp-buffer
+                         (insert-file-contents dotenv)
+                         (buffer-substring-no-properties (point-min) (point-max)))))
+        (seq-doseq (line (s-split "\n" contents))
+          (when (and (s-match "=" line) (not (s-match "\s*#" line)))
+            (seq-let [var val] (mapcar 'string-trim (s-split "=" line))
+              (setenv var val))))
+        nil))))
+
+(defun plexus/screencast-mode ()
+  (interactive)
+  (blink-cursor-mode 0)
+  (setq indicate-empty-lines nil)
+  (set-frame-parameter nil 'left-fringe 18))
