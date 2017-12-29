@@ -86,6 +86,7 @@
         upcase-region
         wdired-finish-edit
         wdired-next-line
+        wdired-previous-line
         wgrep-finish-edit
         yaml-electric-dash-and-dot
         yas-expand

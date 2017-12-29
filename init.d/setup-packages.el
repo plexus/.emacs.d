@@ -146,7 +146,9 @@
 
 (use-package ace-jump-mode :ensure t
   :bind (("H-'" . ace-jump-mode)
-         ("H-," . ace-jump-mode-pop-mark))
+         ("C-M-s-\"" . ace-jump-mode)
+         ("H-," . ace-jump-mode-pop-mark)
+         ("C-M-s-<" . ace-jump-mode-pop-mark))
   :config (ace-jump-mode-enable-mark-sync))
 
 (use-package mastodon :ensure t

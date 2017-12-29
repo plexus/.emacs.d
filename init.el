@@ -6,9 +6,8 @@
         ("org" . "http://orgmode.org/elpa/"))) ;; no https :(
 
 
-(require 'package-x)
-
-(setq package-archive-upload-base "/home/arne/LambdaIsland/elpa")
+;; (require 'package-x)
+;; (setq package-archive-upload-base "/home/arne/LambdaIsland/elpa")
 
 (setq package-user-dir
       (expand-file-name (concat "elpa-" (substring emacs-version 0 (string-match "\\." emacs-version 3)))

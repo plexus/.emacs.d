@@ -71,7 +71,10 @@
     (catch-pg-key-error 1)
     (handle-pg-key-error 2)
     (prop/for-all 1)
-    (at 1))
+    (at 1)
+    (promise 1)
+    (await 1)
+    (async 0))
 
   (put-clojure-indent 'component 1)
 

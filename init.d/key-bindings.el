@@ -26,9 +26,12 @@
 (global-set-key (kbd "H-[") 'er/contract-region)
 
 (global-set-key (kbd "H-g") 'magit-status)
+(global-set-key (kbd "C-M-s-g") 'magit-status)
 (global-set-key (kbd "H-b") 'magit-blame)
+(global-set-key (kbd "C-M-s-b") 'magit-blame)
 
 (global-set-key (kbd "H-s") 'helm-projectile-ag) ; search in project on steroids
+(global-set-key (kbd "C-M-s-s") 'helm-projectile-ag) ; until I figure out how to have my ergodox send hyper
 
 (global-set-key (kbd "H-k") 'kill-this-buffer)
 
@@ -61,7 +64,9 @@
 (global-unset-key [(control x) (control z)])
 
 ;; might as well
-(global-set-key [(control z)] 'undo)
-(global-set-key [(control shift z)] 'undo-tree-redo)
+(global-set-key [(control z)] #'undo)
+(global-set-key [(control shift z)] #'undo-tree-redo)
+
+(global-set-key (kbd "C-c d") #'duplicate-thing)
 
 (provide 'key-bindings)

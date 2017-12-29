@@ -48,10 +48,10 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-    ("a" ruby-rubocop flycheck avy avy-mode elixir-mode :ido clojure-mode paredit a 4clojure slime lua-mode ob-restclient dired+ dired-plus company json-mode pug-mode html-to-hiccup emojify mastodon ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
-     (dash "2.12.0")
-     (dash "2.13.0")
-     package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
+    (some-nonsense "a" ruby-rubocop flycheck avy avy-mode elixir-mode :ido clojure-mode paredit a 4clojure slime lua-mode ob-restclient dired+ dired-plus company json-mode pug-mode html-to-hiccup emojify mastodon ace-jump-mode nvm slim-mode php-mode web-mode clj-refactor cider sass-mode aggressive-indent rest-client
+                   (dash "2.12.0")
+                   (dash "2.13.0")
+                   package-lint projectile-rails highlight-symbol feature-mode yaml-mode haml-mode elm-mode jsx-mode matrix-client base16-theme org monroe restclient "inf-clojure" inf-clojure ranger org-present string-edit edn nginx-mode org-mode org-bullets :rainbow-mode rainbow-delimiters-mode haskell-mode htmlize db-pg sql-indent which-key ac-cider eval-sexp-fu multiple-cursors yasnippet s dash clj-refac1tor visual-fill-column visual-fill-column-mode elfeed elfeed-org darkroom use-package outline-magic rainbow-mode helm-ag helm-projectile heml-projectile helm ruby-hash-syntax inf-ruby chruby wgrep undo-tree smooth-scrolling smartparens rainbow-delimiters projectile move-text markdown-mode magit js2-mode highlight-escape-sequences guide-key flymake-coffee fill-column-indicator f expand-region elisp-slime-nav duplicate-thing color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clojure-mode-extra-font-locking cider-eval-sexp-fu)))
  '(popwin-mode t)
  '(popwin:popup-window-height 15)
  '(projectile-create-missing-test-files t)
