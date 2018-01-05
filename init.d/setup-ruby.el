@@ -16,13 +16,14 @@
   ;; switches the current buffer to the ruby process buffer.
   (define-key ruby-mode-map (kbd "C-c C-z") 'ruby-switch-to-inf)
 
-  (define-key ruby-mode-map (kbd "C-c M-j") 'inf-ruby-console-auto)
+  (define-key ruby-mode-map (kbd "C-c M-j") 'inf-ruby)
 
   ;; sends the current definition to the ruby process.
   (define-key ruby-mode-map (kbd "C-M-x") 'ruby-send-definition)
 
   ;; sends the current region to the ruby process.
   (define-key ruby-mode-map (kbd "C-C C-r") 'ruby-send-region)
+  (define-key ruby-mode-map (kbd "C-C C-k") 'ruby-send-buffer)
 
   (setq ruby-insert-encoding-magic-comment nil))
 

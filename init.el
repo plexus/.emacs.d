@@ -39,6 +39,7 @@
 (require 'setup-code-editing)
 (require 'setup-markdown)
 (require 'setup-org-mode)
+(require 'setup-lambdaisland)
 
 (require 'look-and-feel)
 (require 'key-bindings)
@@ -217,23 +218,6 @@
 (add-to-list 'auto-mode-alist '("\\.network\\'" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.link\\'" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.automount\\'" . conf-unix-mode))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; record-controller
-
-(setq plexus/record-counter (propertize "**" 'face 'bold))
-
-(defun plexus/show-record-counter-in-modeline ()
-  (interactive)
-  (setq mode-line-format
-        (append '(">>>" (:eval plexus/record-counter) "<<<") mode-line-format)))
-
-(defun plexus/set-record-counter (i)
-  (setq plexus/record-counter (propertize (number-to-string i) 'face 'bold)))
-
-(make-face 'plexus/writing-face)
-
-(set-face-font 'plexus/writing-face "Lato")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; backup / autosave
