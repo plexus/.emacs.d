@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         backward-sexp
+        beginning-of-visual-line
         cider-eval-last-sexp
         cljr-slash
         cljr-splice-sexp-killing-backward

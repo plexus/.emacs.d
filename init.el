@@ -156,55 +156,6 @@
                   (lambda (retrieved) t))))
 
 
-;; lambda island
-
-(defun plexus/lambdaisland-recording-setup ()
-  (interactive)
-  (set-frame-font "Inconsolata-17" t
-                  (list (make-frame '((name . "islandmacs"))))))
-
-(defun plexus/resize-for-lambda-island ()
-  (setq frame-resize-pixelwise t)
-  (set-frame-width (selected-frame) 1265 nil t)
-  (set-frame-height (selected-frame) 720 nil t))
-
-(defun plexus/ffmpeg-position ()
-  (let* ((f (frame-position))
-         (x (car f))
-         (y (cdr f)))
-    ;; these offsets have been carefully, experimentally verified. They
-    ;; compensate for the drop shadow and title bar that is somehow considered
-    ;; part of the frame
-    (format "%d,%d" (mod (+ x 10) 1920) (+ y 35))))
-
-;; from https://www.emacswiki.org/emacs/SqlMode
-;; PostgreSQL databases with underscores in their names trip up the prompt specified in sql.el. I work around this with the following. Warning, this sets the prompt globally, which is fine by me since I only ever use Postgres.
-
-
-;; Avoid third person in screencast scripts
-(defface plexus/third-person-face
-  '((((supports :underline (:style wave)))
-     :underline (:style wave :color "DarkOrange"))
-    (((class color) (background light))
-     (:inherit font-lock-warning-face :background "moccasin"))
-    (((class color) (background dark))
-     (:inherit font-lock-warning-face :background "DarkOrange")))
-  "Face for highlighting use of the third person")
-
-(defun plexus/third-person-font-lock-keywords ()
-  (list (list (rx word-start
-                  (or "we" "We" "us" "let's" "Let's" "we'll" "We'll")
-                  word-end)
-	      0 (quote 'plexus/third-person-face) 'prepend)))
-
-(defun plexus/third-person-turn-on ()
-  "Turn on syntax highlighting for third person"
-  (interactive)
-  (font-lock-add-keywords
-   nil
-   (plexus/third-person-font-lock-keywords) t))
-
-
 ;; Syntax highlighting for systemd config files
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-unix-mode))
 (add-to-list 'auto-mode-alist '("\\.timer\\'" . conf-unix-mode))
@@ -383,9 +334,3 @@ and how to display message."
             (seq-let [var val] (mapcar 'string-trim (s-split "=" line))
               (setenv var val))))
         nil))))
-
-(defun plexus/screencast-mode ()
-  (interactive)
-  (blink-cursor-mode 0)
-  (setq indicate-empty-lines nil)
-  (set-frame-parameter nil 'left-fringe 18))

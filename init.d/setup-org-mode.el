@@ -141,7 +141,14 @@
     (org-latex-export-to-pdf)
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.mobi")
     (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-guides/repls.html /home/arne/github/lambdaisland-guides/repls.epub")
-    (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/App/resources/guides")))
+    (shell-command-to-string "cp /home/arne/github/lambdaisland-guides/repls.{html,pdf,epub,mobi} /home/arne/LambdaIsland/App/resources/guides"))
+
+  (with-current-buffer (find-file-noselect "/home/arne/github/lambdaisland-docs/lambdaisland-docs.org")
+    (org-html-export-to-html)
+    (org-latex-export-to-pdf)
+    (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-docs/lambdaisland-docs.html /home/arne/github/lambdaisland-docs/lambdaisland-docs.mobi")
+    (shell-command-to-string "ebook-convert /home/arne/github/lambdaisland-docs/lambdaisland-docs.html /home/arne/github/lambdaisland-docs/lambdaisland-docs.epub")
+    (shell-command-to-string "cp /home/arne/github/lambdaisland-docs/lambdaisland-docs.{html,pdf,epub,mobi} /home/arne/LambdaIsland/App/resources/guides")))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
