@@ -1,0 +1,10 @@
+/straight
+.emacs.desktop
+.emacs.desktop.lock
+projectile.cache
+projectile-bookmarks.eld
+.swp
+/transient
+recentf
+smex-items
+.nrepl-port
