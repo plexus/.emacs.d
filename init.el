@@ -1,19 +1,17 @@
-(defvar bootstrap-version)
-(setq straight-use-package-by-default t)
+(push (concat user-emacs-directory "lisp") load-path)
+(mapc #'load-file (directory-files (concat user-emacs-directory "lisp") t "[0-9]*.el$"))
 
-(let ((install-url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
-      (bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer (url-retrieve-synchronously install-url 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(use-package magit
+  :defer 1)
 
-(straight-use-package 'use-package)
+(use-package evil-magit
+  :defer 1
+  :after (magit))
 
-(use-package corgi
-  :straight (corgi
-             :type git
-             :branch "main"
-             :repo "/home/arne/github/lambdaisland/corgi"))
+(use-package org
+  :defer 1
+  :config
+  (require 'org-tempo))
+
+(use-package markdown-mode)
+(use-package yaml-mode)

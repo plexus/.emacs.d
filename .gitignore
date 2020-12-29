@@ -1,4 +1,5 @@
-/straight
+/straight/*
+!/straight/versions
 .emacs.desktop
 .emacs.desktop.lock
 projectile.cache
@@ -8,3 +9,5 @@ projectile-bookmarks.eld
 recentf
 smex-items
 .nrepl-port
+/auto-save-list
+/backups

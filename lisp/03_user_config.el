@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
-(when (not (server-running-p))
-  (server-start))
+;; (when (not (server-running-p))
+;;   (server-start))
 
 ;; Enable copy-paste to/from x clipboard when running in a terminal
 (use-package xclip
@@ -198,6 +198,6 @@
 (use-package color-theme-sanityinc-tomorrow
   :config
   (load-theme 'sanityinc-tomorrow-blue t))
-;;(color-theme-sanityinc-tomorrow-night)
+;;(color-theme-sanityinc-tomorrow-blue)
 
-(use-package keycast)
+;; (use-package keycast)
