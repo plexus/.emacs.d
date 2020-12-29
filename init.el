@@ -4,9 +4,9 @@
 (use-package magit
   :defer 1)
 
-(use-package evil-magit
-  :defer 1
-  :after (magit))
+;; (use-package evil-magit
+;;   :defer 1
+;;   :after (magit))
 
 (use-package org
   :defer 1
@@ -15,3 +15,5 @@
 
 (use-package markdown-mode)
 (use-package yaml-mode)
+
+(straight-freeze-versions)
