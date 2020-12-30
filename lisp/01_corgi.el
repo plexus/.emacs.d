@@ -11,4 +11,9 @@
   (use-package corgi-editor)
   (use-package corgi-emacs-lisp)
   (use-package corgi-commands)
-  (use-package corgi-clojure))
+  (use-package corgi-clojure)
+  (use-package corgi-stateline)
+  (use-package corkey
+    :config
+    (corkey-mode 1)
+    (corkey/install-bindings)))
