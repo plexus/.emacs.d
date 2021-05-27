@@ -16,4 +16,4 @@
   (use-package corkey
     :config
     (corkey-mode 1)
-    (corkey/install-bindings)))
+    (corkey/install-bindings '(corgi-keys) '(corgi-signals plexus-signals))))

@@ -8,6 +8,7 @@
  '(ansi-color-names-vector
    (vector "#2d2d2d" "#f2777a" "#99cc99" "#ffcc66" "#6699cc" "#cc99cc" "#66cccc" "#cccccc"))
  '(beacon-color "#f2777a")
+ '(corkey-mode t)
  '(custom-enabled-themes '(sanityinc-tomorrow-blue))
  '(custom-safe-themes
    '("82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" default))
@@ -15,7 +16,29 @@
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
  '(frame-background-mode 'dark)
  '(safe-local-variable-values
-   '((dired-actual-switches . "-AlhrG --color=always")
+   '((eval define-clojure-indent
+           (assoc 0)
+           (for* 1))
+     (eval define-clojure-indent
+           (codepoint-case 'defun))
+     (cider-cljs-lein-repl . "(do (user/go) (user/cljs-repl))")
+     (eval progn
+           (cider-register-cljs-repl-type 'procflow "(user/shadow-cljs-repl)"))
+     (buffer-save-without-query . t)
+     (eval define-clojure-indent
+           (assoc 0)
+           (ex-info 0)
+           (for! 1)
+           (for* 1)
+           (js-for 1)
+           (as-> 2)
+           (nextjournal\.commands\.api/register! 1)
+           (nextjournal\.commands\.api/register-context-fn! 1)
+           (commands/register! 1))
+     (git-commit-major-mode . git-commit-elisp-text-mode)
+     (org-html-table-align-individual-fields)
+     (header-auto-update-enabled)
+     (dired-actual-switches . "-AlhrG --color=always")
      (dired-listing-switches . "-alr")
      (eval progn
            (put 'defendpoint 'clojure-doc-string-elt 3)

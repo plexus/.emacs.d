@@ -4,10 +4,6 @@
 ;;   (server-start))
 
 ;; Enable copy-paste to/from x clipboard when running in a terminal
-(use-package xclip
-  :config
-  (unless (executable-find xclip-program)
-    (xclip-mode t)))
 
 (set-frame-font "Iosevka Fixed SS14-22")
 
@@ -192,8 +188,11 @@
 
 (use-package sql-presto
   :config
-  (setq sql-presto-program "/home/arne/Eleven/runeleven/presto/bin/presto_cli.sh")
-  (setq sql-presto-options '("--" "--output-format" "CSV_HEADER")))
+  (setq sql-presto-program "/home/arne/Eleven/runeleven/melvn/bin/presto_cli")
+  (setq sql-presto-options
+        nil
+        ;;'("--" "--output-format" "CSV_HEADER")
+        ))
 
 (use-package color-theme-sanityinc-tomorrow
   :config

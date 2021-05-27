@@ -11,3 +11,4 @@ smex-items
 .nrepl-port
 /auto-save-list
 /backups
+session.*
