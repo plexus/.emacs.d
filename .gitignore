@@ -12,3 +12,5 @@ smex-items
 /auto-save-list
 /backups
 session.*
+/tramp
+/cider-cache

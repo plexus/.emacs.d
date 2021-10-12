@@ -16,7 +16,45 @@
  '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
  '(frame-background-mode 'dark)
  '(safe-local-variable-values
-   '((eval define-clojure-indent
+   '((cider-print-fn . pprint)
+     (cider-print-fn . print)
+     (cider-print-fn . puget)
+     (eval progn)
+     (eval
+      (lambda nil
+        (when
+            (not
+             (featurep 'clerk))
+          (let
+              ((init-file-path
+                (expand-file-name "clerk.el" default-directory)))
+            (when
+                (file-exists-p init-file-path)
+              (load init-file-path)
+              (require 'clerk))))))
+     (eval with-eval-after-load 'clojure-mode
+           (define-clojure-indent
+             (assoc 0)
+             (ex-info 0)
+             (for! 1)
+             (for* 1)
+             (js-for 1)
+             (as-> 2)
+             (nextjournal\.commands\.api/register! 1)
+             (nextjournal\.commands\.api/register-context-fn! 1)
+             (commands/register! 1)))
+     (eval with-eval-after-load 'lsp-mode
+           (setq lsp-file-watch-ignored-directories
+                 (cl-union lsp-file-watch-ignored-directories
+                           '("[/\\\\]\\react-native\\'"))))
+     (eval setq lsp-file-watch-ignored-directories
+           (cl-union lsp-file-watch-ignored-directories
+                     '("[/\\\\]\\react-native\\'")))
+     (eval define-clojure-indent
+           (defmutableclass
+             '(2 :form :form
+                 (1))))
+     (eval define-clojure-indent
            (assoc 0)
            (for* 1))
      (eval define-clojure-indent

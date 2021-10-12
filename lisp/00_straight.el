@@ -12,3 +12,6 @@
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
+
+(when (not (file-exists-p (expand-file-name "straight/versions/default.el" straight-base-dir)))
+  (straight-freeze-versions))

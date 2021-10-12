@@ -35,23 +35,29 @@
 (defun babashka-jack-in (&optional connected-callback)
   (interactive)
   (babashka-quit)
-  (let* ((cmd "bb --nrepl-server 0") ;; Until https://github.com/babashka/babashka.nrepl/pull/32 you'll need your own build of bb
+  (let* ((current-dir default-directory)
+         (cmd "bb --nrepl-server 0")
          (serv-buf (get-buffer-create "*babashka-nrepl-server*"))
          (host "127.0.0.1")
-         (repl-builder (lambda (port)
-                         (lambda (_)
-                           (let ((repl-buf (get-buffer-create "*babashka-repl*")))
-                             (with-current-buffer repl-buf
-                               (cider-repl-create (list :repl-buffer repl-buf
-                                                        :repl-type 'clj
-                                                        :host host
-                                                        :port port
-                                                        :project-dir "~"
-                                                        :session-name "babashka"
-                                                        :repl-init-function (lambda ()
-                                                                              (setq-local cljr-suppress-no-project-warning t
-                                                                                          cljr-suppress-middleware-warnings t)
-                                                                              (rename-buffer "*babashka-repl*")))))))))
+         (repl-builder
+          (lambda (port)
+            (lambda (_)
+              (let ((repl-buf (get-buffer-create "*babashka-repl*"))
+                    (project-dir (let ((clojure-build-tool-files '("bb.edn")))
+                                   (clojure-project-root-path current-dir))))
+                (message "Starting babashka in %s" project-dir)
+                (with-current-buffer repl-buf
+                  (cider-repl-create (list :repl-buffer repl-buf
+                                           :repl-type 'clj
+                                           :host host
+                                           :port port
+                                           :project-dir project-dir
+
+                                           :session-name "babashka"
+                                           :repl-init-function (lambda ()
+                                                                 (setq-local cljr-suppress-no-project-warning t
+                                                                             cljr-suppress-middleware-warnings t)
+                                                                 (rename-buffer "*babashka-repl*")))))))))
          (port-filter (lambda (serv-buf)
                         (lambda (process output)
                           (when (buffer-live-p serv-buf)
